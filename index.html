@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✧ 莪の夢幻小窩 ✧ 千禧霓虹</title>
+  <title id="pageTitle">✧ 莪の夢幻小窩 ✧ 千禧霓虹</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -24,7 +24,6 @@
       position: relative;
     }
 
-    /* 星星层 - 不阻挡点击 */
     body::after {
       content: "";
       position: fixed;
@@ -49,13 +48,24 @@
       z-index: 10;
     }
 
-    button, input, textarea, .format-btn, .change-avatar-btn, label {
+    button, input, textarea, .format-btn, .change-avatar-btn, label, .editable-text, [contenteditable="true"] {
       position: relative;
       z-index: 100;
       cursor: pointer;
     }
 
-    /* 装饰元素 - 不阻挡点击 */
+    /* 可编辑文字样式提示 */
+    [contenteditable="true"]:hover {
+      background: rgba(255, 192, 203, 0.2);
+      outline: 2px dashed #ff99cc;
+      border-radius: 8px;
+    }
+
+    [contenteditable="true"]:focus {
+      background: rgba(255, 192, 203, 0.3);
+      outline: 3px solid #ff69b4;
+    }
+
     .bow-deco, .heart-corner, .floating-bow {
       pointer-events: none;
       position: absolute;
@@ -65,7 +75,43 @@
     .heart-corner { bottom: -8px; left: 20px; font-size: 36px; filter: drop-shadow(0 0 10px #ff95d0); }
     .floating-bow { left: -10px; bottom: 20%; font-size: 30px; opacity: 0.7; }
 
-    /* 顶部区域 */
+    /* 控制面板 */
+    .control-panel {
+      background: rgba(30, 15, 50, 0.8);
+      border: 2px solid #ff99cc;
+      border-radius: 20px;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .control-btn {
+      background: #1d1240;
+      border: 2px outset #d89cff;
+      color: #fffac2;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #511e5e;
+    }
+
+    .control-btn:hover {
+      background: #3d2570;
+      transform: scale(0.98);
+    }
+
+    .save-indicator {
+      color: #7df9ff;
+      margin-left: auto;
+      font-size: 0.9rem;
+    }
+
     .top-section {
       display: flex;
       align-items: flex-end;
@@ -86,6 +132,12 @@
       border-radius: 60% 40% 60% 40% / 50% 50% 40% 40%;
       border: 4mm ridge #ffa6d2;
       box-shadow: 0 0 30px #fe7be5, inset 0 0 15px #b3e4ff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .avatar-wrapper:hover {
+      box-shadow: 0 0 40px #ff44e6, inset 0 0 20px #fff;
     }
 
     .avatar-img {
@@ -98,26 +150,10 @@
       box-shadow: 0 6px 0 #872b84, 0 0 30px #ffb6f3;
     }
 
-    .change-avatar-btn {
-      margin-top: 12px;
-      background: #1d1240;
-      border: 3px outset #d89cff;
-      color: #fffac2;
-      font-weight: bold;
-      padding: 8px 16px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      box-shadow: 0 4px 0 #511e5e, 0 0 12px #ffa0d0;
-      text-shadow: 1px 1px 0 #2f0055;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .change-avatar-btn:hover {
-      background: #3d2570;
-      border-color: #ffbfe8;
-      transform: scale(0.98);
+    .avatar-hint {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #ffb3d9;
     }
 
     .welcome-neon {
@@ -132,6 +168,7 @@
       color: #fff0d0;
       text-shadow: 0 0 5px #fff3b0, 0 0 15px #ff5eb8, 0 0 30px #f03cff, 0 0 50px #3c96ff, 4px 4px 0 #2d0060;
       animation: neonPulse 1.8s infinite alternate;
+      outline: none;
     }
 
     @keyframes neonPulse {
@@ -165,7 +202,6 @@
       30%{ transform: scale(1.2); }
     }
 
-    /* 内容网格 */
     .content-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -188,6 +224,13 @@
       border-radius: 20px 4px 20px 4px;
       border: 2px dashed #f9b7ff;
       margin-bottom: 15px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .pic-frame:hover {
+      border-color: #ff69b4;
+      box-shadow: 0 0 20px #ff99cc;
     }
 
     .vintage-pic {
@@ -198,6 +241,13 @@
       border: 3px solid #fee49b;
       box-shadow: 0 0 18px #ff94e6;
       background: #badaff;
+    }
+
+    .pic-hint {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #ffb3d9;
+      margin-top: 5px;
     }
 
     .editable-box {
@@ -225,12 +275,6 @@
       outline: none;
     }
 
-    .editable-text:focus {
-      border: 3px solid #ffb1f0;
-      background: #ffffffee;
-      box-shadow: 0 0 18px #ff8ad4;
-    }
-
     .format-toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -250,11 +294,6 @@
       text-shadow: 1px 1px 0 #350066;
     }
 
-    .format-btn:hover {
-      background: #332068;
-      border-color: #ffc1e7;
-    }
-
     .footer-note {
       margin-top: 35px;
       text-align: right;
@@ -264,7 +303,18 @@
       color: #ffd1f0;
     }
 
-    #avatarUpload { display: none; }
+    #avatarUpload, .hidden-file-input {
+      display: none;
+    }
+
+    /* 编辑提示 */
+    .edit-tip {
+      text-align: center;
+      color: #7df9ff;
+      font-size: 0.8rem;
+      margin-top: 5px;
+      opacity: 0.8;
+    }
 
     @media (max-width: 640px) {
       .neon-text { font-size: 2rem; }
@@ -280,36 +330,49 @@
   <div class="heart-corner">💗💖💗</div>
   <div class="floating-bow">🎀</div>
 
+  <!-- 控制面板 -->
+  <div class="control-panel">
+    <button class="control-btn" onclick="saveAllContent()">💾 保存所有更改</button>
+    <button class="control-btn" onclick="resetToDefault()">🔄 恢复默认</button>
+    <button class="control-btn" onclick="exportConfig()">📤 导出配置</button>
+    <button class="control-btn" onclick="importConfig()">📥 导入配置</button>
+    <span class="save-indicator" id="saveIndicator"></span>
+  </div>
+
+  <div class="edit-tip">💡 提示：双击任何文字可直接编辑 | 点击图片可更换</div>
+
   <!-- 头像区 -->
   <div class="top-section">
     <div class="avatar-area">
-      <div class="avatar-wrapper">
+      <div class="avatar-wrapper" onclick="document.getElementById('avatarUpload').click()">
         <img id="profileAvatar" class="avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='40' r='32' fill='%23fdd7b0'/%3E%3Ccircle cx='36' cy='35' r='4.5' fill='%23331a00'/%3E%3Ccircle cx='64' cy='35' r='4.5' fill='%23331a00'/%3E%3Cpath d='M42 52 Q50 65,58 52' stroke='%23cc5577' stroke-width='4' fill='%23ffa7a7'/%3E%3Cpath d='M50 18 L54 28 L65 30 L56 37 L58 48 L50 42 L42 48 L44 37 L35 30 L46 28 Z' fill='%23ffcc99'/%3E%3C/svg%3E" alt="手绘女孩">
       </div>
-      <button class="change-avatar-btn" onclick="document.getElementById('avatarUpload').click()">📸 換頭像</button>
+      <div class="avatar-hint">👆 点击头像更换</div>
       <input type="file" id="avatarUpload" accept="image/*" onchange="changeAvatar(event)">
     </div>
     <div class="welcome-neon">
-      <div class="neon-text">Welcome to my world!</div>
-      <div class="neon-sub" style="margin-top:8px;">✧ 啵啵星球 · 永遠歡迎妳 ✧</div>
+      <div class="neon-text" contenteditable="true" id="welcomeText">Welcome to my world!</div>
+      <div class="neon-sub" style="margin-top:8px;" contenteditable="true" id="welcomeSub">✧ 啵啵星球 · 永遠歡迎妳 ✧</div>
     </div>
   </div>
 
   <!-- 手写分割线 -->
   <div class="hand-drawn-divider">
-    <span class="divider-heart">❤️</span>
+    <span class="divider-heart" contenteditable="true" id="heartLeft">❤️</span>
     <span class="divider-line"></span>
-    <span class="divider-heart">💕</span>
+    <span class="divider-heart" contenteditable="true" id="heartRight">💕</span>
   </div>
 
-  <!-- 内容区域 - 图片+可编辑文字 -->
+  <!-- 内容区域 -->
   <div class="content-grid">
     
     <!-- 卡片1 -->
     <div class="pic-card">
-      <div class="pic-frame">
-        <img class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffb3d9'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23ffe0f0'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23ff6699' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸1">
+      <div class="pic-frame" onclick="document.getElementById('picUpload1').click()">
+        <img id="pic1" class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffb3d9'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23ffe0f0'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23ff6699' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸1">
+        <div class="pic-hint">👆 点击图片更换</div>
       </div>
+      <input type="file" id="picUpload1" accept="image/*" class="hidden-file-input" onchange="changePic(1, event)">
       <div class="editable-box">
         <textarea class="editable-text" id="text1" placeholder="寫下妳的心情...">🌸 今天也是粉紅泡泡的一天！</textarea>
         <div class="format-toolbar">
@@ -317,15 +380,18 @@
           <button class="format-btn" onclick="formatText('text1', 'italic')"><i>I</i></button>
           <button class="format-btn" onclick="changeColor('text1', '#ff69b4')">🌸</button>
           <button class="format-btn" onclick="changeColor('text1', '#7df9ff')">💙</button>
+          <button class="format-btn" onclick="changeColor('text1', '#ffcc00')">⭐</button>
         </div>
       </div>
     </div>
 
     <!-- 卡片2 -->
     <div class="pic-card">
-      <div class="pic-frame">
-        <img class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23b3d9ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffcc00'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffcc00'/%3E%3Ctext x='30' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸2">
+      <div class="pic-frame" onclick="document.getElementById('picUpload2').click()">
+        <img id="pic2" class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23b3d9ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffcc00'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffcc00'/%3E%3Ctext x='30' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸2">
+        <div class="pic-hint">👆 点击图片更换</div>
       </div>
+      <input type="file" id="picUpload2" accept="image/*" class="hidden-file-input" onchange="changePic(2, event)">
       <div class="editable-box">
         <textarea class="editable-text" id="text2" placeholder="寫下妳的心情...">✨ 閃閃惹人愛 ✨</textarea>
         <div class="format-toolbar">
@@ -333,15 +399,18 @@
           <button class="format-btn" onclick="formatText('text2', 'italic')"><i>I</i></button>
           <button class="format-btn" onclick="changeColor('text2', '#ff69b4')">🌸</button>
           <button class="format-btn" onclick="changeColor('text2', '#7df9ff')">💙</button>
+          <button class="format-btn" onclick="changeColor('text2', '#ffcc00')">⭐</button>
         </div>
       </div>
     </div>
 
     <!-- 卡片3 -->
     <div class="pic-card">
-      <div class="pic-frame">
-        <img class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d9b3ff'/%3E%3Cpath d='M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z' fill='%23ffe6ff'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 夢幻 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸3">
+      <div class="pic-frame" onclick="document.getElementById('picUpload3').click()">
+        <img id="pic3" class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d9b3ff'/%3E%3Cpath d='M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z' fill='%23ffe6ff'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 夢幻 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸3">
+        <div class="pic-hint">👆 点击图片更换</div>
       </div>
+      <input type="file" id="picUpload3" accept="image/*" class="hidden-file-input" onchange="changePic(3, event)">
       <div class="editable-box">
         <textarea class="editable-text" id="text3" placeholder="寫下妳的心情...">🦋 在夢境裡飛行 🦋</textarea>
         <div class="format-toolbar">
@@ -349,31 +418,47 @@
           <button class="format-btn" onclick="formatText('text3', 'italic')"><i>I</i></button>
           <button class="format-btn" onclick="changeColor('text3', '#ff69b4')">🌸</button>
           <button class="format-btn" onclick="changeColor('text3', '#7df9ff')">💙</button>
+          <button class="format-btn" onclick="changeColor('text3', '#ffcc00')">⭐</button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- 可编辑签名 -->
   <div class="footer-note">
-    <span>🎀 歡迎來到我的小宇宙 🎀</span><br>
-    <span style="font-size:0.9rem;">✧ 留言 · 貼圖 · 愛妳 ✧</span>
+    <span contenteditable="true" id="footerLine1">🎀 歡迎來到我的小宇宙 🎀</span><br>
+    <span style="font-size:0.9rem;" contenteditable="true" id="footerLine2">✧ 留言 · 貼圖 · 愛妳 ✧</span>
   </div>
 </div>
 
 <script>
-  // 更换头像
+  // ========== 头像更换 ==========
   function changeAvatar(event) {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = function(e) {
         document.getElementById('profileAvatar').src = e.target.result;
+        showSaveTip('头像已更换');
       };
       reader.readAsDataURL(file);
     }
   }
 
-  // 文字格式化
+  // ========== 图片更换 ==========
+  function changePic(index, event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('pic' + index).src = e.target.result;
+        showSaveTip('图片 ' + index + ' 已更换');
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // ========== 文字格式化 ==========
   function formatText(textareaId, command) {
     const textarea = document.getElementById(textareaId);
     const start = textarea.selectionStart;
@@ -389,18 +474,148 @@
     
     if (selectedText) {
       textarea.value = textarea.value.substring(0, start) + formattedText + textarea.value.substring(end);
+    } else {
+      // 如果没有选中文字，插入符号
+      if (command === 'bold') {
+        textarea.value += '【文字】';
+      } else {
+        textarea.value += '✧文字✧';
+      }
     }
   }
 
-  // 改变文字颜色（简单实现：添加emoji标记）
   function changeColor(textareaId, color) {
     const textarea = document.getElementById(textareaId);
-    const colorEmoji = color === '#ff69b4' ? '🌸' : '💙';
+    const colorEmoji = color === '#ff69b4' ? '🌸' : (color === '#7df9ff' ? '💙' : '⭐');
     textarea.value = colorEmoji + ' ' + textarea.value;
   }
 
-  // 确保所有元素可点击
-  console.log('✧ 千禧空間已加載 ✧ 所有按鈕都可以點擊喔！');
+  // ========== 保存和加载 ==========
+  function saveAllContent() {
+    const data = {
+      // 头像
+      avatar: document.getElementById('profileAvatar').src,
+      // 可编辑文字
+      welcomeText: document.getElementById('welcomeText').innerText,
+      welcomeSub: document.getElementById('welcomeSub').innerText,
+      heartLeft: document.getElementById('heartLeft').innerText,
+      heartRight: document.getElementById('heartRight').innerText,
+      footerLine1: document.getElementById('footerLine1').innerText,
+      footerLine2: document.getElementById('footerLine2').innerText,
+      // 文本框
+      text1: document.getElementById('text1').value,
+      text2: document.getElementById('text2').value,
+      text3: document.getElementById('text3').value,
+      // 图片
+      pic1: document.getElementById('pic1').src,
+      pic2: document.getElementById('pic2').src,
+      pic3: document.getElementById('pic3').src,
+    };
+    
+    localStorage.setItem('millenniumSite', JSON.stringify(data));
+    showSaveTip('所有内容已保存到浏览器！');
+  }
+
+  function loadAllContent() {
+    const saved = localStorage.getItem('millenniumSite');
+    if (saved) {
+      const data = JSON.parse(saved);
+      
+      if (data.avatar) document.getElementById('profileAvatar').src = data.avatar;
+      if (data.welcomeText) document.getElementById('welcomeText').innerText = data.welcomeText;
+      if (data.welcomeSub) document.getElementById('welcomeSub').innerText = data.welcomeSub;
+      if (data.heartLeft) document.getElementById('heartLeft').innerText = data.heartLeft;
+      if (data.heartRight) document.getElementById('heartRight').innerText = data.heartRight;
+      if (data.footerLine1) document.getElementById('footerLine1').innerText = data.footerLine1;
+      if (data.footerLine2) document.getElementById('footerLine2').innerText = data.footerLine2;
+      if (data.text1) document.getElementById('text1').value = data.text1;
+      if (data.text2) document.getElementById('text2').value = data.text2;
+      if (data.text3) document.getElementById('text3').value = data.text3;
+      if (data.pic1) document.getElementById('pic1').src = data.pic1;
+      if (data.pic2) document.getElementById('pic2').src = data.pic2;
+      if (data.pic3) document.getElementById('pic3').src = data.pic3;
+      
+      showSaveTip('已加载保存的内容');
+    } else {
+      showSaveTip('没有找到保存的内容');
+    }
+  }
+
+  function resetToDefault() {
+    if (confirm('确定要恢复默认设置吗？当前未保存的更改会丢失。')) {
+      localStorage.removeItem('millenniumSite');
+      location.reload();
+    }
+  }
+
+  // ========== 导入/导出 ==========
+  function exportConfig() {
+    const data = localStorage.getItem('millenniumSite');
+    if (data) {
+      const blob = new Blob([data], {type: 'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'my_millennium_site.json';
+      a.click();
+      showSaveTip('配置已导出');
+    } else {
+      showSaveTip('请先保存内容再导出');
+    }
+  }
+
+  function importConfig() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          localStorage.setItem('millenniumSite', event.target.result);
+          loadAllContent();
+          showSaveTip('配置已导入');
+        };
+        reader.readAsText(file);
+      }
+    };
+    input.click();
+  }
+
+  function showSaveTip(msg) {
+    const indicator = document.getElementById('saveIndicator');
+    indicator.innerText = '✨ ' + msg;
+    setTimeout(() => {
+      indicator.innerText = '';
+    }, 3000);
+  }
+
+  // ========== 自动保存（文字变化时） ==========
+  let autoSaveTimer;
+  function autoSave() {
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(() => {
+      saveAllContent();
+      showSaveTip('已自动保存');
+    }, 2000);
+  }
+
+  // 监听所有可编辑元素的变化
+  document.addEventListener('input', function(e) {
+    if (e.target.contentEditable === 'true' || e.target.tagName === 'TEXTAREA') {
+      autoSave();
+    }
+  });
+
+  // ========== 页面加载时自动加载 ==========
+  window.onload = function() {
+    loadAllContent();
+    console.log('✧ 千禧空間已加載 ✧ 所有文字和圖片都可以編輯更換！');
+  };
+
+  // ========== 额外：双击页面标题也可以编辑 ==========
+  document.getElementById('pageTitle').contentEditable = 'false'; // 标题不直接编辑，但可以通过其他方式
 </script>
 
 </body>
