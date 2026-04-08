@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✧ 莪の夢幻小窩 ✧ 千禧樂園</title>
+  <title>✧ 麓の夢幻小窩 ✧ 千禧樂園</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -58,31 +58,32 @@
       z-index: 10;
     }
 
-    /* 同步提示横幅 */
-    .sync-banner {
-      background: #ffe0b3;
-      border: 2px solid #ffb347;
-      border-radius: 20px;
-      padding: 10px 18px;
-      margin-bottom: 20px;
-      display: none;
-      align-items: center;
-      gap: 15px;
-      color: #6b4a3a;
-    }
-
-    .sync-banner.show {
+    .loading-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255, 240, 245, 0.8);
       display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      font-size: 24px;
+      color: #7a4a6e;
+      backdrop-filter: blur(5px);
     }
 
-    .sync-banner button {
-      background: #ffb347;
-      border: none;
-      color: white;
+    .loading-overlay.hide {
+      display: none;
+    }
+
+    .sync-status {
+      background: rgba(255, 220, 240, 0.6);
+      border: 2px solid #ffb6c1;
+      border-radius: 40px;
       padding: 5px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
+      margin-bottom: 15px;
+      display: inline-block;
+      font-size: 0.8rem;
+      color: #7a6a7e;
     }
 
     .login-bar {
@@ -502,7 +503,7 @@
     }
 
     .comment-list {
-      max-height: 130px;
+      max-height: 150px;
       overflow-y: auto;
       margin-bottom: 8px;
       font-size: 0.8rem;
@@ -596,14 +597,21 @@
       color: #7a5a6e;
     }
 
-    #avatarUpload {
-      display: none;
-    }
-
     .deco-bear {
       position: absolute;
       font-size: 20px;
       opacity: 0.4;
+    }
+
+    .refresh-btn {
+      background: #b3e0ff;
+      border: 2px outset #d4e8ff;
+      color: #5a6a7e;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      margin-left: 10px;
     }
 
     @media (max-width: 640px) {
@@ -614,6 +622,10 @@
   </style>
 </head>
 <body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <span>🧸 載入中... 🎀</span>
+</div>
 
 <div class="deco-bear" style="top: 50px; left: 20px;">🧸</div>
 <div class="deco-bear" style="bottom: 80px; right: 30px;">🍀</div>
@@ -644,18 +656,16 @@
   <button onclick="closeGuestNotice()">知道了 ✨</button>
 </div>
 
-<!-- 同步提示横幅 -->
-<div class="sync-banner" id="syncBanner">
-  <span>📢 主人已更新內容！點擊按鈕同步最新版本～</span>
-  <button onclick="syncLatestContent()">🔄 立即同步</button>
-  <button onclick="closeSyncBanner()" style="background:#c4a0b0;">✕</button>
-</div>
-
 <div class="dream-container">
   <div class="bow-deco">🎀✨🎀</div>
   <div class="heart-corner">💗💖💗</div>
   <div class="floating-deco-1">🦋⭐</div>
   <div class="floating-deco-2">🧸🍀</div>
+
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+    <span class="sync-status" id="syncStatus">☁️ 已連接雲端</span>
+    <button class="refresh-btn" onclick="loadAllFromCloud()">🔄 刷新</button>
+  </div>
 
   <div class="login-bar">
     <div class="login-status">
@@ -672,11 +682,10 @@
   </div>
 
   <div class="control-panel" id="controlPanel">
-    <button class="control-btn" onclick="saveToLocal()">💾 本地保存</button>
-    <button class="control-btn highlight" onclick="generateUpdateCode()">📤 生成更新代碼</button>
+    <button class="control-btn highlight" onclick="saveSiteToCloud()">☁️ 同步網站到雲端</button>
     <button class="control-btn" onclick="resetToDefault()">🔄 恢復默認</button>
-    <button class="control-btn" onclick="exportConfig()">📥 導出配置</button>
-    <button class="control-btn" onclick="importConfig()">📤 導入配置</button>
+    <button class="control-btn" onclick="exportConfig()">📥 導出備份</button>
+    <button class="control-btn" onclick="importConfig()">📤 導入備份</button>
     <span style="color:#7a6a5e; margin-left:auto;" id="saveIndicator"></span>
   </div>
 
@@ -748,12 +757,16 @@
 </div>
 
 <script>
-  // ========== 配置 ==========
-  const OWNER_PASSWORD = '123456';
-  const OWNER_NAME = '主人';
+  // ========== 配置 - 请替换成你自己的 ==========
+  const JSONBIN_API_KEY = '$2a$10$plHl7lwVtxDRSvcuiLOim.FYzmX7LCoGjktOqbAXH6uLY9fnM/7aq';           // 👈 替换这里！
+  const SITE_BIN_ID = '69d65cc7aaba882197d805f3';           // 👈 替换这里！（主人数据）
+  const COMMENTS_BIN_ID = '69d6650536566621a88f4399';   // 👈 替换这里！（公开评论）
   
-  // 版本号 - 每次主人更新时递增
-  let contentVersion = localStorage.getItem('contentVersion') || '1.0.0';
+  const SITE_URL = `https://api.jsonbin.io/v3/b/${SITE_BIN_ID}`;
+  const COMMENTS_URL = `https://api.jsonbin.io/v3/b/${COMMENTS_BIN_ID}`;
+  
+  const OWNER_PASSWORD = '123456';
+  const OWNER_NAME = '麓';
   
   let isOwner = false;
   let guestName = localStorage.getItem('guestName') || '';
@@ -767,17 +780,163 @@
   ];
 
   let cardsData = JSON.parse(JSON.stringify(defaultCards));
-  
-  // 评论数据 - 使用一个简单的云存储方案（基于 GitHub Gist 或 JSONbin）
-  // 这里使用 localStorage 作为临时方案，但会提示主人更新
-  let commentsData = JSON.parse(localStorage.getItem('millennium_comments') || '[[],[],[]]');
+  let commentsData = [[], [], []];
+
+  // ========== 云端操作 ==========
+  async function loadAllFromCloud() {
+    showLoading(true);
+    try {
+      // 并行加载站点数据和评论
+      const [siteRes, commentsRes] = await Promise.all([
+        fetch(`${SITE_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } }),
+        fetch(`${COMMENTS_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } })
+      ]);
+      
+      if (siteRes.ok) {
+        const siteData = await siteRes.json();
+        applySiteData(siteData.record);
+        if (siteData.record.cards) cardsData = siteData.record.cards;
+      }
+      
+      if (commentsRes.ok) {
+        const commentsResp = await commentsRes.json();
+        commentsData = commentsResp.record;
+        if (!Array.isArray(commentsData)) commentsData = [[], [], []];
+        while (commentsData.length < cardsData.length) commentsData.push([]);
+      }
+      
+      document.getElementById('syncStatus').innerHTML = '☁️ 已同步最新內容';
+      renderCards();
+      showSaveTip('✨ 已從雲端載入最新內容！');
+    } catch (e) {
+      console.error('加載失敗', e);
+      document.getElementById('syncStatus').innerHTML = '⚠️ 離線模式';
+    }
+    showLoading(false);
+  }
+
+  async function saveSiteToCloud() {
+    if (!isOwner) {
+      alert('只有主人可以儲存網站內容到雲端喔！👑');
+      return;
+    }
+    
+    showLoading(true);
+    
+    const siteData = collectSiteData();
+    siteData.cards = cardsData;
+    
+    try {
+      const response = await fetch(SITE_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_API_KEY
+        },
+        body: JSON.stringify(siteData)
+      });
+      
+      if (response.ok) {
+        document.getElementById('syncStatus').innerHTML = '☁️ 網站已同步';
+        showSaveTip('✨ 網站內容已同步到雲端！');
+      }
+    } catch (e) {
+      alert('同步失敗，請檢查網絡');
+    }
+    showLoading(false);
+  }
+
+  async function saveCommentsToCloud() {
+    try {
+      const response = await fetch(COMMENTS_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_API_KEY
+        },
+        body: JSON.stringify(commentsData)
+      });
+      
+      if (response.ok) {
+        document.getElementById('syncStatus').innerHTML = '☁️ 評論已同步';
+      }
+    } catch (e) {
+      console.error('評論同步失敗', e);
+    }
+  }
+
+  function applySiteData(data) {
+    if (data.avatar) {
+      const avatarEl = document.getElementById('profileAvatar');
+      if (data.avatarType === 'emoji') {
+        if (avatarEl.tagName === 'IMG') {
+          const parent = avatarEl.parentNode;
+          const newDiv = document.createElement('div');
+          newDiv.id = 'profileAvatar';
+          newDiv.className = 'avatar-img avatar-emoji';
+          newDiv.innerText = data.avatar;
+          parent.replaceChild(newDiv, avatarEl);
+        } else {
+          avatarEl.innerText = data.avatar;
+        }
+      } else {
+        if (avatarEl.tagName !== 'IMG') {
+          const parent = avatarEl.parentNode;
+          const img = document.createElement('img');
+          img.id = 'profileAvatar';
+          img.className = 'avatar-img';
+          img.src = data.avatar;
+          parent.replaceChild(img, avatarEl);
+        } else {
+          avatarEl.src = data.avatar;
+        }
+      }
+    }
+    if (data.welcomeText) document.getElementById('welcomeText').innerText = data.welcomeText;
+    if (data.welcomeSub) document.getElementById('welcomeSub').innerText = data.welcomeSub;
+    if (data.heartLeft) document.getElementById('heartLeft').innerText = data.heartLeft;
+    if (data.heartRight) document.getElementById('heartRight').innerText = data.heartRight;
+    if (data.footerLine1) document.getElementById('footerLine1').innerText = data.footerLine1;
+    if (data.footerLine2) document.getElementById('footerLine2').innerText = data.footerLine2;
+  }
+
+  function collectSiteData() {
+    const avatarEl = document.getElementById('profileAvatar');
+    return {
+      avatar: avatarEl.tagName === 'IMG' ? avatarEl.src : avatarEl.innerText,
+      avatarType: avatarEl.tagName === 'IMG' ? 'image' : 'emoji',
+      welcomeText: document.getElementById('welcomeText').innerText,
+      welcomeSub: document.getElementById('welcomeSub').innerText,
+      heartLeft: document.getElementById('heartLeft').innerText,
+      heartRight: document.getElementById('heartRight').innerText,
+      footerLine1: document.getElementById('footerLine1').innerText,
+      footerLine2: document.getElementById('footerLine2').innerText
+    };
+  }
+
+  function showLoading(show) {
+    document.getElementById('loadingOverlay').classList.toggle('hide', !show);
+  }
 
   // ========== 初始化 ==========
-  function init() {
-    loadOwnerData();
-    renderCards();
-    updateOwnerUI();
+  async function init() {
     initAvatarLibrary();
+    await loadAllFromCloud();
+    updateOwnerUI();
+    
+    // 每15秒自动刷新评论
+    setInterval(async () => {
+      try {
+        const res = await fetch(`${COMMENTS_URL}/latest`, { 
+          headers: { 'X-Master-Key': JSONBIN_API_KEY } 
+        });
+        if (res.ok) {
+          const data = await res.json();
+          commentsData = data.record;
+          renderCards();
+        }
+      } catch (e) {}
+    }, 15000);
     
     if (!isOwner && !localStorage.getItem('guestNoticeShown')) {
       setTimeout(() => {
@@ -793,17 +952,10 @@
         });
       }, 100);
     }
-
-    // 检查版本更新
-    checkVersionUpdate();
   }
 
   function closeGuestNotice() {
     document.getElementById('guestNotice').classList.remove('show');
-  }
-
-  function closeSyncBanner() {
-    document.getElementById('syncBanner').classList.remove('show');
   }
 
   function initAvatarLibrary() {
@@ -838,7 +990,6 @@
       avatarEl.innerText = avatar;
     }
     closeAvatarLibrary();
-    if (isOwner) saveToLocal();
   }
 
   function uploadCustomAvatar(event) {
@@ -855,7 +1006,6 @@
         img.style.objectFit = 'cover';
         parent.replaceChild(img, avatarEl);
         closeAvatarLibrary();
-        if (isOwner) saveToLocal();
       };
       reader.readAsDataURL(file);
     }
@@ -936,6 +1086,11 @@
     const grid = document.getElementById('contentGrid');
     grid.innerHTML = '';
     
+    // 确保评论数组长度足够
+    while (commentsData.length < cardsData.length) {
+      commentsData.push([]);
+    }
+    
     cardsData.forEach((card, index) => {
       const cardDiv = document.createElement('div');
       cardDiv.className = 'pic-card';
@@ -965,9 +1120,8 @@
       textarea.className = 'editable-text';
       textarea.value = card.text;
       textarea.readOnly = !isOwner;
-      textarea.oninput = () => { 
+      textarea.onchange = () => { 
         card.text = textarea.value; 
-        if(isOwner) saveToLocal(); 
       };
       
       editableBox.appendChild(textarea);
@@ -978,7 +1132,7 @@
       const commentList = document.createElement('div');
       commentList.className = 'comment-list';
       
-      (commentsData[index] || []).forEach((comment, cIndex) => {
+      (commentsData[index] || []).forEach((comment) => {
         const commentItem = document.createElement('div');
         commentItem.className = 'comment-item';
         const isOwnerComment = comment.name === OWNER_NAME || comment.name.includes('👑');
@@ -1010,9 +1164,6 @@
         if (!isOwner) {
           guestName = this.value;
           localStorage.setItem('guestName', guestName);
-          document.querySelectorAll('.comment-name-input').forEach(inp => {
-            if (inp.id !== `commentName${index}` && !isOwner) inp.value = guestName;
-          });
         }
       };
       
@@ -1062,7 +1213,6 @@
         reader.onload = (event) => {
           cardsData[index].pic = event.target.result;
           renderCards();
-          saveToLocal();
         };
         reader.readAsDataURL(file);
       }
@@ -1078,21 +1228,10 @@
       textInput.placeholder = `回覆 ${targetName}...`;
       textInput.focus();
       replyTarget = targetName;
-      
-      // 修改发送按钮行为
-      const cardDiv = textInput.closest('.pic-card');
-      const commentBtn = cardDiv.querySelector('.comment-btn');
-      const originalClick = commentBtn.onclick;
-      commentBtn.onclick = () => {
-        addComment(index, targetName);
-        commentBtn.onclick = originalClick;
-        textInput.placeholder = '留言...';
-        replyTarget = null;
-      };
     }
   }
 
-  function addComment(index, replyTo = null) {
+  async function addComment(index) {
     const nameInput = document.getElementById(`commentName${index}`);
     const textInput = document.getElementById(`commentText${index}`);
     let name = nameInput.value.trim();
@@ -1111,10 +1250,10 @@
     }
     
     const comment = { name, text, time: Date.now() };
-    if (replyTo || replyTarget) {
-      comment.replyTo = replyTo || replyTarget;
-      text = text + (comment.replyTo ? ` @${comment.replyTo}` : '');
-      comment.text = text;
+    if (replyTarget) {
+      comment.replyTo = replyTarget;
+      comment.text = text + ` @${replyTarget}`;
+      replyTarget = null;
     }
     
     if (!commentsData[index]) commentsData[index] = [];
@@ -1126,158 +1265,34 @@
     
     textInput.value = '';
     textInput.placeholder = '留言...';
-    replyTarget = null;
-    
-    localStorage.setItem('millennium_comments', JSON.stringify(commentsData));
     
     renderCards();
-    showSaveTip('評論已發送！');
-  }
-
-  function loadOwnerData() {
-    const saved = localStorage.getItem('millennium_owner_data');
-    if (saved) {
-      const data = JSON.parse(saved);
-      
-      const avatarEl = document.getElementById('profileAvatar');
-      if (data.avatar) {
-        if (data.avatarType === 'emoji') {
-          if (avatarEl.tagName === 'IMG') {
-            const parent = avatarEl.parentNode;
-            const newDiv = document.createElement('div');
-            newDiv.id = 'profileAvatar';
-            newDiv.className = 'avatar-img avatar-emoji';
-            newDiv.innerText = data.avatar;
-            parent.replaceChild(newDiv, avatarEl);
-          } else {
-            avatarEl.innerText = data.avatar;
-          }
-        } else {
-          if (avatarEl.tagName !== 'IMG') {
-            const parent = avatarEl.parentNode;
-            const img = document.createElement('img');
-            img.id = 'profileAvatar';
-            img.className = 'avatar-img';
-            img.src = data.avatar;
-            parent.replaceChild(img, avatarEl);
-          } else {
-            avatarEl.src = data.avatar;
-          }
-        }
-      }
-      
-      if (data.welcomeText) document.getElementById('welcomeText').innerText = data.welcomeText;
-      if (data.welcomeSub) document.getElementById('welcomeSub').innerText = data.welcomeSub;
-      if (data.heartLeft) document.getElementById('heartLeft').innerText = data.heartLeft;
-      if (data.heartRight) document.getElementById('heartRight').innerText = data.heartRight;
-      if (data.footerLine1) document.getElementById('footerLine1').innerText = data.footerLine1;
-      if (data.footerLine2) document.getElementById('footerLine2').innerText = data.footerLine2;
-      if (data.cards) cardsData = data.cards;
-      if (data.version) contentVersion = data.version;
-    }
-  }
-
-  function saveToLocal() {
-    if (!isOwner) return;
     
-    const avatarEl = document.getElementById('profileAvatar');
-    const data = {
-      avatar: avatarEl.tagName === 'IMG' ? avatarEl.src : avatarEl.innerText,
-      avatarType: avatarEl.tagName === 'IMG' ? 'image' : 'emoji',
-      welcomeText: document.getElementById('welcomeText').innerText,
-      welcomeSub: document.getElementById('welcomeSub').innerText,
-      heartLeft: document.getElementById('heartLeft').innerText,
-      heartRight: document.getElementById('heartRight').innerText,
-      footerLine1: document.getElementById('footerLine1').innerText,
-      footerLine2: document.getElementById('footerLine2').innerText,
-      cards: cardsData,
-      version: incrementVersion()
-    };
-    
-    localStorage.setItem('millennium_owner_data', JSON.stringify(data));
-    showSaveTip('✨ 內容已本地保存！請生成更新代碼同步給訪客');
-  }
-
-  function incrementVersion() {
-    const parts = contentVersion.split('.');
-    parts[2] = (parseInt(parts[2]) || 0) + 1;
-    contentVersion = parts.join('.');
-    localStorage.setItem('contentVersion', contentVersion);
-    return contentVersion;
-  }
-
-  function generateUpdateCode() {
-    if (!isOwner) return;
-    
-    const data = localStorage.getItem('millennium_owner_data');
-    if (!data) {
-      alert('請先保存內容！');
-      return;
-    }
-    
-    // 生成一个更新代码
-    const updateCode = btoa(encodeURIComponent(data));
-    
-    // 复制到剪贴板
-    navigator.clipboard?.writeText(updateCode).then(() => {
-      alert('📋 更新代碼已複製！請將這段代碼發送給訪客，或手動更新到網站文件中。\n\n提示：由於GitHub Pages是靜態網站，訪客需要點擊「同步最新內容」並輸入此代碼才能看到更新。');
-    }).catch(() => {
-      prompt('📋 請手動複製以下更新代碼：', updateCode);
-    });
-    
-    // 显示同步横幅（模拟）
-    document.getElementById('syncBanner').classList.add('show');
-  }
-
-  function syncLatestContent() {
-    const code = prompt('請輸入主人提供的更新代碼：');
-    if (code) {
-      try {
-        const data = JSON.parse(decodeURIComponent(atob(code)));
-        localStorage.setItem('millennium_owner_data', JSON.stringify(data));
-        contentVersion = data.version || '1.0.0';
-        localStorage.setItem('contentVersion', contentVersion);
-        loadOwnerData();
-        renderCards();
-        closeSyncBanner();
-        showSaveTip('✨ 已同步到最新內容！');
-      } catch (e) {
-        alert('更新代碼無效，請確認後重試～');
-      }
-    }
-  }
-
-  function checkVersionUpdate() {
-    // 检查是否有新版本（实际应用中可以从服务器获取）
-    // 这里简化处理：显示提示让访客手动同步
-    if (!isOwner && !localStorage.getItem('syncReminderShown')) {
-      setTimeout(() => {
-        document.getElementById('syncBanner').classList.add('show');
-        localStorage.setItem('syncReminderShown', 'true');
-      }, 2000);
-    }
+    // 立即同步评论到云端（所有人都有权限）
+    await saveCommentsToCloud();
+    showSaveTip('💬 評論已發送！');
   }
 
   function resetToDefault() {
     if (!isOwner) return;
     if (confirm('確定要恢復默認設置嗎？')) {
-      localStorage.removeItem('millennium_owner_data');
       cardsData = JSON.parse(JSON.stringify(defaultCards));
-      location.reload();
+      renderCards();
+      saveSiteToCloud();
     }
   }
 
   function exportConfig() {
     if (!isOwner) return;
-    const data = localStorage.getItem('millennium_owner_data');
-    if (data) {
-      const blob = new Blob([data], {type: 'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'my_site_config.json';
-      a.click();
-    }
+    const siteData = collectSiteData();
+    siteData.cards = cardsData;
+    const data = { siteData, comments: commentsData };
+    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'my_site_backup.json';
+    a.click();
   }
 
   function importConfig() {
@@ -1289,11 +1304,17 @@
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (event) => {
-          localStorage.setItem('millennium_owner_data', event.target.result);
-          loadOwnerData();
+        reader.onload = async (event) => {
+          const data = JSON.parse(event.target.result);
+          if (data.siteData) {
+            applySiteData(data.siteData);
+            if (data.siteData.cards) cardsData = data.siteData.cards;
+          }
+          if (data.comments) commentsData = data.comments;
           renderCards();
-          showSaveTip('配置已導入');
+          await saveSiteToCloud();
+          await saveCommentsToCloud();
+          showSaveTip('備份已導入並同步！');
         };
         reader.readAsText(file);
       }
@@ -1306,16 +1327,6 @@
     indicator.innerText = msg;
     setTimeout(() => indicator.innerText = '', 3000);
   }
-
-  document.addEventListener('input', (e) => {
-    if (isOwner) {
-      if (e.target.classList.contains('editable-text')) {
-        const index = Array.from(document.querySelectorAll('.editable-text')).indexOf(e.target);
-        if (index >= 0) cardsData[index].text = e.target.value;
-      }
-      saveToLocal();
-    }
-  });
 
   window.onload = init;
 </script>
