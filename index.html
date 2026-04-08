@@ -2,86 +2,70 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>✧ 莪の夢幻小窩 ✧ 千禧霓虹波點</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✧ 莪の夢幻小窩 ✧ 千禧霓虹</title>
   <style>
-    /* ========== 千禧復古重置 ========== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #0f0b1f; /* 深紫黑底 */
-      /* 波點背景 —— 千禧年經典 */
+      background: #0f0b1f;
       background-image: 
-        radial-gradient(circle at 20% 30%, #ff66c4 2px, transparent 2px),
-        radial-gradient(circle at 80% 70%, #7df9ff 3px, transparent 3px),
-        radial-gradient(circle at 40% 80%, #ffb3d9 2.5px, transparent 2.5px),
-        radial-gradient(circle at 90% 15%, #b266ff 4px, transparent 4px),
-        radial-gradient(circle at 10% 50%, #ffcc66 3px, transparent 3px),
-        repeating-linear-gradient(45deg, rgba(255, 90, 200, 0.05) 0px, rgba(255, 90, 200, 0.05) 15px, 
-          rgba(100, 200, 255, 0.05) 15px, rgba(100, 200, 255, 0.05) 30px);
-      background-size: 200px 200px, 180px 180px, 220px 220px, 250px 250px, 160px 160px, auto;
+        radial-gradient(circle at 20% 30%, #ff66c4 3px, transparent 3px),
+        radial-gradient(circle at 80% 70%, #7df9ff 4px, transparent 4px),
+        radial-gradient(circle at 40% 80%, #ffb3d9 3px, transparent 3px),
+        radial-gradient(circle at 90% 15%, #b266ff 5px, transparent 5px),
+        radial-gradient(circle at 10% 50%, #ffcc66 4px, transparent 4px);
+      background-size: 200px 200px, 180px 180px, 220px 220px, 250px 250px, 160px 160px;
       min-height: 100vh;
       padding: 24px 16px;
-      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Segoe UI', '幼圆', cursive, sans-serif;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', '幼圆', cursive, sans-serif;
       color: #fff9e0;
-      text-shadow: 2px 2px 0 #440066, 0 0 8px #ffa0e0;
+      text-shadow: 2px 2px 0 #440066;
       position: relative;
-      cursor: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'26\' viewBox=\'0 0 24 26\'%3E%3Cpath fill=\'%23ff77aa\' stroke=\'%23ffffff\' stroke-width=\'1.5\' d=\'M2 4 L18 7 22 15 15 22 7 24 2 17Z\' /%3E%3Ccircle cx=\'7\' cy=\'10\' r=\'2.5\' fill=\'%23ffffff\' /%3E%3C/svg%3E') 6 6, auto;
     }
 
-    /* 閃爍星星層 */
+    /* 星星层 - 不阻挡点击 */
     body::after {
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: transparent url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' viewBox=\'0 0 80 80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath fill=\'%23fff9c4\' d=\'M20 10 L22 16 L28 18 L22 20 L20 26 L18 20 L12 18 L18 16z\'/%3E%3Cpath fill=\'%23ffb3e6\' d=\'M60 45 L61.5 49.5L66 51L61.5 52.5L60 57L58.5 52.5L54 51L58.5 49.5z\'/%3E%3C/svg%3E');
+      background: url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath fill=\'%23fff9c4\' d=\'M20 10 L22 16 L28 18 L22 20 L20 26 L18 20 L12 18 L18 16z\'/%3E%3C/svg%3E');
       background-repeat: repeat;
       pointer-events: none;
-      z-index: 0;
-      opacity: 0.5;
-      animation: starTwinkle 3s infinite alternate;
+      z-index: 1;
+      opacity: 0.4;
     }
 
-    @keyframes starTwinkle {
-      0% { opacity: 0.2; }
-      100% { opacity: 0.7; }
-    }
-
-    /* 主卡片 —— 霓虹磨砂 */
     .dream-container {
       max-width: 1200px;
       margin: 0 auto;
-      background: rgba(18, 10, 35, 0.55);
-      backdrop-filter: blur(10px);
+      background: rgba(18, 10, 35, 0.65);
+      backdrop-filter: blur(8px);
       border: 5px ridge #fea7ff;
       border-radius: 50px 20px 50px 20px;
-      box-shadow: 0 0 40px #ff44e6, 0 0 20px #00d4ff inset, 0 0 30px #b77aff;
+      box-shadow: 0 0 40px #ff44e6, 0 0 20px #00d4ff inset;
       padding: 28px 24px;
       position: relative;
       z-index: 10;
     }
 
-    /* ========== 蝴蝶結 + 愛心裝飾 ========== */
-    .bow-deco {
-      position: absolute;
-      top: -12px; right: 30px;
-      font-size: 42px;
-      filter: drop-shadow(0 0 12px #ffaad4);
-      transform: rotate(10deg);
-      z-index: 20;
-    }
-    .heart-corner {
-      position: absolute;
-      bottom: -8px; left: 20px;
-      font-size: 36px;
-      filter: drop-shadow(0 0 10px #ff95d0);
+    button, input, textarea, .format-btn, .change-avatar-btn, label {
+      position: relative;
+      z-index: 100;
+      cursor: pointer;
     }
 
-    /* ===== 頂部區域：頭像 + 霓虹歡迎語 ===== */
+    /* 装饰元素 - 不阻挡点击 */
+    .bow-deco, .heart-corner, .floating-bow {
+      pointer-events: none;
+      position: absolute;
+      z-index: 20;
+    }
+    .bow-deco { top: -12px; right: 30px; font-size: 42px; filter: drop-shadow(0 0 12px #ffaad4); }
+    .heart-corner { bottom: -8px; left: 20px; font-size: 36px; filter: drop-shadow(0 0 10px #ff95d0); }
+    .floating-bow { left: -10px; bottom: 20%; font-size: 30px; opacity: 0.7; }
+
+    /* 顶部区域 */
     .top-section {
       display: flex;
       align-items: flex-end;
@@ -90,7 +74,6 @@
       margin-bottom: 20px;
     }
 
-    /* 手繪女孩頭像區 (可更換) */
     .avatar-area {
       display: flex;
       flex-direction: column;
@@ -103,8 +86,6 @@
       border-radius: 60% 40% 60% 40% / 50% 50% 40% 40%;
       border: 4mm ridge #ffa6d2;
       box-shadow: 0 0 30px #fe7be5, inset 0 0 15px #b3e4ff;
-      transform: rotate(-3deg);
-      transition: 0.2s;
     }
 
     .avatar-img {
@@ -115,10 +96,8 @@
       border-radius: 55% 35% 55% 35% / 45% 45% 35% 55%;
       border: 3px solid #ffffffc9;
       box-shadow: 0 6px 0 #872b84, 0 0 30px #ffb6f3;
-      display: block;
     }
 
-    /* 更換頭像按鈕 */
     .change-avatar-btn {
       margin-top: 12px;
       background: #1d1240;
@@ -128,10 +107,8 @@
       padding: 8px 16px;
       border-radius: 30px;
       font-size: 0.9rem;
-      cursor: pointer;
       box-shadow: 0 4px 0 #511e5e, 0 0 12px #ffa0d0;
       text-shadow: 1px 1px 0 #2f0055;
-      transition: 0.1s;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -140,45 +117,28 @@
     .change-avatar-btn:hover {
       background: #3d2570;
       border-color: #ffbfe8;
-      box-shadow: 0 4px 0 #5d2570, 0 0 20px #fda7e6;
       transform: scale(0.98);
     }
 
-    /* 霓虹歡迎文字 */
     .welcome-neon {
       flex: 1;
       padding: 8px 0;
     }
 
     .neon-text {
-      font-size: 3.5rem;
+      font-size: 3rem;
       font-weight: bold;
       font-family: 'Brush Script MT', 'Comic Sans MS', cursive;
       color: #fff0d0;
-      text-shadow: 
-        0 0 5px #fff3b0,
-        0 0 15px #ff5eb8,
-        0 0 30px #f03cff,
-        0 0 50px #3c96ff,
-        4px 4px 0 #2d0060;
-      letter-spacing: 3px;
-      word-break: break-word;
+      text-shadow: 0 0 5px #fff3b0, 0 0 15px #ff5eb8, 0 0 30px #f03cff, 0 0 50px #3c96ff, 4px 4px 0 #2d0060;
       animation: neonPulse 1.8s infinite alternate;
     }
 
     @keyframes neonPulse {
-      from { text-shadow: 0 0 5px #fffbc2, 0 0 15px #ff6ac6, 0 0 30px #c06cff, 0 0 45px #37c3ff, 4px 4px 0 #2e0050; }
-      to { text-shadow: 0 0 10px #fffacd, 0 0 25px #ff99e6, 0 0 45px #d58cff, 0 0 65px #69d0ff, 4px 4px 0 #4a1a7a; }
+      from { text-shadow: 0 0 5px #fffbc2, 0 0 15px #ff6ac6, 0 0 30px #c06cff, 4px 4px 0 #2e0050; }
+      to { text-shadow: 0 0 10px #fffacd, 0 0 25px #ff99e6, 0 0 45px #d58cff, 4px 4px 0 #4a1a7a; }
     }
 
-    .neon-sub {
-      font-size: 1.2rem;
-      margin-top: 5px;
-      color: #ebd6ff;
-      text-shadow: 0 0 8px magenta;
-    }
-
-    /* 手寫分割線 (愛心+線條) */
     .hand-drawn-divider {
       margin: 15px 0 25px;
       display: flex;
@@ -205,15 +165,14 @@
       30%{ transform: scale(1.2); }
     }
 
-    /* ===== 主內容：圖片穿插 + 可編輯文本框 ===== */
+    /* 内容网格 */
     .content-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 24px;
       margin: 25px 0 15px;
     }
 
-    /* 圖片卡片 */
     .pic-card {
       background: #1f1740d0;
       backdrop-filter: blur(4px);
@@ -221,13 +180,6 @@
       border-radius: 30px 8px 30px 8px;
       padding: 16px 12px;
       box-shadow: 0 8px 0 #371d5e, 0 0 30px #ffa3d9;
-      transition: transform 0.15s;
-    }
-
-    .pic-card:hover {
-      transform: translateY(-3px);
-      border-color: #ffcfef;
-      box-shadow: 0 8px 0 #4e2575, 0 0 35px #ffb8ec;
     }
 
     .pic-frame {
@@ -248,7 +200,6 @@
       background: #badaff;
     }
 
-    /* 可編輯文本框 (千禧風格) */
     .editable-box {
       background: #030014b8;
       border: 3px inset #e3adff;
@@ -270,17 +221,16 @@
       font-weight: bold;
       line-height: 1.5;
       resize: vertical;
-      box-shadow: inset 0 0 10px #ccaaff, 0 2px 0 #b34e9a;
+      box-shadow: inset 0 0 10px #ccaaff;
       outline: none;
     }
 
     .editable-text:focus {
       border: 3px solid #ffb1f0;
       background: #ffffffee;
-      box-shadow: 0 0 18px #ff8ad4, inset 0 0 5px #b77aff;
+      box-shadow: 0 0 18px #ff8ad4;
     }
 
-    /* 文字格式工具欄 */
     .format-toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -296,30 +246,13 @@
       border-radius: 30px;
       font-size: 0.85rem;
       font-weight: bold;
-      cursor: pointer;
       box-shadow: 0 3px 0 #391d58, 0 0 8px #ec9eff;
       text-shadow: 1px 1px 0 #350066;
-      transition: 0.05s linear;
-      flex: 0 0 auto;
     }
 
     .format-btn:hover {
       background: #332068;
       border-color: #ffc1e7;
-      box-shadow: 0 3px 0 #572e7a, 0 0 14px #ffb3f0;
-    }
-
-    .format-btn.active {
-      background: #b34180;
-      border-color: #ffefb0;
-    }
-
-    /* 特殊：更多千禧裝飾 */
-    .sparkle-group {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 5px;
     }
 
     .footer-note {
@@ -331,40 +264,144 @@
       color: #ffd1f0;
     }
 
-    /* 上傳隱藏input */
-    #avatarUpload {
-      display: none;
-    }
+    #avatarUpload { display: none; }
 
-    /* 手機優化 */
     @media (max-width: 640px) {
-      .neon-text { font-size: 2.2rem; }
+      .neon-text { font-size: 2rem; }
       .top-section { flex-direction: column; align-items: center; }
       .welcome-neon { text-align: center; }
-    }
-
-    /* 蝴蝶結+愛心元素散落 */
-    .floating-bow {
-      position: absolute;
-      left: -10px;
-      bottom: 20%;
-      font-size: 30px;
-      opacity: 0.7;
-      transform: rotate(-15deg);
     }
   </style>
 </head>
 <body>
 
 <div class="dream-container">
-  <!-- 角落蝴蝶結 -->
   <div class="bow-deco">🎀✨🎀</div>
   <div class="heart-corner">💗💖💗</div>
   <div class="floating-bow">🎀</div>
 
-  <!-- 頭像 + 霓虹歡迎區 -->
+  <!-- 头像区 -->
   <div class="top-section">
     <div class="avatar-area">
       <div class="avatar-wrapper">
-        <!-- 手繪女孩頭像 (可更換) 預設一個data-uri插畫風女孩 -->
-        <img id="profileAvatar" class="avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='45' r='30' fill='%23fdd7b0'/%3E%3Ccircle cx='36' cy='38' r='4' fill='%23331a00'/%3E%3Ccircle cx='64' cy='38' r='4' fill='%23331a00'/%3E%3Cpath d='M40 55 Q50 68,60 55' stroke='%23cc5577' stroke-width='4' fill='%23ffa7a7' /%3E%3Cpath d='M50 22 L55 30 L64 32 L57 38 L59 47 L50 42 L41 47 L43 38 L36 
+        <img id="profileAvatar" class="avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='40' r='32' fill='%23fdd7b0'/%3E%3Ccircle cx='36' cy='35' r='4.5' fill='%23331a00'/%3E%3Ccircle cx='64' cy='35' r='4.5' fill='%23331a00'/%3E%3Cpath d='M42 52 Q50 65,58 52' stroke='%23cc5577' stroke-width='4' fill='%23ffa7a7'/%3E%3Cpath d='M50 18 L54 28 L65 30 L56 37 L58 48 L50 42 L42 48 L44 37 L35 30 L46 28 Z' fill='%23ffcc99'/%3E%3C/svg%3E" alt="手绘女孩">
+      </div>
+      <button class="change-avatar-btn" onclick="document.getElementById('avatarUpload').click()">📸 換頭像</button>
+      <input type="file" id="avatarUpload" accept="image/*" onchange="changeAvatar(event)">
+    </div>
+    <div class="welcome-neon">
+      <div class="neon-text">Welcome to my world!</div>
+      <div class="neon-sub" style="margin-top:8px;">✧ 啵啵星球 · 永遠歡迎妳 ✧</div>
+    </div>
+  </div>
+
+  <!-- 手写分割线 -->
+  <div class="hand-drawn-divider">
+    <span class="divider-heart">❤️</span>
+    <span class="divider-line"></span>
+    <span class="divider-heart">💕</span>
+  </div>
+
+  <!-- 内容区域 - 图片+可编辑文字 -->
+  <div class="content-grid">
+    
+    <!-- 卡片1 -->
+    <div class="pic-card">
+      <div class="pic-frame">
+        <img class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffb3d9'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23ffe0f0'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23ff6699' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸1">
+      </div>
+      <div class="editable-box">
+        <textarea class="editable-text" id="text1" placeholder="寫下妳的心情...">🌸 今天也是粉紅泡泡的一天！</textarea>
+        <div class="format-toolbar">
+          <button class="format-btn" onclick="formatText('text1', 'bold')"><b>B</b></button>
+          <button class="format-btn" onclick="formatText('text1', 'italic')"><i>I</i></button>
+          <button class="format-btn" onclick="changeColor('text1', '#ff69b4')">🌸</button>
+          <button class="format-btn" onclick="changeColor('text1', '#7df9ff')">💙</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 卡片2 -->
+    <div class="pic-card">
+      <div class="pic-frame">
+        <img class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23b3d9ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffcc00'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffcc00'/%3E%3Ctext x='30' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸2">
+      </div>
+      <div class="editable-box">
+        <textarea class="editable-text" id="text2" placeholder="寫下妳的心情...">✨ 閃閃惹人愛 ✨</textarea>
+        <div class="format-toolbar">
+          <button class="format-btn" onclick="formatText('text2', 'bold')"><b>B</b></button>
+          <button class="format-btn" onclick="formatText('text2', 'italic')"><i>I</i></button>
+          <button class="format-btn" onclick="changeColor('text2', '#ff69b4')">🌸</button>
+          <button class="format-btn" onclick="changeColor('text2', '#7df9ff')">💙</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 卡片3 -->
+    <div class="pic-card">
+      <div class="pic-frame">
+        <img class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d9b3ff'/%3E%3Cpath d='M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z' fill='%23ffe6ff'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 夢幻 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸3">
+      </div>
+      <div class="editable-box">
+        <textarea class="editable-text" id="text3" placeholder="寫下妳的心情...">🦋 在夢境裡飛行 🦋</textarea>
+        <div class="format-toolbar">
+          <button class="format-btn" onclick="formatText('text3', 'bold')"><b>B</b></button>
+          <button class="format-btn" onclick="formatText('text3', 'italic')"><i>I</i></button>
+          <button class="format-btn" onclick="changeColor('text3', '#ff69b4')">🌸</button>
+          <button class="format-btn" onclick="changeColor('text3', '#7df9ff')">💙</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">
+    <span>🎀 歡迎來到我的小宇宙 🎀</span><br>
+    <span style="font-size:0.9rem;">✧ 留言 · 貼圖 · 愛妳 ✧</span>
+  </div>
+</div>
+
+<script>
+  // 更换头像
+  function changeAvatar(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('profileAvatar').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // 文字格式化
+  function formatText(textareaId, command) {
+    const textarea = document.getElementById(textareaId);
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    
+    let formattedText = '';
+    if (command === 'bold') {
+      formattedText = '【' + selectedText + '】';
+    } else if (command === 'italic') {
+      formattedText = '✧' + selectedText + '✧';
+    }
+    
+    if (selectedText) {
+      textarea.value = textarea.value.substring(0, start) + formattedText + textarea.value.substring(end);
+    }
+  }
+
+  // 改变文字颜色（简单实现：添加emoji标记）
+  function changeColor(textareaId, color) {
+    const textarea = document.getElementById(textareaId);
+    const colorEmoji = color === '#ff69b4' ? '🌸' : '💙';
+    textarea.value = colorEmoji + ' ' + textarea.value;
+  }
+
+  // 确保所有元素可点击
+  console.log('✧ 千禧空間已加載 ✧ 所有按鈕都可以點擊喔！');
+</script>
+
+</body>
+</html>
