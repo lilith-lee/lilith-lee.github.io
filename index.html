@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="pageTitle">✧ 莪の夢幻小窩 ✧ 千禧霓虹</title>
+  <title>✧ 莪の夢幻小窩 ✧ 千禧霓虹</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -48,24 +48,169 @@
       z-index: 10;
     }
 
-    button, input, textarea, .format-btn, .change-avatar-btn, label, .editable-text, [contenteditable="true"] {
-      position: relative;
-      z-index: 100;
+    /* 登录状态栏 */
+    .login-bar {
+      background: rgba(30, 15, 50, 0.8);
+      border: 2px solid #ff99cc;
+      border-radius: 30px;
+      padding: 8px 18px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(5px);
+    }
+
+    .login-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .crown-icon {
+      font-size: 24px;
+      filter: drop-shadow(0 0 8px gold);
+    }
+
+    .login-btn, .logout-btn {
+      background: #1d1240;
+      border: 2px outset #d89cff;
+      color: #fffac2;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #511e5e;
+    }
+
+    .login-btn:hover, .logout-btn:hover {
+      background: #3d2570;
+      transform: scale(0.98);
+    }
+
+    .password-input {
+      background: #fff5fb;
+      border: 2px solid #ff8ad4;
+      border-radius: 30px;
+      padding: 6px 12px;
+      font-family: 'Comic Sans MS', cursive;
+      outline: none;
+    }
+
+    /* 控制面板（仅主人可见） */
+    .control-panel {
+      background: rgba(50, 20, 70, 0.8);
+      border: 2px solid #ffb347;
+      border-radius: 20px;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+      display: none;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .control-panel.show {
+      display: flex;
+    }
+
+    .control-btn {
+      background: #2a1050;
+      border: 2px outset #ffb347;
+      color: #fffac2;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    /* 可编辑文字样式提示 */
+    /* 头像库弹窗 */
+    .avatar-library {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1a1040;
+      border: 5px ridge #ff99cc;
+      border-radius: 30px;
+      padding: 24px;
+      z-index: 1000;
+      display: none;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 0 50px #ff44e6;
+    }
+
+    .avatar-library.show {
+      display: block;
+    }
+
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .avatar-option {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 3px solid #ffb3d9;
+      cursor: pointer;
+      background: #ffe0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      transition: 0.2s;
+    }
+
+    .avatar-option:hover {
+      transform: scale(1.1);
+      border-color: #ff69b4;
+      box-shadow: 0 0 20px #ff99cc;
+    }
+
+    .close-library {
+      background: #ff69b4;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      display: none;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    /* 可编辑元素提示 */
+    .editable-hint {
+      cursor: pointer;
+    }
+
     [contenteditable="true"]:hover {
       background: rgba(255, 192, 203, 0.2);
       outline: 2px dashed #ff99cc;
       border-radius: 8px;
     }
 
-    [contenteditable="true"]:focus {
-      background: rgba(255, 192, 203, 0.3);
-      outline: 3px solid #ff69b4;
-    }
-
+    /* 装饰 */
     .bow-deco, .heart-corner, .floating-bow {
       pointer-events: none;
       position: absolute;
@@ -75,41 +220,20 @@
     .heart-corner { bottom: -8px; left: 20px; font-size: 36px; filter: drop-shadow(0 0 10px #ff95d0); }
     .floating-bow { left: -10px; bottom: 20%; font-size: 30px; opacity: 0.7; }
 
-    /* 控制面板 */
-    .control-panel {
-      background: rgba(30, 15, 50, 0.8);
-      border: 2px solid #ff99cc;
-      border-radius: 20px;
-      padding: 10px 15px;
-      margin-bottom: 20px;
+    /* 手绘线条女孩 - 穿插装饰 */
+    .line-girl-decoration {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      backdrop-filter: blur(5px);
+      justify-content: space-around;
+      margin: 20px 0;
+      padding: 10px;
+      pointer-events: none;
     }
 
-    .control-btn {
-      background: #1d1240;
-      border: 2px outset #d89cff;
-      color: #fffac2;
-      padding: 6px 14px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 3px 0 #511e5e;
-    }
-
-    .control-btn:hover {
-      background: #3d2570;
-      transform: scale(0.98);
-    }
-
-    .save-indicator {
-      color: #7df9ff;
-      margin-left: auto;
-      font-size: 0.9rem;
+    .line-girl-svg {
+      width: 80px;
+      height: 100px;
+      filter: drop-shadow(0 0 8px #ffb3d9);
+      opacity: 0.8;
     }
 
     .top-section {
@@ -133,11 +257,6 @@
       border: 4mm ridge #ffa6d2;
       box-shadow: 0 0 30px #fe7be5, inset 0 0 15px #b3e4ff;
       cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .avatar-wrapper:hover {
-      box-shadow: 0 0 40px #ff44e6, inset 0 0 20px #fff;
     }
 
     .avatar-img {
@@ -150,10 +269,13 @@
       box-shadow: 0 6px 0 #872b84, 0 0 30px #ffb6f3;
     }
 
-    .avatar-hint {
-      margin-top: 8px;
-      font-size: 0.8rem;
-      color: #ffb3d9;
+    .avatar-emoji {
+      font-size: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
     }
 
     .welcome-neon {
@@ -224,13 +346,6 @@
       border-radius: 20px 4px 20px 4px;
       border: 2px dashed #f9b7ff;
       margin-bottom: 15px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .pic-frame:hover {
-      border-color: #ff69b4;
-      box-shadow: 0 0 20px #ff99cc;
     }
 
     .vintage-pic {
@@ -243,13 +358,6 @@
       background: #badaff;
     }
 
-    .pic-hint {
-      text-align: center;
-      font-size: 0.75rem;
-      color: #ffb3d9;
-      margin-top: 5px;
-    }
-
     .editable-box {
       background: #030014b8;
       border: 3px inset #e3adff;
@@ -260,7 +368,7 @@
 
     .editable-text {
       width: 100%;
-      min-height: 100px;
+      min-height: 80px;
       padding: 12px 10px;
       background: #fff5fbd9;
       border: 2px solid #ff8ad4;
@@ -269,29 +377,71 @@
       color: #1c0033;
       font-size: 1rem;
       font-weight: bold;
-      line-height: 1.5;
       resize: vertical;
-      box-shadow: inset 0 0 10px #ccaaff;
       outline: none;
     }
 
-    .format-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 12px 0 5px;
+    /* 评论区 */
+    .comment-section {
+      margin-top: 12px;
+      border-top: 2px dotted #ff99cc;
+      padding-top: 10px;
     }
 
-    .format-btn {
-      background: #140e2e;
-      border: 2px outset #bf9bff;
-      color: #faf0b0;
-      padding: 6px 10px;
-      border-radius: 30px;
+    .comment-list {
+      max-height: 120px;
+      overflow-y: auto;
+      margin-bottom: 10px;
       font-size: 0.85rem;
+    }
+
+    .comment-item {
+      background: rgba(255, 240, 245, 0.15);
+      padding: 5px 8px;
+      border-radius: 10px;
+      margin-bottom: 5px;
+      color: #fff0d0;
+    }
+
+    .comment-name {
+      color: #ffb347;
       font-weight: bold;
-      box-shadow: 0 3px 0 #391d58, 0 0 8px #ec9eff;
-      text-shadow: 1px 1px 0 #350066;
+      margin-right: 8px;
+    }
+
+    .comment-input-area {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .comment-name-input {
+      width: 80px;
+      padding: 5px 8px;
+      border-radius: 20px;
+      border: 2px solid #ff99cc;
+      background: #fff5fb;
+      font-size: 0.8rem;
+    }
+
+    .comment-text-input {
+      flex: 1;
+      padding: 5px 8px;
+      border-radius: 20px;
+      border: 2px solid #ff99cc;
+      background: #fff5fb;
+      font-size: 0.8rem;
+    }
+
+    .comment-btn {
+      background: #ff69b4;
+      border: none;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.8rem;
     }
 
     .footer-note {
@@ -303,17 +453,8 @@
       color: #ffd1f0;
     }
 
-    #avatarUpload, .hidden-file-input {
+    .hidden-file-input, #avatarUpload {
       display: none;
-    }
-
-    /* 编辑提示 */
-    .edit-tip {
-      text-align: center;
-      color: #7df9ff;
-      font-size: 0.8rem;
-      margin-top: 5px;
-      opacity: 0.8;
     }
 
     @media (max-width: 640px) {
@@ -325,257 +466,480 @@
 </head>
 <body>
 
+<!-- 头像库弹窗 -->
+<div class="overlay" id="overlay"></div>
+<div class="avatar-library" id="avatarLibrary">
+  <h3 style="color:#fff0d0; text-align:center;">🎀 選擇妳的頭像 🎀</h3>
+  <div class="avatar-grid" id="avatarGrid"></div>
+  <button class="close-library" onclick="closeAvatarLibrary()">關閉</button>
+</div>
+
 <div class="dream-container">
   <div class="bow-deco">🎀✨🎀</div>
   <div class="heart-corner">💗💖💗</div>
   <div class="floating-bow">🎀</div>
 
-  <!-- 控制面板 -->
-  <div class="control-panel">
-    <button class="control-btn" onclick="saveAllContent()">💾 保存所有更改</button>
-    <button class="control-btn" onclick="resetToDefault()">🔄 恢复默认</button>
-    <button class="control-btn" onclick="exportConfig()">📤 导出配置</button>
-    <button class="control-btn" onclick="importConfig()">📥 导入配置</button>
-    <span class="save-indicator" id="saveIndicator"></span>
+  <!-- 登录状态栏 -->
+  <div class="login-bar">
+    <div class="login-status">
+      <span class="crown-icon" id="crownIcon">👤</span>
+      <span id="loginStatusText">訪客模式 · 只能評論</span>
+    </div>
+    <div id="loginArea">
+      <input type="password" id="passwordInput" class="password-input" placeholder="輸入密碼" style="width:100px;">
+      <button class="login-btn" onclick="login()">🔐 登入</button>
+    </div>
+    <div id="logoutArea" style="display:none;">
+      <button class="logout-btn" onclick="logout()">🚪 退出主人模式</button>
+    </div>
   </div>
 
-  <div class="edit-tip">💡 提示：双击任何文字可直接编辑 | 点击图片可更换</div>
+  <!-- 控制面板（仅主人可见） -->
+  <div class="control-panel" id="controlPanel">
+    <button class="control-btn" onclick="saveAllContent()">💾 保存更改</button>
+    <button class="control-btn" onclick="resetToDefault()">🔄 恢復默認</button>
+    <button class="control-btn" onclick="exportConfig()">📤 導出配置</button>
+    <button class="control-btn" onclick="importConfig()">📥 導入配置</button>
+    <span style="color:#7df9ff; margin-left:auto;" id="saveIndicator"></span>
+  </div>
 
   <!-- 头像区 -->
   <div class="top-section">
     <div class="avatar-area">
-      <div class="avatar-wrapper" onclick="document.getElementById('avatarUpload').click()">
-        <img id="profileAvatar" class="avatar-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='40' r='32' fill='%23fdd7b0'/%3E%3Ccircle cx='36' cy='35' r='4.5' fill='%23331a00'/%3E%3Ccircle cx='64' cy='35' r='4.5' fill='%23331a00'/%3E%3Cpath d='M42 52 Q50 65,58 52' stroke='%23cc5577' stroke-width='4' fill='%23ffa7a7'/%3E%3Cpath d='M50 18 L54 28 L65 30 L56 37 L58 48 L50 42 L42 48 L44 37 L35 30 L46 28 Z' fill='%23ffcc99'/%3E%3C/svg%3E" alt="手绘女孩">
+      <div class="avatar-wrapper" id="avatarWrapper" onclick="handleAvatarClick()">
+        <div id="profileAvatar" class="avatar-img avatar-emoji">👧</div>
       </div>
-      <div class="avatar-hint">👆 点击头像更换</div>
+      <div style="margin-top:8px; font-size:0.8rem; color:#ffb3d9;">
+        <span id="avatarHint">👆 點擊更換頭像</span>
+      </div>
       <input type="file" id="avatarUpload" accept="image/*" onchange="changeAvatar(event)">
     </div>
     <div class="welcome-neon">
-      <div class="neon-text" contenteditable="true" id="welcomeText">Welcome to my world!</div>
-      <div class="neon-sub" style="margin-top:8px;" contenteditable="true" id="welcomeSub">✧ 啵啵星球 · 永遠歡迎妳 ✧</div>
+      <div class="neon-text" id="welcomeText">Welcome to my world!</div>
+      <div style="margin-top:8px;" id="welcomeSub">✧ 啵啵星球 · 永遠歡迎妳 ✧</div>
     </div>
+  </div>
+
+  <!-- 手绘线条女孩装饰1 -->
+  <div class="line-girl-decoration">
+    <svg class="line-girl-svg" viewBox="0 0 100 120">
+      <circle cx="50" cy="35" r="18" fill="none" stroke="#ffb3d9" stroke-width="2.5"/>
+      <circle cx="42" cy="32" r="2.5" fill="#ffb3d9"/>
+      <circle cx="58" cy="32" r="2.5" fill="#ffb3d9"/>
+      <path d="M44 45 Q50 52,56 45" fill="none" stroke="#ffb3d9" stroke-width="2"/>
+      <path d="M50 53 L50 80" stroke="#ffb3d9" stroke-width="2"/>
+      <path d="M50 65 L35 55" stroke="#ffb3d9" stroke-width="2"/>
+      <path d="M50 65 L65 55" stroke="#ffb3d9" stroke-width="2"/>
+      <path d="M50 80 L40 100" stroke="#ffb3d9" stroke-width="2"/>
+      <path d="M50 80 L60 100" stroke="#ffb3d9" stroke-width="2"/>
+      <path d="M30 30 Q20 15,35 20" fill="none" stroke="#ffb3d9" stroke-width="2"/>
+      <path d="M70 30 Q80 15,65 20" fill="none" stroke="#ffb3d9" stroke-width="2"/>
+    </svg>
+    <svg class="line-girl-svg" viewBox="0 0 100 120">
+      <circle cx="50" cy="35" r="16" fill="none" stroke="#7df9ff" stroke-width="2"/>
+      <circle cx="43" cy="33" r="2" fill="#7df9ff"/>
+      <circle cx="57" cy="33" r="2" fill="#7df9ff"/>
+      <path d="M45 43 Q50 49,55 43" fill="none" stroke="#7df9ff" stroke-width="2"/>
+      <path d="M50 51 L50 75" stroke="#7df9ff" stroke-width="2"/>
+      <path d="M35 55 L50 62 L65 55" fill="none" stroke="#7df9ff" stroke-width="2"/>
+      <path d="M50 75 L42 95" stroke="#7df9ff" stroke-width="2"/>
+      <path d="M50 75 L58 95" stroke="#7df9ff" stroke-width="2"/>
+    </svg>
   </div>
 
   <!-- 手写分割线 -->
   <div class="hand-drawn-divider">
-    <span class="divider-heart" contenteditable="true" id="heartLeft">❤️</span>
+    <span class="divider-heart" id="heartLeft">❤️</span>
     <span class="divider-line"></span>
-    <span class="divider-heart" contenteditable="true" id="heartRight">💕</span>
+    <span class="divider-heart" id="heartRight">💕</span>
   </div>
 
   <!-- 内容区域 -->
-  <div class="content-grid">
-    
-    <!-- 卡片1 -->
-    <div class="pic-card">
-      <div class="pic-frame" onclick="document.getElementById('picUpload1').click()">
-        <img id="pic1" class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffb3d9'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23ffe0f0'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23ff6699' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸1">
-        <div class="pic-hint">👆 点击图片更换</div>
-      </div>
-      <input type="file" id="picUpload1" accept="image/*" class="hidden-file-input" onchange="changePic(1, event)">
-      <div class="editable-box">
-        <textarea class="editable-text" id="text1" placeholder="寫下妳的心情...">🌸 今天也是粉紅泡泡的一天！</textarea>
-        <div class="format-toolbar">
-          <button class="format-btn" onclick="formatText('text1', 'bold')"><b>B</b></button>
-          <button class="format-btn" onclick="formatText('text1', 'italic')"><i>I</i></button>
-          <button class="format-btn" onclick="changeColor('text1', '#ff69b4')">🌸</button>
-          <button class="format-btn" onclick="changeColor('text1', '#7df9ff')">💙</button>
-          <button class="format-btn" onclick="changeColor('text1', '#ffcc00')">⭐</button>
-        </div>
-      </div>
-    </div>
+  <div class="content-grid" id="contentGrid"></div>
 
-    <!-- 卡片2 -->
-    <div class="pic-card">
-      <div class="pic-frame" onclick="document.getElementById('picUpload2').click()">
-        <img id="pic2" class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23b3d9ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffcc00'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffcc00'/%3E%3Ctext x='30' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸2">
-        <div class="pic-hint">👆 点击图片更换</div>
-      </div>
-      <input type="file" id="picUpload2" accept="image/*" class="hidden-file-input" onchange="changePic(2, event)">
-      <div class="editable-box">
-        <textarea class="editable-text" id="text2" placeholder="寫下妳的心情...">✨ 閃閃惹人愛 ✨</textarea>
-        <div class="format-toolbar">
-          <button class="format-btn" onclick="formatText('text2', 'bold')"><b>B</b></button>
-          <button class="format-btn" onclick="formatText('text2', 'italic')"><i>I</i></button>
-          <button class="format-btn" onclick="changeColor('text2', '#ff69b4')">🌸</button>
-          <button class="format-btn" onclick="changeColor('text2', '#7df9ff')">💙</button>
-          <button class="format-btn" onclick="changeColor('text2', '#ffcc00')">⭐</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 卡片3 -->
-    <div class="pic-card">
-      <div class="pic-frame" onclick="document.getElementById('picUpload3').click()">
-        <img id="pic3" class="vintage-pic" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d9b3ff'/%3E%3Cpath d='M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z' fill='%23ffe6ff'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 夢幻 ✧%3C/text%3E%3C/svg%3E" alt="千禧贴纸3">
-        <div class="pic-hint">👆 点击图片更换</div>
-      </div>
-      <input type="file" id="picUpload3" accept="image/*" class="hidden-file-input" onchange="changePic(3, event)">
-      <div class="editable-box">
-        <textarea class="editable-text" id="text3" placeholder="寫下妳的心情...">🦋 在夢境裡飛行 🦋</textarea>
-        <div class="format-toolbar">
-          <button class="format-btn" onclick="formatText('text3', 'bold')"><b>B</b></button>
-          <button class="format-btn" onclick="formatText('text3', 'italic')"><i>I</i></button>
-          <button class="format-btn" onclick="changeColor('text3', '#ff69b4')">🌸</button>
-          <button class="format-btn" onclick="changeColor('text3', '#7df9ff')">💙</button>
-          <button class="format-btn" onclick="changeColor('text3', '#ffcc00')">⭐</button>
-        </div>
-      </div>
-    </div>
+  <!-- 手绘线条女孩装饰2 -->
+  <div class="line-girl-decoration">
+    <svg class="line-girl-svg" viewBox="0 0 100 120">
+      <circle cx="50" cy="30" r="20" fill="none" stroke="#ffcc66" stroke-width="2.5"/>
+      <path d="M40 28 Q45 25,50 28 Q55 25,60 28" fill="none" stroke="#ffcc66" stroke-width="2"/>
+      <circle cx="42" cy="28" r="2" fill="#ffcc66"/>
+      <circle cx="58" cy="28" r="2" fill="#ffcc66"/>
+      <path d="M50 50 L50 80" stroke="#ffcc66" stroke-width="2"/>
+      <path d="M50 60 L30 50" stroke="#ffcc66" stroke-width="2"/>
+      <path d="M50 60 L70 50" stroke="#ffcc66" stroke-width="2"/>
+      <path d="M50 80 L38 105" stroke="#ffcc66" stroke-width="2"/>
+      <path d="M50 80 L62 105" stroke="#ffcc66" stroke-width="2"/>
+    </svg>
   </div>
 
-  <!-- 可编辑签名 -->
+  <!-- 签名 -->
   <div class="footer-note">
-    <span contenteditable="true" id="footerLine1">🎀 歡迎來到我的小宇宙 🎀</span><br>
-    <span style="font-size:0.9rem;" contenteditable="true" id="footerLine2">✧ 留言 · 貼圖 · 愛妳 ✧</span>
+    <span id="footerLine1">🎀 歡迎來到我的小宇宙 🎀</span><br>
+    <span style="font-size:0.9rem;" id="footerLine2">✧ 留言 · 貼圖 · 愛妳 ✧</span>
   </div>
 </div>
 
 <script>
-  // ========== 头像更换 ==========
-  function changeAvatar(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById('profileAvatar').src = e.target.result;
-        showSaveTip('头像已更换');
-      };
-      reader.readAsDataURL(file);
+  // ========== 配置 ==========
+  const OWNER_PASSWORD = '123456'; // 主人密码，你可以改成自己的
+  
+  let isOwner = false;
+  
+  // 预设头像库（emoji）
+  const avatarEmojis = ['👧', '👩', '🧑', '👸', '🤴', '🐰', '🐱', '🦊', '🐼', '🌸', '⭐', '🌈', '💗', '🎀', '🦋', '✨'];
+  
+  // 默认卡片数据
+  const defaultCards = [
+    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffb3d9'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23ffe0f0'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23ff6699' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E", text: "🌸 今天也是粉紅泡泡的一天！" },
+    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23b3d9ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffcc00'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffcc00'/%3E%3Ctext x='30' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E", text: "✨ 閃閃惹人愛 ✨" },
+    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d9b3ff'/%3E%3Cpath d='M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z' fill='%23ffe6ff'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 夢幻 ✧%3C/text%3E%3C/svg%3E", text: "🦋 在夢境裡飛行 🦋" }
+  ];
+
+  let cardsData = JSON.parse(JSON.stringify(defaultCards));
+  let commentsData = [[], [], []]; // 每个卡片的评论
+
+  // ========== 初始化 ==========
+  function init() {
+    loadFromStorage();
+    renderCards();
+    updateOwnerUI();
+    initAvatarLibrary();
+  }
+
+  function initAvatarLibrary() {
+    const grid = document.getElementById('avatarGrid');
+    grid.innerHTML = '';
+    avatarEmojis.forEach(emoji => {
+      const div = document.createElement('div');
+      div.className = 'avatar-option';
+      div.innerText = emoji;
+      div.onclick = () => selectAvatar(emoji);
+      grid.appendChild(div);
+    });
+  }
+
+  function selectAvatar(emoji) {
+    document.getElementById('profileAvatar').innerText = emoji;
+    closeAvatarLibrary();
+    if (isOwner) {
+      autoSave();
     }
   }
 
-  // ========== 图片更换 ==========
-  function changePic(index, event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        document.getElementById('pic' + index).src = e.target.result;
-        showSaveTip('图片 ' + index + ' 已更换');
-      };
-      reader.readAsDataURL(file);
+  function openAvatarLibrary() {
+    if (!isOwner) {
+      alert('只有主人可以更換頭像喔！👑');
+      return;
     }
+    document.getElementById('avatarLibrary').classList.add('show');
+    document.getElementById('overlay').classList.add('show');
   }
 
-  // ========== 文字格式化 ==========
-  function formatText(textareaId, command) {
-    const textarea = document.getElementById(textareaId);
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    
-    let formattedText = '';
-    if (command === 'bold') {
-      formattedText = '【' + selectedText + '】';
-    } else if (command === 'italic') {
-      formattedText = '✧' + selectedText + '✧';
-    }
-    
-    if (selectedText) {
-      textarea.value = textarea.value.substring(0, start) + formattedText + textarea.value.substring(end);
+  function closeAvatarLibrary() {
+    document.getElementById('avatarLibrary').classList.remove('show');
+    document.getElementById('overlay').classList.remove('show');
+  }
+
+  function handleAvatarClick() {
+    if (isOwner) {
+      openAvatarLibrary();
     } else {
-      // 如果没有选中文字，插入符号
-      if (command === 'bold') {
-        textarea.value += '【文字】';
-      } else {
-        textarea.value += '✧文字✧';
-      }
+      alert('只有主人可以更換頭像喔！👑');
     }
   }
 
-  function changeColor(textareaId, color) {
-    const textarea = document.getElementById(textareaId);
-    const colorEmoji = color === '#ff69b4' ? '🌸' : (color === '#7df9ff' ? '💙' : '⭐');
-    textarea.value = colorEmoji + ' ' + textarea.value;
+  // ========== 登录系统 ==========
+  function login() {
+    const password = document.getElementById('passwordInput').value;
+    if (password === OWNER_PASSWORD) {
+      isOwner = true;
+      updateOwnerUI();
+      document.getElementById('passwordInput').value = '';
+      showSaveTip('歡迎回來，主人！👑');
+    } else {
+      alert('密碼錯誤喔～');
+    }
+  }
+
+  function logout() {
+    isOwner = false;
+    updateOwnerUI();
+    showSaveTip('已退出主人模式');
+  }
+
+  function updateOwnerUI() {
+    const loginArea = document.getElementById('loginArea');
+    const logoutArea = document.getElementById('logoutArea');
+    const controlPanel = document.getElementById('controlPanel');
+    const crownIcon = document.getElementById('crownIcon');
+    const statusText = document.getElementById('loginStatusText');
+    const editableElements = document.querySelectorAll('[contenteditable]');
+    const textareas = document.querySelectorAll('.editable-text');
+    const avatarHint = document.getElementById('avatarHint');
+
+    if (isOwner) {
+      loginArea.style.display = 'none';
+      logoutArea.style.display = 'block';
+      controlPanel.classList.add('show');
+      crownIcon.innerText = '👑';
+      statusText.innerText = '主人模式 · 可以編輯';
+      avatarHint.innerText = '👆 點擊更換頭像';
+      
+      // 启用编辑
+      editableElements.forEach(el => el.contentEditable = 'true');
+      textareas.forEach(el => el.readOnly = false);
+    } else {
+      loginArea.style.display = 'flex';
+      logoutArea.style.display = 'none';
+      controlPanel.classList.remove('show');
+      crownIcon.innerText = '👤';
+      statusText.innerText = '訪客模式 · 只能評論';
+      avatarHint.innerText = '🔒 只有主人可更換';
+      
+      // 禁用编辑
+      editableElements.forEach(el => el.contentEditable = 'false');
+      textareas.forEach(el => el.readOnly = true);
+    }
+    
+    renderCards(); // 重新渲染以更新按钮状态
+  }
+
+  // ========== 渲染卡片 ==========
+  function renderCards() {
+    const grid = document.getElementById('contentGrid');
+    grid.innerHTML = '';
+    
+    cardsData.forEach((card, index) => {
+      const cardDiv = document.createElement('div');
+      cardDiv.className = 'pic-card';
+      
+      // 图片区域
+      const picFrame = document.createElement('div');
+      picFrame.className = 'pic-frame';
+      if (isOwner) {
+        picFrame.style.cursor = 'pointer';
+        picFrame.onclick = () => uploadPic(index);
+      }
+      
+      const img = document.createElement('img');
+      img.className = 'vintage-pic';
+      img.src = card.pic;
+      img.id = `pic${index}`;
+      
+      const picHint = document.createElement('div');
+      picHint.style.cssText = 'text-align:center; font-size:0.75rem; color:#ffb3d9; margin-top:5px;';
+      picHint.innerText = isOwner ? '👆 點擊更換圖片' : '📸';
+      
+      picFrame.appendChild(img);
+      picFrame.appendChild(picHint);
+      
+      // 文字区域
+      const editableBox = document.createElement('div');
+      editableBox.className = 'editable-box';
+      
+      const textarea = document.createElement('textarea');
+      textarea.className = 'editable-text';
+      textarea.id = `text${index}`;
+      textarea.value = card.text;
+      textarea.readOnly = !isOwner;
+      textarea.oninput = () => { card.text = textarea.value; if(isOwner) autoSave(); };
+      
+      editableBox.appendChild(textarea);
+      
+      // 评论区
+      const commentSection = document.createElement('div');
+      commentSection.className = 'comment-section';
+      
+      const commentList = document.createElement('div');
+      commentList.className = 'comment-list';
+      commentList.id = `commentList${index}`;
+      
+      // 渲染评论
+      commentsData[index].forEach(comment => {
+        const commentItem = document.createElement('div');
+        commentItem.className = 'comment-item';
+        commentItem.innerHTML = `<span class="comment-name">${escapeHtml(comment.name)}：</span>${escapeHtml(comment.text)}`;
+        commentList.appendChild(commentItem);
+      });
+      
+      const commentInputArea = document.createElement('div');
+      commentInputArea.className = 'comment-input-area';
+      
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'comment-name-input';
+      nameInput.placeholder = '名字';
+      nameInput.id = `commentName${index}`;
+      nameInput.maxLength = 10;
+      
+      const textInput = document.createElement('input');
+      textInput.type = 'text';
+      textInput.className = 'comment-text-input';
+      textInput.placeholder = '留言...';
+      textInput.id = `commentText${index}`;
+      textInput.maxLength = 50;
+      
+      const commentBtn = document.createElement('button');
+      commentBtn.className = 'comment-btn';
+      commentBtn.innerText = '發送';
+      commentBtn.onclick = () => addComment(index);
+      
+      commentInputArea.appendChild(nameInput);
+      commentInputArea.appendChild(textInput);
+      commentInputArea.appendChild(commentBtn);
+      
+      commentSection.appendChild(commentList);
+      commentSection.appendChild(commentInputArea);
+      
+      cardDiv.appendChild(picFrame);
+      cardDiv.appendChild(editableBox);
+      cardDiv.appendChild(commentSection);
+      
+      grid.appendChild(cardDiv);
+    });
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function uploadPic(index) {
+    if (!isOwner) return;
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          cardsData[index].pic = event.target.result;
+          renderCards();
+          autoSave();
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  }
+
+  // ========== 评论功能 ==========
+  function addComment(index) {
+    const nameInput = document.getElementById(`commentName${index}`);
+    const textInput = document.getElementById(`commentText${index}`);
+    const name = nameInput.value.trim();
+    const text = textInput.value.trim();
+    
+    if (!name) {
+      alert('請輸入名字～');
+      return;
+    }
+    if (!text) {
+      alert('請輸入留言內容～');
+      return;
+    }
+    
+    commentsData[index].push({ name, text, time: Date.now() });
+    if (commentsData[index].length > 20) {
+      commentsData[index].shift();
+    }
+    
+    nameInput.value = '';
+    textInput.value = '';
+    
+    renderCards();
+    saveComments();
   }
 
   // ========== 保存和加载 ==========
   function saveAllContent() {
+    if (!isOwner) return;
+    
     const data = {
-      // 头像
-      avatar: document.getElementById('profileAvatar').src,
-      // 可编辑文字
+      avatar: document.getElementById('profileAvatar').innerText,
       welcomeText: document.getElementById('welcomeText').innerText,
       welcomeSub: document.getElementById('welcomeSub').innerText,
       heartLeft: document.getElementById('heartLeft').innerText,
       heartRight: document.getElementById('heartRight').innerText,
       footerLine1: document.getElementById('footerLine1').innerText,
       footerLine2: document.getElementById('footerLine2').innerText,
-      // 文本框
-      text1: document.getElementById('text1').value,
-      text2: document.getElementById('text2').value,
-      text3: document.getElementById('text3').value,
-      // 图片
-      pic1: document.getElementById('pic1').src,
-      pic2: document.getElementById('pic2').src,
-      pic3: document.getElementById('pic3').src,
+      cards: cardsData
     };
     
-    localStorage.setItem('millenniumSite', JSON.stringify(data));
-    showSaveTip('所有内容已保存到浏览器！');
+    localStorage.setItem('millenniumSite_owner', JSON.stringify(data));
+    showSaveTip('✨ 所有內容已保存！');
   }
 
-  function loadAllContent() {
-    const saved = localStorage.getItem('millenniumSite');
+  function saveComments() {
+    localStorage.setItem('millenniumSite_comments', JSON.stringify(commentsData));
+  }
+
+  function loadFromStorage() {
+    // 加载主人数据
+    const saved = localStorage.getItem('millenniumSite_owner');
     if (saved) {
       const data = JSON.parse(saved);
-      
-      if (data.avatar) document.getElementById('profileAvatar').src = data.avatar;
+      if (data.avatar) document.getElementById('profileAvatar').innerText = data.avatar;
       if (data.welcomeText) document.getElementById('welcomeText').innerText = data.welcomeText;
       if (data.welcomeSub) document.getElementById('welcomeSub').innerText = data.welcomeSub;
       if (data.heartLeft) document.getElementById('heartLeft').innerText = data.heartLeft;
       if (data.heartRight) document.getElementById('heartRight').innerText = data.heartRight;
       if (data.footerLine1) document.getElementById('footerLine1').innerText = data.footerLine1;
       if (data.footerLine2) document.getElementById('footerLine2').innerText = data.footerLine2;
-      if (data.text1) document.getElementById('text1').value = data.text1;
-      if (data.text2) document.getElementById('text2').value = data.text2;
-      if (data.text3) document.getElementById('text3').value = data.text3;
-      if (data.pic1) document.getElementById('pic1').src = data.pic1;
-      if (data.pic2) document.getElementById('pic2').src = data.pic2;
-      if (data.pic3) document.getElementById('pic3').src = data.pic3;
-      
-      showSaveTip('已加载保存的内容');
-    } else {
-      showSaveTip('没有找到保存的内容');
+      if (data.cards) cardsData = data.cards;
+    }
+    
+    // 加载评论
+    const savedComments = localStorage.getItem('millenniumSite_comments');
+    if (savedComments) {
+      commentsData = JSON.parse(savedComments);
+    }
+  }
+
+  function autoSave() {
+    if (isOwner) {
+      saveAllContent();
     }
   }
 
   function resetToDefault() {
-    if (confirm('确定要恢复默认设置吗？当前未保存的更改会丢失。')) {
-      localStorage.removeItem('millenniumSite');
+    if (!isOwner) return;
+    if (confirm('確定要恢復默認設置嗎？')) {
+      localStorage.removeItem('millenniumSite_owner');
+      cardsData = JSON.parse(JSON.stringify(defaultCards));
       location.reload();
     }
   }
 
-  // ========== 导入/导出 ==========
   function exportConfig() {
-    const data = localStorage.getItem('millenniumSite');
+    if (!isOwner) return;
+    const data = localStorage.getItem('millenniumSite_owner');
     if (data) {
       const blob = new Blob([data], {type: 'application/json'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'my_millennium_site.json';
+      a.download = 'my_site_config.json';
       a.click();
-      showSaveTip('配置已导出');
-    } else {
-      showSaveTip('请先保存内容再导出');
     }
   }
 
   function importConfig() {
+    if (!isOwner) return;
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
-    input.onchange = function(e) {
+    input.onchange = (e) => {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(event) {
-          localStorage.setItem('millenniumSite', event.target.result);
-          loadAllContent();
-          showSaveTip('配置已导入');
+        reader.onload = (event) => {
+          localStorage.setItem('millenniumSite_owner', event.target.result);
+          loadFromStorage();
+          renderCards();
+          showSaveTip('配置已導入');
         };
         reader.readAsText(file);
       }
@@ -583,39 +947,38 @@
     input.click();
   }
 
+  function changeAvatar(event) {
+    if (!isOwner) return;
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // 如果上传的是图片，可以显示图片，但这里简单处理
+        document.getElementById('profileAvatar').innerText = '🖼️';
+        autoSave();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   function showSaveTip(msg) {
     const indicator = document.getElementById('saveIndicator');
-    indicator.innerText = '✨ ' + msg;
-    setTimeout(() => {
-      indicator.innerText = '';
-    }, 3000);
+    indicator.innerText = msg;
+    setTimeout(() => indicator.innerText = '', 2000);
   }
 
-  // ========== 自动保存（文字变化时） ==========
-  let autoSaveTimer;
-  function autoSave() {
-    clearTimeout(autoSaveTimer);
-    autoSaveTimer = setTimeout(() => {
-      saveAllContent();
-      showSaveTip('已自动保存');
-    }, 2000);
-  }
-
-  // 监听所有可编辑元素的变化
-  document.addEventListener('input', function(e) {
-    if (e.target.contentEditable === 'true' || e.target.tagName === 'TEXTAREA') {
+  // 监听文字变化自动保存
+  document.addEventListener('input', (e) => {
+    if (isOwner && (e.target.contentEditable === 'true' || e.target.classList.contains('editable-text'))) {
+      if (e.target.classList.contains('editable-text')) {
+        const index = parseInt(e.target.id.replace('text', ''));
+        if (!isNaN(index)) cardsData[index].text = e.target.value;
+      }
       autoSave();
     }
   });
 
-  // ========== 页面加载时自动加载 ==========
-  window.onload = function() {
-    loadAllContent();
-    console.log('✧ 千禧空間已加載 ✧ 所有文字和圖片都可以編輯更換！');
-  };
-
-  // ========== 额外：双击页面标题也可以编辑 ==========
-  document.getElementById('pageTitle').contentEditable = 'false'; // 标题不直接编辑，但可以通过其他方式
+  window.onload = init;
 </script>
 
 </body>
