@@ -3,56 +3,69 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✧ 莪の夢幻小窩 ✧ 千禧霓虹</title>
+  <title>✧ 莪の夢幻小窩 ✧ 千禧樂園</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: #0f0b1f;
+      background: linear-gradient(135deg, #fff0f5 0%, #e8f4ff 50%, #fff9e6 100%);
       background-image: 
-        radial-gradient(circle at 20% 30%, #ff66c4 3px, transparent 3px),
-        radial-gradient(circle at 80% 70%, #7df9ff 4px, transparent 4px),
-        radial-gradient(circle at 40% 80%, #ffb3d9 3px, transparent 3px),
-        radial-gradient(circle at 90% 15%, #b266ff 5px, transparent 5px),
-        radial-gradient(circle at 10% 50%, #ffcc66 4px, transparent 4px);
-      background-size: 200px 200px, 180px 180px, 220px 220px, 250px 250px, 160px 160px;
+        radial-gradient(circle at 15% 25%, #ffb3d9 2px, transparent 2px),
+        radial-gradient(circle at 85% 15%, #ffe066 3px, transparent 3px),
+        radial-gradient(circle at 75% 85%, #b3e0ff 2.5px, transparent 2.5px),
+        radial-gradient(circle at 25% 75%, #d9b3ff 3px, transparent 3px),
+        radial-gradient(circle at 50% 50%, #ffccdd 2px, transparent 2px),
+        radial-gradient(circle at 10% 50%, #c2e0ff 2px, transparent 2px),
+        radial-gradient(circle at 90% 60%, #ffe6b3 2.5px, transparent 2.5px);
+      background-size: 180px 180px, 200px 200px, 220px 220px, 160px 160px, 250px 250px, 190px 190px, 210px 210px;
       min-height: 100vh;
       padding: 24px 16px;
-      font-family: 'Comic Sans MS', 'Chalkboard SE', '幼圆', cursive, sans-serif;
-      color: #fff9e0;
-      text-shadow: 2px 2px 0 #440066;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', '幼圆', 'Segoe UI', cursive, sans-serif;
+      color: #5a3a6e;
       position: relative;
+    }
+
+    /* 装饰元素层 */
+    body::before {
+      content: "🧸🎀🍀☘️⭐✨💗🦋";
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      font-size: 24px;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 1;
     }
 
     body::after {
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: url('data:image/svg+xml,%3Csvg width=\'80\' height=\'80\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath fill=\'%23fff9c4\' d=\'M20 10 L22 16 L28 18 L22 20 L20 26 L18 20 L12 18 L18 16z\'/%3E%3C/svg%3E');
+      background: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath fill=\'%23ffd4e8\' d=\'M10 10 L13 16 L19 19 L13 22 L10 28 L7 22 L1 19 L7 16z\'/%3E%3C/svg%3E');
       background-repeat: repeat;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.4;
+      opacity: 0.2;
     }
 
     .dream-container {
       max-width: 1200px;
       margin: 0 auto;
-      background: rgba(18, 10, 35, 0.65);
-      backdrop-filter: blur(8px);
-      border: 5px ridge #fea7ff;
+      background: rgba(255, 250, 240, 0.75);
+      backdrop-filter: blur(12px);
+      border: 5px ridge #ffb6d9;
       border-radius: 50px 20px 50px 20px;
-      box-shadow: 0 0 40px #ff44e6, 0 0 20px #00d4ff inset;
+      box-shadow: 0 0 40px #ffb3d9, 0 0 20px #b3e0ff inset, 0 8px 0 #d4a0c0;
       padding: 28px 24px;
       position: relative;
       z-index: 10;
     }
 
-    /* 登录状态栏 */
+    /* 登录状态栏 - 更轻盈 */
     .login-bar {
-      background: rgba(30, 15, 50, 0.8);
-      border: 2px solid #ff99cc;
-      border-radius: 30px;
+      background: rgba(255, 220, 240, 0.6);
+      border: 2px solid #ffb6c1;
+      border-radius: 40px;
       padding: 8px 18px;
       margin-bottom: 20px;
       display: flex;
@@ -65,45 +78,47 @@
     .login-status {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex: 1;
     }
 
     .crown-icon {
-      font-size: 24px;
-      filter: drop-shadow(0 0 8px gold);
+      font-size: 22px;
+      filter: drop-shadow(0 0 5px #ffd700);
     }
 
     .login-btn, .logout-btn {
-      background: #1d1240;
-      border: 2px outset #d89cff;
-      color: #fffac2;
+      background: #ffb6d9;
+      border: 2px outset #ffe0f0;
+      color: #6b3a5a;
       padding: 6px 16px;
       border-radius: 30px;
       font-size: 0.9rem;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 3px 0 #511e5e;
+      box-shadow: 0 3px 0 #d491b0;
+      transition: 0.1s;
     }
 
     .login-btn:hover, .logout-btn:hover {
-      background: #3d2570;
+      background: #ffc4e0;
       transform: scale(0.98);
     }
 
     .password-input {
       background: #fff5fb;
-      border: 2px solid #ff8ad4;
+      border: 2px solid #ffb6d9;
       border-radius: 30px;
       padding: 6px 12px;
       font-family: 'Comic Sans MS', cursive;
       outline: none;
+      color: #5a3a6e;
     }
 
-    /* 控制面板（仅主人可见） */
+    /* 控制面板 */
     .control-panel {
-      background: rgba(50, 20, 70, 0.8);
-      border: 2px solid #ffb347;
+      background: rgba(255, 235, 215, 0.7);
+      border: 2px solid #ffd4a0;
       border-radius: 20px;
       padding: 10px 15px;
       margin-bottom: 20px;
@@ -111,6 +126,7 @@
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
+      backdrop-filter: blur(5px);
     }
 
     .control-panel.show {
@@ -118,14 +134,15 @@
     }
 
     .control-btn {
-      background: #2a1050;
-      border: 2px outset #ffb347;
-      color: #fffac2;
+      background: #ffe0b3;
+      border: 2px outset #ffd4a0;
+      color: #6b4a3a;
       padding: 6px 14px;
       border-radius: 30px;
       font-size: 0.85rem;
       font-weight: bold;
       cursor: pointer;
+      box-shadow: 0 3px 0 #d4a070;
     }
 
     /* 头像库弹窗 */
@@ -134,19 +151,47 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: #1a1040;
-      border: 5px ridge #ff99cc;
+      background: #fff5e6;
+      border: 5px ridge #ffb6d9;
       border-radius: 30px;
       padding: 24px;
       z-index: 1000;
       display: none;
-      max-width: 400px;
+      max-width: 450px;
       width: 90%;
-      box-shadow: 0 0 50px #ff44e6;
+      box-shadow: 0 0 50px #ffb3d9;
     }
 
     .avatar-library.show {
       display: block;
+    }
+
+    .avatar-library h3 {
+      color: #7a4a6e;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .avatar-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    .avatar-tab {
+      flex: 1;
+      padding: 8px;
+      background: #ffe0f0;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #7a4a6e;
+    }
+
+    .avatar-tab.active {
+      background: #ffb6d9;
+      color: white;
     }
 
     .avatar-grid {
@@ -154,15 +199,17 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       margin: 20px 0;
+      max-height: 300px;
+      overflow-y: auto;
     }
 
     .avatar-option {
       width: 70px;
       height: 70px;
       border-radius: 50%;
-      border: 3px solid #ffb3d9;
+      border: 3px solid #ffd4e8;
       cursor: pointer;
-      background: #ffe0f0;
+      background: #fff0f5;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -172,12 +219,28 @@
 
     .avatar-option:hover {
       transform: scale(1.1);
-      border-color: #ff69b4;
-      box-shadow: 0 0 20px #ff99cc;
+      border-color: #ff99cc;
+      box-shadow: 0 0 15px #ffb6d9;
+    }
+
+    .upload-area {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .upload-btn {
+      background: #ffb6d9;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 10px 0;
     }
 
     .close-library {
-      background: #ff69b4;
+      background: #c4a0b0;
       border: none;
       color: white;
       padding: 10px 20px;
@@ -190,7 +253,8 @@
     .overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
+      background: rgba(255, 220, 240, 0.5);
+      backdrop-filter: blur(3px);
       z-index: 999;
       display: none;
     }
@@ -199,41 +263,70 @@
       display: block;
     }
 
-    /* 可编辑元素提示 */
-    .editable-hint {
+    /* 访客提示弹窗 */
+    .guest-notice {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #fff0e0;
+      border: 3px solid #ffb6d9;
+      border-radius: 50px;
+      padding: 12px 24px;
+      z-index: 900;
+      box-shadow: 0 5px 20px rgba(255, 180, 200, 0.5);
+      display: none;
+      align-items: center;
+      gap: 15px;
+      color: #7a4a6e;
+      font-weight: bold;
+    }
+
+    .guest-notice.show {
+      display: flex;
+    }
+
+    .guest-notice button {
+      background: #ffb6d9;
+      border: none;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
       cursor: pointer;
     }
 
+    /* 可编辑元素 */
     [contenteditable="true"]:hover {
-      background: rgba(255, 192, 203, 0.2);
-      outline: 2px dashed #ff99cc;
+      background: rgba(255, 200, 220, 0.2);
+      outline: 2px dashed #ffb6d9;
       border-radius: 8px;
     }
 
-    /* 装饰 */
-    .bow-deco, .heart-corner, .floating-bow {
+    /* 装饰元素 */
+    .bow-deco, .heart-corner, .floating-deco {
       pointer-events: none;
       position: absolute;
       z-index: 20;
     }
-    .bow-deco { top: -12px; right: 30px; font-size: 42px; filter: drop-shadow(0 0 12px #ffaad4); }
-    .heart-corner { bottom: -8px; left: 20px; font-size: 36px; filter: drop-shadow(0 0 10px #ff95d0); }
-    .floating-bow { left: -10px; bottom: 20%; font-size: 30px; opacity: 0.7; }
+    .bow-deco { top: -12px; right: 30px; font-size: 36px; filter: drop-shadow(0 0 8px #ffb6d9); }
+    .heart-corner { bottom: -8px; left: 20px; font-size: 30px; filter: drop-shadow(0 0 8px #ffb6d9); }
+    .floating-deco-1 { right: -5px; bottom: 30%; font-size: 28px; opacity: 0.7; }
+    .floating-deco-2 { left: 10px; top: 20%; font-size: 24px; opacity: 0.6; }
 
-    /* 手绘线条女孩 - 穿插装饰 */
+    /* 手绘线条女孩 */
     .line-girl-decoration {
       display: flex;
       justify-content: space-around;
-      margin: 20px 0;
-      padding: 10px;
+      margin: 15px 0;
+      padding: 5px;
       pointer-events: none;
     }
 
     .line-girl-svg {
-      width: 80px;
-      height: 100px;
-      filter: drop-shadow(0 0 8px #ffb3d9);
-      opacity: 0.8;
+      width: 70px;
+      height: 90px;
+      filter: drop-shadow(0 0 5px #ffd4e8);
+      opacity: 0.7;
     }
 
     .top-section {
@@ -251,26 +344,26 @@
     }
 
     .avatar-wrapper {
-      background: #231b3b;
-      padding: 12px 12px 8px;
+      background: #ffe4f0;
+      padding: 10px 10px 6px;
       border-radius: 60% 40% 60% 40% / 50% 50% 40% 40%;
-      border: 4mm ridge #ffa6d2;
-      box-shadow: 0 0 30px #fe7be5, inset 0 0 15px #b3e4ff;
+      border: 4mm ridge #ffd4e8;
+      box-shadow: 0 0 25px #ffb6d9, inset 0 0 10px #fff0f5;
       cursor: pointer;
     }
 
     .avatar-img {
-      width: 140px;
-      height: 140px;
+      width: 130px;
+      height: 130px;
       object-fit: cover;
-      background: #ffe1f0;
+      background: #fff0f5;
       border-radius: 55% 35% 55% 35% / 45% 45% 35% 55%;
-      border: 3px solid #ffffffc9;
-      box-shadow: 0 6px 0 #872b84, 0 0 30px #ffb6f3;
+      border: 3px solid #ffffff;
+      box-shadow: 0 5px 0 #d491b0, 0 0 20px #ffd4e8;
     }
 
     .avatar-emoji {
-      font-size: 80px;
+      font-size: 70px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -284,22 +377,22 @@
     }
 
     .neon-text {
-      font-size: 3rem;
+      font-size: 2.8rem;
       font-weight: bold;
       font-family: 'Brush Script MT', 'Comic Sans MS', cursive;
-      color: #fff0d0;
-      text-shadow: 0 0 5px #fff3b0, 0 0 15px #ff5eb8, 0 0 30px #f03cff, 0 0 50px #3c96ff, 4px 4px 0 #2d0060;
-      animation: neonPulse 1.8s infinite alternate;
+      color: #7a4a6e;
+      text-shadow: 0 0 5px #fff9e6, 0 0 15px #ffb6d9, 0 0 25px #ffd4e8, 3px 3px 0 #ffe0f0;
+      animation: softGlow 2s infinite alternate;
       outline: none;
     }
 
-    @keyframes neonPulse {
-      from { text-shadow: 0 0 5px #fffbc2, 0 0 15px #ff6ac6, 0 0 30px #c06cff, 4px 4px 0 #2e0050; }
-      to { text-shadow: 0 0 10px #fffacd, 0 0 25px #ff99e6, 0 0 45px #d58cff, 4px 4px 0 #4a1a7a; }
+    @keyframes softGlow {
+      from { text-shadow: 0 0 5px #fff9e6, 0 0 15px #ffb6d9, 0 0 25px #ffd4e8, 3px 3px 0 #ffe0f0; }
+      to { text-shadow: 0 0 10px #fff5d0, 0 0 20px #ffc4e0, 0 0 35px #ffe0b3, 3px 3px 0 #ffd4e8; }
     }
 
     .hand-drawn-divider {
-      margin: 15px 0 25px;
+      margin: 15px 0 20px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -307,21 +400,20 @@
 
     .divider-line {
       flex: 1;
-      height: 8px;
-      background: repeating-linear-gradient(90deg, #ffb0f0, #ffb0f0 8px, transparent 8px, transparent 16px);
+      height: 6px;
+      background: repeating-linear-gradient(90deg, #ffd4e8, #ffd4e8 8px, transparent 8px, transparent 16px);
       border-radius: 20px;
-      box-shadow: 0 0 15px #ffa6f0;
     }
 
     .divider-heart {
-      font-size: 32px;
-      filter: drop-shadow(0 0 12px #ff78b0);
-      animation: heartbeat 1.2s infinite;
+      font-size: 28px;
+      filter: drop-shadow(0 0 8px #ffb6d9);
+      animation: heartbeat 1.5s infinite;
     }
 
     @keyframes heartbeat {
       0%,100%{ transform: scale(1); }
-      30%{ transform: scale(1.2); }
+      30%{ transform: scale(1.15); }
     }
 
     .content-grid {
@@ -332,20 +424,20 @@
     }
 
     .pic-card {
-      background: #1f1740d0;
+      background: rgba(255, 245, 235, 0.7);
       backdrop-filter: blur(4px);
-      border: 4px ridge #b7e2ff;
+      border: 3px ridge #ffd4e8;
       border-radius: 30px 8px 30px 8px;
       padding: 16px 12px;
-      box-shadow: 0 8px 0 #371d5e, 0 0 30px #ffa3d9;
+      box-shadow: 0 6px 0 #d4b0c0, 0 0 20px #ffe0f0;
     }
 
     .pic-frame {
-      background: #10192e;
-      padding: 10px;
+      background: #fff0e6;
+      padding: 8px;
       border-radius: 20px 4px 20px 4px;
-      border: 2px dashed #f9b7ff;
-      margin-bottom: 15px;
+      border: 2px dashed #ffd4e8;
+      margin-bottom: 12px;
     }
 
     .vintage-pic {
@@ -353,60 +445,70 @@
       aspect-ratio: 1/1;
       object-fit: cover;
       border-radius: 20px 4px 20px 4px;
-      border: 3px solid #fee49b;
-      box-shadow: 0 0 18px #ff94e6;
-      background: #badaff;
+      border: 3px solid #fff9e6;
+      box-shadow: 0 0 15px #ffd4e8;
+      background: #ffe4d0;
     }
 
     .editable-box {
-      background: #030014b8;
-      border: 3px inset #e3adff;
+      background: rgba(255, 250, 240, 0.6);
+      border: 2px inset #ffd4e8;
       border-radius: 20px 4px 20px 4px;
-      padding: 10px;
-      box-shadow: inset 0 0 15px #3a2266, 0 5px 0 #351d54;
+      padding: 8px;
     }
 
     .editable-text {
       width: 100%;
-      min-height: 80px;
-      padding: 12px 10px;
-      background: #fff5fbd9;
-      border: 2px solid #ff8ad4;
+      min-height: 70px;
+      padding: 10px 8px;
+      background: #fff9f0;
+      border: 2px solid #ffd4e8;
       border-radius: 14px 2px 14px 2px;
       font-family: 'Comic Sans MS', '幼圆', sans-serif;
-      color: #1c0033;
-      font-size: 1rem;
-      font-weight: bold;
+      color: #6b4a5a;
+      font-size: 0.95rem;
+      font-weight: 500;
       resize: vertical;
       outline: none;
     }
 
-    /* 评论区 */
+    /* 评论区 - 更美观 */
     .comment-section {
       margin-top: 12px;
-      border-top: 2px dotted #ff99cc;
+      border-top: 2px dotted #ffd4e8;
       padding-top: 10px;
     }
 
     .comment-list {
-      max-height: 120px;
+      max-height: 130px;
       overflow-y: auto;
-      margin-bottom: 10px;
-      font-size: 0.85rem;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+      padding-right: 5px;
     }
 
     .comment-item {
-      background: rgba(255, 240, 245, 0.15);
-      padding: 5px 8px;
-      border-radius: 10px;
+      background: rgba(255, 245, 240, 0.6);
+      padding: 6px 10px;
+      border-radius: 15px;
       margin-bottom: 5px;
-      color: #fff0d0;
+      color: #6b4a5a;
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      flex-wrap: wrap;
     }
 
     .comment-name {
-      color: #ffb347;
       font-weight: bold;
-      margin-right: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .owner-crown {
+      font-size: 12px;
+      filter: drop-shadow(0 0 3px gold);
     }
 
     .comment-input-area {
@@ -416,45 +518,55 @@
     }
 
     .comment-name-input {
-      width: 80px;
+      width: 75px;
       padding: 5px 8px;
       border-radius: 20px;
-      border: 2px solid #ff99cc;
-      background: #fff5fb;
-      font-size: 0.8rem;
+      border: 2px solid #ffd4e8;
+      background: #fff9f0;
+      font-size: 0.75rem;
+      color: #6b4a5a;
     }
 
     .comment-text-input {
       flex: 1;
       padding: 5px 8px;
       border-radius: 20px;
-      border: 2px solid #ff99cc;
-      background: #fff5fb;
-      font-size: 0.8rem;
+      border: 2px solid #ffd4e8;
+      background: #fff9f0;
+      font-size: 0.75rem;
+      color: #6b4a5a;
     }
 
     .comment-btn {
-      background: #ff69b4;
+      background: #ffd4e8;
       border: none;
-      color: white;
+      color: #7a4a6e;
       padding: 5px 12px;
       border-radius: 20px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      box-shadow: 0 2px 0 #d4a0b0;
     }
 
     .footer-note {
-      margin-top: 35px;
+      margin-top: 30px;
       text-align: right;
-      font-size: 1.1rem;
-      border-top: 2px dotted #e3a9ff;
+      font-size: 1rem;
+      border-top: 2px dotted #ffd4e8;
       padding-top: 15px;
-      color: #ffd1f0;
+      color: #7a5a6e;
     }
 
-    .hidden-file-input, #avatarUpload {
+    #avatarUpload {
       display: none;
+    }
+
+    /* 装饰小熊四叶草等 */
+    .deco-bear {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.4;
     }
 
     @media (max-width: 640px) {
@@ -466,144 +578,189 @@
 </head>
 <body>
 
+<!-- 装饰元素 -->
+<div class="deco-bear" style="top: 50px; left: 20px;">🧸</div>
+<div class="deco-bear" style="bottom: 80px; right: 30px;">🍀</div>
+<div class="deco-bear" style="top: 150px; right: 50px;">☘️</div>
+
 <!-- 头像库弹窗 -->
 <div class="overlay" id="overlay"></div>
 <div class="avatar-library" id="avatarLibrary">
-  <h3 style="color:#fff0d0; text-align:center;">🎀 選擇妳的頭像 🎀</h3>
-  <div class="avatar-grid" id="avatarGrid"></div>
+  <h3>🎀 選擇妳的頭像 🎀</h3>
+  <div class="avatar-tabs">
+    <button class="avatar-tab active" onclick="switchAvatarTab('emoji')">😊 Emoji</button>
+    <button class="avatar-tab" onclick="switchAvatarTab('upload')">📸 上傳</button>
+  </div>
+  <div id="emojiTab">
+    <div class="avatar-grid" id="avatarGrid"></div>
+  </div>
+  <div id="uploadTab" style="display:none;">
+    <div class="upload-area">
+      <p style="color:#7a4a6e;">點擊上傳妳的圖片</p>
+      <button class="upload-btn" onclick="document.getElementById('avatarUploadInput').click()">📁 選擇圖片</button>
+      <input type="file" id="avatarUploadInput" accept="image/*" style="display:none;" onchange="uploadCustomAvatar(event)">
+    </div>
+  </div>
   <button class="close-library" onclick="closeAvatarLibrary()">關閉</button>
+</div>
+
+<!-- 访客提示 -->
+<div class="guest-notice" id="guestNotice">
+  <span>👋 歡迎來訪！在這裡可以留下妳的評論喔～</span>
+  <button onclick="closeGuestNotice()">知道了 ✨</button>
 </div>
 
 <div class="dream-container">
   <div class="bow-deco">🎀✨🎀</div>
   <div class="heart-corner">💗💖💗</div>
-  <div class="floating-bow">🎀</div>
+  <div class="floating-deco-1">🦋⭐</div>
+  <div class="floating-deco-2">🧸🍀</div>
 
   <!-- 登录状态栏 -->
   <div class="login-bar">
     <div class="login-status">
-      <span class="crown-icon" id="crownIcon">👤</span>
-      <span id="loginStatusText">訪客模式 · 只能評論</span>
+      <span class="crown-icon" id="crownIcon">🧸</span>
+      <span id="loginStatusText">訪客模式 · 歡迎來玩</span>
     </div>
     <div id="loginArea">
-      <input type="password" id="passwordInput" class="password-input" placeholder="輸入密碼" style="width:100px;">
+      <input type="password" id="passwordInput" class="password-input" placeholder="密碼" style="width:80px;">
       <button class="login-btn" onclick="login()">🔐 登入</button>
     </div>
     <div id="logoutArea" style="display:none;">
-      <button class="logout-btn" onclick="logout()">🚪 退出主人模式</button>
+      <button class="logout-btn" onclick="logout()">👑 退出主人模式</button>
     </div>
   </div>
 
-  <!-- 控制面板（仅主人可见） -->
+  <!-- 控制面板 -->
   <div class="control-panel" id="controlPanel">
     <button class="control-btn" onclick="saveAllContent()">💾 保存更改</button>
     <button class="control-btn" onclick="resetToDefault()">🔄 恢復默認</button>
-    <button class="control-btn" onclick="exportConfig()">📤 導出配置</button>
-    <button class="control-btn" onclick="importConfig()">📥 導入配置</button>
-    <span style="color:#7df9ff; margin-left:auto;" id="saveIndicator"></span>
+    <button class="control-btn" onclick="exportConfig()">📤 導出</button>
+    <button class="control-btn" onclick="importConfig()">📥 導入</button>
+    <span style="color:#7a6a5e; margin-left:auto;" id="saveIndicator"></span>
   </div>
 
   <!-- 头像区 -->
   <div class="top-section">
     <div class="avatar-area">
-      <div class="avatar-wrapper" id="avatarWrapper" onclick="handleAvatarClick()">
+      <div class="avatar-wrapper" onclick="handleAvatarClick()">
         <div id="profileAvatar" class="avatar-img avatar-emoji">👧</div>
       </div>
-      <div style="margin-top:8px; font-size:0.8rem; color:#ffb3d9;">
+      <div style="margin-top:6px; font-size:0.75rem; color:#9a7a8e;">
         <span id="avatarHint">👆 點擊更換頭像</span>
       </div>
-      <input type="file" id="avatarUpload" accept="image/*" onchange="changeAvatar(event)">
     </div>
     <div class="welcome-neon">
-      <div class="neon-text" id="welcomeText">Welcome to my world!</div>
-      <div style="margin-top:8px;" id="welcomeSub">✧ 啵啵星球 · 永遠歡迎妳 ✧</div>
+      <div class="neon-text" id="welcomeText" contenteditable="false">Welcome to my world!</div>
+      <div style="margin-top:6px; color:#8a6a7e;" id="welcomeSub" contenteditable="false">✧ 啵啵星球 · 永遠歡迎妳 ✧</div>
     </div>
   </div>
 
-  <!-- 手绘线条女孩装饰1 -->
+  <!-- 手绘线条女孩 -->
   <div class="line-girl-decoration">
     <svg class="line-girl-svg" viewBox="0 0 100 120">
-      <circle cx="50" cy="35" r="18" fill="none" stroke="#ffb3d9" stroke-width="2.5"/>
-      <circle cx="42" cy="32" r="2.5" fill="#ffb3d9"/>
-      <circle cx="58" cy="32" r="2.5" fill="#ffb3d9"/>
-      <path d="M44 45 Q50 52,56 45" fill="none" stroke="#ffb3d9" stroke-width="2"/>
-      <path d="M50 53 L50 80" stroke="#ffb3d9" stroke-width="2"/>
-      <path d="M50 65 L35 55" stroke="#ffb3d9" stroke-width="2"/>
-      <path d="M50 65 L65 55" stroke="#ffb3d9" stroke-width="2"/>
-      <path d="M50 80 L40 100" stroke="#ffb3d9" stroke-width="2"/>
-      <path d="M50 80 L60 100" stroke="#ffb3d9" stroke-width="2"/>
-      <path d="M30 30 Q20 15,35 20" fill="none" stroke="#ffb3d9" stroke-width="2"/>
-      <path d="M70 30 Q80 15,65 20" fill="none" stroke="#ffb3d9" stroke-width="2"/>
+      <circle cx="50" cy="35" r="16" fill="none" stroke="#d4a0b0" stroke-width="2"/>
+      <circle cx="43" cy="32" r="2" fill="#d4a0b0"/>
+      <circle cx="57" cy="32" r="2" fill="#d4a0b0"/>
+      <path d="M45 43 Q50 49,55 43" fill="none" stroke="#d4a0b0" stroke-width="1.8"/>
+      <path d="M50 51 L50 75" stroke="#d4a0b0" stroke-width="1.8"/>
+      <path d="M35 55 L50 62 L65 55" fill="none" stroke="#d4a0b0" stroke-width="1.8"/>
+      <path d="M50 75 L42 95" stroke="#d4a0b0" stroke-width="1.8"/>
+      <path d="M50 75 L58 95" stroke="#d4a0b0" stroke-width="1.8"/>
     </svg>
     <svg class="line-girl-svg" viewBox="0 0 100 120">
-      <circle cx="50" cy="35" r="16" fill="none" stroke="#7df9ff" stroke-width="2"/>
-      <circle cx="43" cy="33" r="2" fill="#7df9ff"/>
-      <circle cx="57" cy="33" r="2" fill="#7df9ff"/>
-      <path d="M45 43 Q50 49,55 43" fill="none" stroke="#7df9ff" stroke-width="2"/>
-      <path d="M50 51 L50 75" stroke="#7df9ff" stroke-width="2"/>
-      <path d="M35 55 L50 62 L65 55" fill="none" stroke="#7df9ff" stroke-width="2"/>
-      <path d="M50 75 L42 95" stroke="#7df9ff" stroke-width="2"/>
-      <path d="M50 75 L58 95" stroke="#7df9ff" stroke-width="2"/>
+      <circle cx="50" cy="30" r="18" fill="none" stroke="#c4a0b0" stroke-width="2"/>
+      <path d="M40 28 Q45 25,50 28 Q55 25,60 28" fill="none" stroke="#c4a0b0" stroke-width="1.8"/>
+      <circle cx="42" cy="28" r="1.8" fill="#c4a0b0"/>
+      <circle cx="58" cy="28" r="1.8" fill="#c4a0b0"/>
+      <path d="M50 48 L50 78" stroke="#c4a0b0" stroke-width="1.8"/>
+      <path d="M50 58 L32 48" stroke="#c4a0b0" stroke-width="1.8"/>
+      <path d="M50 58 L68 48" stroke="#c4a0b0" stroke-width="1.8"/>
+      <path d="M50 78 L40 100" stroke="#c4a0b0" stroke-width="1.8"/>
+      <path d="M50 78 L60 100" stroke="#c4a0b0" stroke-width="1.8"/>
     </svg>
   </div>
 
-  <!-- 手写分割线 -->
+  <!-- 分割线 -->
   <div class="hand-drawn-divider">
-    <span class="divider-heart" id="heartLeft">❤️</span>
+    <span class="divider-heart" id="heartLeft" contenteditable="false">❤️</span>
     <span class="divider-line"></span>
-    <span class="divider-heart" id="heartRight">💕</span>
+    <span class="divider-heart" id="heartRight" contenteditable="false">💕</span>
   </div>
 
   <!-- 内容区域 -->
   <div class="content-grid" id="contentGrid"></div>
 
-  <!-- 手绘线条女孩装饰2 -->
+  <!-- 手绘线条女孩 -->
   <div class="line-girl-decoration">
     <svg class="line-girl-svg" viewBox="0 0 100 120">
-      <circle cx="50" cy="30" r="20" fill="none" stroke="#ffcc66" stroke-width="2.5"/>
-      <path d="M40 28 Q45 25,50 28 Q55 25,60 28" fill="none" stroke="#ffcc66" stroke-width="2"/>
-      <circle cx="42" cy="28" r="2" fill="#ffcc66"/>
-      <circle cx="58" cy="28" r="2" fill="#ffcc66"/>
-      <path d="M50 50 L50 80" stroke="#ffcc66" stroke-width="2"/>
-      <path d="M50 60 L30 50" stroke="#ffcc66" stroke-width="2"/>
-      <path d="M50 60 L70 50" stroke="#ffcc66" stroke-width="2"/>
-      <path d="M50 80 L38 105" stroke="#ffcc66" stroke-width="2"/>
-      <path d="M50 80 L62 105" stroke="#ffcc66" stroke-width="2"/>
+      <circle cx="50" cy="32" r="17" fill="none" stroke="#b4a0c0" stroke-width="2"/>
+      <circle cx="44" cy="29" r="2" fill="#b4a0c0"/>
+      <circle cx="56" cy="29" r="2" fill="#b4a0c0"/>
+      <path d="M46 40 Q50 45,54 40" fill="none" stroke="#b4a0c0" stroke-width="1.5"/>
+      <path d="M50 49 L50 70" stroke="#b4a0c0" stroke-width="1.8"/>
+      <path d="M50 58 L38 50" stroke="#b4a0c0" stroke-width="1.8"/>
+      <path d="M50 58 L62 50" stroke="#b4a0c0" stroke-width="1.8"/>
+      <path d="M50 70 L43 92" stroke="#b4a0c0" stroke-width="1.8"/>
+      <path d="M50 70 L57 92" stroke="#b4a0c0" stroke-width="1.8"/>
     </svg>
   </div>
 
   <!-- 签名 -->
   <div class="footer-note">
-    <span id="footerLine1">🎀 歡迎來到我的小宇宙 🎀</span><br>
-    <span style="font-size:0.9rem;" id="footerLine2">✧ 留言 · 貼圖 · 愛妳 ✧</span>
+    <span id="footerLine1" contenteditable="false">🎀 歡迎來到我的小宇宙 🎀</span><br>
+    <span style="font-size:0.85rem;" id="footerLine2" contenteditable="false">✧ 留言 · 貼圖 · 愛妳 ✧</span>
   </div>
 </div>
 
 <script>
   // ========== 配置 ==========
-  const OWNER_PASSWORD = '123456'; // 主人密码，你可以改成自己的
+  const OWNER_PASSWORD = '123456';
+  const OWNER_NAME = '主人';
   
   let isOwner = false;
+  let guestName = localStorage.getItem('guestName') || '';
   
-  // 预设头像库（emoji）
-  const avatarEmojis = ['👧', '👩', '🧑', '👸', '🤴', '🐰', '🐱', '🦊', '🐼', '🌸', '⭐', '🌈', '💗', '🎀', '🦋', '✨'];
+  // 预设头像
+  const avatarEmojis = ['👧', '👩', '🧑', '👸', '🐰', '🐱', '🦊', '🐼', '🌸', '⭐', '🌈', '💗', '🎀', '🦋', '✨', '☀️'];
   
-  // 默认卡片数据
+  // 默认卡片
   const defaultCards = [
-    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffb3d9'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23ffe0f0'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23ff6699' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E", text: "🌸 今天也是粉紅泡泡的一天！" },
-    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23b3d9ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffcc00'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffcc00'/%3E%3Ctext x='30' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E", text: "✨ 閃閃惹人愛 ✨" },
-    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d9b3ff'/%3E%3Cpath d='M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z' fill='%23ffe6ff'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23ffffff' font-family='Comic Sans MS'%3E✧ 夢幻 ✧%3C/text%3E%3C/svg%3E", text: "🦋 在夢境裡飛行 🦋" }
+    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffe0f0'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23fff0f5'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23d491b0' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23b07090' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E", text: "🌸 今天也是粉紅泡泡的一天！" },
+    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d4e8ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffe6b3'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffe6b3'/%3E%3Ctext x='30' y='90' font-size='14' fill='%237090b0' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E", text: "✨ 閃閃惹人愛 ✨" },
+    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e8d4ff'/%3E%3Cpath d='M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z' fill='%23fff0f5'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23a070b0' font-family='Comic Sans MS'%3E✧ 夢幻 ✧%3C/text%3E%3C/svg%3E", text: "🦋 在夢境裡飛行 🦋" }
   ];
 
   let cardsData = JSON.parse(JSON.stringify(defaultCards));
-  let commentsData = [[], [], []]; // 每个卡片的评论
+  let commentsData = JSON.parse(localStorage.getItem('millennium_comments') || '[[],[],[]]');
 
   // ========== 初始化 ==========
   function init() {
-    loadFromStorage();
+    loadOwnerData();
     renderCards();
     updateOwnerUI();
     initAvatarLibrary();
+    
+    // 显示访客提示（只显示一次）
+    if (!isOwner && !localStorage.getItem('guestNoticeShown')) {
+      setTimeout(() => {
+        document.getElementById('guestNotice').classList.add('show');
+        localStorage.setItem('guestNoticeShown', 'true');
+      }, 500);
+    }
+    
+    // 如果有保存的访客名字，填入输入框
+    if (guestName) {
+      setTimeout(() => {
+        document.querySelectorAll('.comment-name-input').forEach(input => {
+          if (!input.value) input.value = guestName;
+        });
+      }, 100);
+    }
+  }
+
+  function closeGuestNotice() {
+    document.getElementById('guestNotice').classList.remove('show');
   }
 
   function initAvatarLibrary() {
@@ -618,11 +775,49 @@
     });
   }
 
-  function selectAvatar(emoji) {
-    document.getElementById('profileAvatar').innerText = emoji;
+  function switchAvatarTab(tab) {
+    document.querySelectorAll('.avatar-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('emojiTab').style.display = tab === 'emoji' ? 'block' : 'none';
+    document.getElementById('uploadTab').style.display = tab === 'upload' ? 'block' : 'none';
+  }
+
+  function selectAvatar(avatar) {
+    const avatarEl = document.getElementById('profileAvatar');
+    if (avatarEl.tagName === 'IMG') {
+      // 如果是图片，转换成div
+      const parent = avatarEl.parentNode;
+      const newDiv = document.createElement('div');
+      newDiv.id = 'profileAvatar';
+      newDiv.className = 'avatar-img avatar-emoji';
+      newDiv.innerText = avatar;
+      parent.replaceChild(newDiv, avatarEl);
+    } else {
+      avatarEl.innerText = avatar;
+    }
     closeAvatarLibrary();
     if (isOwner) {
-      autoSave();
+      saveAllContent();
+    }
+  }
+
+  function uploadCustomAvatar(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const avatarEl = document.getElementById('profileAvatar');
+        const parent = avatarEl.parentNode;
+        const img = document.createElement('img');
+        img.id = 'profileAvatar';
+        img.className = 'avatar-img';
+        img.src = e.target.result;
+        img.style.objectFit = 'cover';
+        parent.replaceChild(img, avatarEl);
+        closeAvatarLibrary();
+        if (isOwner) saveAllContent();
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -641,14 +836,10 @@
   }
 
   function handleAvatarClick() {
-    if (isOwner) {
-      openAvatarLibrary();
-    } else {
-      alert('只有主人可以更換頭像喔！👑');
-    }
+    openAvatarLibrary();
   }
 
-  // ========== 登录系统 ==========
+  // ========== 登录 ==========
   function login() {
     const password = document.getElementById('passwordInput').value;
     if (password === OWNER_PASSWORD) {
@@ -685,23 +876,21 @@
       statusText.innerText = '主人模式 · 可以編輯';
       avatarHint.innerText = '👆 點擊更換頭像';
       
-      // 启用编辑
       editableElements.forEach(el => el.contentEditable = 'true');
       textareas.forEach(el => el.readOnly = false);
     } else {
       loginArea.style.display = 'flex';
       logoutArea.style.display = 'none';
       controlPanel.classList.remove('show');
-      crownIcon.innerText = '👤';
-      statusText.innerText = '訪客模式 · 只能評論';
+      crownIcon.innerText = '🧸';
+      statusText.innerText = '訪客模式 · 歡迎來玩';
       avatarHint.innerText = '🔒 只有主人可更換';
       
-      // 禁用编辑
       editableElements.forEach(el => el.contentEditable = 'false');
       textareas.forEach(el => el.readOnly = true);
     }
     
-    renderCards(); // 重新渲染以更新按钮状态
+    renderCards();
   }
 
   // ========== 渲染卡片 ==========
@@ -713,7 +902,7 @@
       const cardDiv = document.createElement('div');
       cardDiv.className = 'pic-card';
       
-      // 图片区域
+      // 图片
       const picFrame = document.createElement('div');
       picFrame.className = 'pic-frame';
       if (isOwner) {
@@ -724,25 +913,26 @@
       const img = document.createElement('img');
       img.className = 'vintage-pic';
       img.src = card.pic;
-      img.id = `pic${index}`;
       
       const picHint = document.createElement('div');
-      picHint.style.cssText = 'text-align:center; font-size:0.75rem; color:#ffb3d9; margin-top:5px;';
-      picHint.innerText = isOwner ? '👆 點擊更換圖片' : '📸';
+      picHint.style.cssText = 'text-align:center; font-size:0.7rem; color:#b090a0; margin-top:3px;';
+      picHint.innerText = isOwner ? '👆 點擊更換' : '📸';
       
       picFrame.appendChild(img);
       picFrame.appendChild(picHint);
       
-      // 文字区域
+      // 文字
       const editableBox = document.createElement('div');
       editableBox.className = 'editable-box';
       
       const textarea = document.createElement('textarea');
       textarea.className = 'editable-text';
-      textarea.id = `text${index}`;
       textarea.value = card.text;
       textarea.readOnly = !isOwner;
-      textarea.oninput = () => { card.text = textarea.value; if(isOwner) autoSave(); };
+      textarea.oninput = () => { 
+        card.text = textarea.value; 
+        if(isOwner) autoSave(); 
+      };
       
       editableBox.appendChild(textarea);
       
@@ -752,13 +942,20 @@
       
       const commentList = document.createElement('div');
       commentList.className = 'comment-list';
-      commentList.id = `commentList${index}`;
       
       // 渲染评论
-      commentsData[index].forEach(comment => {
+      (commentsData[index] || []).forEach(comment => {
         const commentItem = document.createElement('div');
         commentItem.className = 'comment-item';
-        commentItem.innerHTML = `<span class="comment-name">${escapeHtml(comment.name)}：</span>${escapeHtml(comment.text)}`;
+        const isOwnerComment = comment.name === OWNER_NAME || comment.name.includes('👑');
+        commentItem.innerHTML = `
+          <span class="comment-name">
+            ${escapeHtml(comment.name)}
+            ${isOwnerComment ? '<span class="owner-crown">👑</span>' : ''}
+            ：
+          </span>
+          <span>${escapeHtml(comment.text)}</span>
+        `;
         commentList.appendChild(commentItem);
       });
       
@@ -769,20 +966,29 @@
       nameInput.type = 'text';
       nameInput.className = 'comment-name-input';
       nameInput.placeholder = '名字';
-      nameInput.id = `commentName${index}`;
+      nameInput.value = isOwner ? OWNER_NAME + '👑' : guestName;
       nameInput.maxLength = 10;
+      nameInput.onchange = function() {
+        if (!isOwner) {
+          guestName = this.value;
+          localStorage.setItem('guestName', guestName);
+          // 同步其他名字输入框
+          document.querySelectorAll('.comment-name-input').forEach(inp => {
+            if (inp !== this && !isOwner) inp.value = guestName;
+          });
+        }
+      };
       
       const textInput = document.createElement('input');
       textInput.type = 'text';
       textInput.className = 'comment-text-input';
       textInput.placeholder = '留言...';
-      textInput.id = `commentText${index}`;
       textInput.maxLength = 50;
       
       const commentBtn = document.createElement('button');
       commentBtn.className = 'comment-btn';
       commentBtn.innerText = '發送';
-      commentBtn.onclick = () => addComment(index);
+      commentBtn.onclick = () => addComment(index, nameInput, textInput);
       
       commentInputArea.appendChild(nameInput);
       commentInputArea.appendChild(textInput);
@@ -817,7 +1023,7 @@
         reader.onload = (event) => {
           cardsData[index].pic = event.target.result;
           renderCards();
-          autoSave();
+          saveAllContent();
         };
         reader.readAsDataURL(file);
       }
@@ -825,40 +1031,77 @@
     input.click();
   }
 
-  // ========== 评论功能 ==========
-  function addComment(index) {
-    const nameInput = document.getElementById(`commentName${index}`);
-    const textInput = document.getElementById(`commentText${index}`);
-    const name = nameInput.value.trim();
+  // ========== 评论 ==========
+  function addComment(index, nameInput, textInput) {
+    let name = nameInput.value.trim();
     const text = textInput.value.trim();
     
     if (!name) {
-      alert('請輸入名字～');
-      return;
+      name = isOwner ? OWNER_NAME : '訪客';
     }
     if (!text) {
       alert('請輸入留言內容～');
       return;
     }
     
+    // 主人评论自动加皇冠
+    if (isOwner && !name.includes('👑')) {
+      name = name + '👑';
+    }
+    
+    if (!commentsData[index]) commentsData[index] = [];
     commentsData[index].push({ name, text, time: Date.now() });
-    if (commentsData[index].length > 20) {
+    
+    if (commentsData[index].length > 30) {
       commentsData[index].shift();
     }
     
-    nameInput.value = '';
     textInput.value = '';
     
+    // 保存评论到本地
+    localStorage.setItem('millennium_comments', JSON.stringify(commentsData));
+    
     renderCards();
-    saveComments();
   }
 
-  // ========== 保存和加载 ==========
+  // ========== 保存/加载 ==========
+  function loadOwnerData() {
+    const saved = localStorage.getItem('millennium_owner_data');
+    if (saved) {
+      const data = JSON.parse(saved);
+      
+      // 恢复头像
+      const avatarEl = document.getElementById('profileAvatar');
+      if (data.avatar) {
+        if (data.avatarType === 'emoji') {
+          avatarEl.innerText = data.avatar;
+        } else {
+          const parent = avatarEl.parentNode;
+          const img = document.createElement('img');
+          img.id = 'profileAvatar';
+          img.className = 'avatar-img';
+          img.src = data.avatar;
+          parent.replaceChild(img, avatarEl);
+        }
+      }
+      
+      if (data.welcomeText) document.getElementById('welcomeText').innerText = data.welcomeText;
+      if (data.welcomeSub) document.getElementById('welcomeSub').innerText = data.welcomeSub;
+      if (data.heartLeft) document.getElementById('heartLeft').innerText = data.heartLeft;
+      if (data.heartRight) document.getElementById('heartRight').innerText = data.heartRight;
+      if (data.footerLine1) document.getElementById('footerLine1').innerText = data.footerLine1;
+      if (data.footerLine2) document.getElementById('footerLine2').innerText = data.footerLine2;
+      if (data.cards) cardsData = data.cards;
+    }
+  }
+
   function saveAllContent() {
     if (!isOwner) return;
     
+    const avatarEl = document.getElementById('profileAvatar');
     const data = {
-      avatar: document.getElementById('profileAvatar').innerText,
+      avatar: avatarEl.tagName === 'IMG' ? avatarEl.src : avatarEl.innerText,
+      avatarType: avatarEl.tagName === 'IMG' ? 'image' : 'emoji',
       welcomeText: document.getElementById('welcomeText').innerText,
       welcomeSub: document.getElementById('welcomeSub').innerText,
       heartLeft: document.getElementById('heartLeft').innerText,
@@ -868,46 +1111,18 @@
       cards: cardsData
     };
     
-    localStorage.setItem('millenniumSite_owner', JSON.stringify(data));
-    showSaveTip('✨ 所有內容已保存！');
-  }
-
-  function saveComments() {
-    localStorage.setItem('millenniumSite_comments', JSON.stringify(commentsData));
-  }
-
-  function loadFromStorage() {
-    // 加载主人数据
-    const saved = localStorage.getItem('millenniumSite_owner');
-    if (saved) {
-      const data = JSON.parse(saved);
-      if (data.avatar) document.getElementById('profileAvatar').innerText = data.avatar;
-      if (data.welcomeText) document.getElementById('welcomeText').innerText = data.welcomeText;
-      if (data.welcomeSub) document.getElementById('welcomeSub').innerText = data.welcomeSub;
-      if (data.heartLeft) document.getElementById('heartLeft').innerText = data.heartLeft;
-      if (data.heartRight) document.getElementById('heartRight').innerText = data.heartRight;
-      if (data.footerLine1) document.getElementById('footerLine1').innerText = data.footerLine1;
-      if (data.footerLine2) document.getElementById('footerLine2').innerText = data.footerLine2;
-      if (data.cards) cardsData = data.cards;
-    }
-    
-    // 加载评论
-    const savedComments = localStorage.getItem('millenniumSite_comments');
-    if (savedComments) {
-      commentsData = JSON.parse(savedComments);
-    }
+    localStorage.setItem('millennium_owner_data', JSON.stringify(data));
+    showSaveTip('✨ 內容已保存！');
   }
 
   function autoSave() {
-    if (isOwner) {
-      saveAllContent();
-    }
+    if (isOwner) saveAllContent();
   }
 
   function resetToDefault() {
     if (!isOwner) return;
     if (confirm('確定要恢復默認設置嗎？')) {
-      localStorage.removeItem('millenniumSite_owner');
+      localStorage.removeItem('millennium_owner_data');
       cardsData = JSON.parse(JSON.stringify(defaultCards));
       location.reload();
     }
@@ -915,13 +1130,13 @@
 
   function exportConfig() {
     if (!isOwner) return;
-    const data = localStorage.getItem('millenniumSite_owner');
+    const data = localStorage.getItem('millennium_owner_data');
     if (data) {
       const blob = new Blob([data], {type: 'application/json'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'my_site_config.json';
+      a.download = 'my_site.json';
       a.click();
     }
   }
@@ -936,8 +1151,8 @@
       if (file) {
         const reader = new FileReader();
         reader.onload = (event) => {
-          localStorage.setItem('millenniumSite_owner', event.target.result);
-          loadFromStorage();
+          localStorage.setItem('millennium_owner_data', event.target.result);
+          loadOwnerData();
           renderCards();
           showSaveTip('配置已導入');
         };
@@ -947,32 +1162,18 @@
     input.click();
   }
 
-  function changeAvatar(event) {
-    if (!isOwner) return;
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        // 如果上传的是图片，可以显示图片，但这里简单处理
-        document.getElementById('profileAvatar').innerText = '🖼️';
-        autoSave();
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
   function showSaveTip(msg) {
     const indicator = document.getElementById('saveIndicator');
     indicator.innerText = msg;
     setTimeout(() => indicator.innerText = '', 2000);
   }
 
-  // 监听文字变化自动保存
+  // 监听变化
   document.addEventListener('input', (e) => {
-    if (isOwner && (e.target.contentEditable === 'true' || e.target.classList.contains('editable-text'))) {
+    if (isOwner) {
       if (e.target.classList.contains('editable-text')) {
-        const index = parseInt(e.target.id.replace('text', ''));
-        if (!isNaN(index)) cardsData[index].text = e.target.value;
+        const index = Array.from(document.querySelectorAll('.editable-text')).indexOf(e.target);
+        if (index >= 0) cardsData[index].text = e.target.value;
       }
       autoSave();
     }
