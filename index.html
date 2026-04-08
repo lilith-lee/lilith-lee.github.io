@@ -1,1335 +1,911 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✧ 莪の夢幻小窩 ✧ 千禧樂園</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      background: linear-gradient(135deg, #fff0f5 0%, #e8f4ff 50%, #fff9e6 100%);
-      background-image: 
-        radial-gradient(circle at 15% 25%, #ffb3d9 2px, transparent 2px),
-        radial-gradient(circle at 85% 15%, #ffe066 3px, transparent 3px),
-        radial-gradient(circle at 75% 85%, #b3e0ff 2.5px, transparent 2.5px),
-        radial-gradient(circle at 25% 75%, #d9b3ff 3px, transparent 3px),
-        radial-gradient(circle at 50% 50%, #ffccdd 2px, transparent 2px);
-      background-size: 180px 180px, 200px 200px, 220px 220px, 160px 160px, 250px 250px;
-      min-height: 100vh;
-      padding: 24px 16px;
-      font-family: 'Comic Sans MS', 'Chalkboard SE', '幼圆', 'Segoe UI', cursive, sans-serif;
-      color: #5a3a6e;
-      position: relative;
-    }
-
-    body::before {
-      content: "🧸🎀🍀☘️⭐✨💗🦋";
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      font-size: 24px;
-      opacity: 0.3;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath fill=\'%23ffd4e8\' d=\'M10 10 L13 16 L19 19 L13 22 L10 28 L7 22 L1 19 L7 16z\'/%3E%3C/svg%3E');
-      background-repeat: repeat;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.2;
-    }
-
-    .dream-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      background: rgba(255, 250, 240, 0.75);
-      backdrop-filter: blur(12px);
-      border: 5px ridge #ffb6d9;
-      border-radius: 50px 20px 50px 20px;
-      box-shadow: 0 0 40px #ffb3d9, 0 0 20px #b3e0ff inset, 0 8px 0 #d4a0c0;
-      padding: 28px 24px;
-      position: relative;
-      z-index: 10;
-    }
-
-    .loading-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(255, 240, 245, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      font-size: 24px;
-      color: #7a4a6e;
-      backdrop-filter: blur(5px);
-    }
-
-    .loading-overlay.hide {
-      display: none;
-    }
-
-    .sync-status {
-      background: rgba(255, 220, 240, 0.6);
-      border: 2px solid #ffb6c1;
-      border-radius: 40px;
-      padding: 5px 15px;
-      margin-bottom: 15px;
-      display: inline-block;
-      font-size: 0.8rem;
-      color: #7a6a7e;
-    }
-
-    .login-bar {
-      background: rgba(255, 220, 240, 0.6);
-      border: 2px solid #ffb6c1;
-      border-radius: 40px;
-      padding: 8px 18px;
-      margin-bottom: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      backdrop-filter: blur(5px);
-    }
-
-    .login-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-    }
-
-    .crown-icon {
-      font-size: 22px;
-      filter: drop-shadow(0 0 5px #ffd700);
-    }
-
-    .login-btn, .logout-btn {
-      background: #ffb6d9;
-      border: 2px outset #ffe0f0;
-      color: #6b3a5a;
-      padding: 6px 16px;
-      border-radius: 30px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 3px 0 #d491b0;
-      transition: 0.1s;
-    }
-
-    .login-btn:hover, .logout-btn:hover {
-      background: #ffc4e0;
-      transform: scale(0.98);
-    }
-
-    .password-input {
-      background: #fff5fb;
-      border: 2px solid #ffb6d9;
-      border-radius: 30px;
-      padding: 6px 12px;
-      font-family: 'Comic Sans MS', cursive;
-      outline: none;
-      color: #5a3a6e;
-    }
-
-    .control-panel {
-      background: rgba(255, 235, 215, 0.7);
-      border: 2px solid #ffd4a0;
-      border-radius: 20px;
-      padding: 10px 15px;
-      margin-bottom: 20px;
-      display: none;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      backdrop-filter: blur(5px);
-    }
-
-    .control-panel.show {
-      display: flex;
-    }
-
-    .control-btn {
-      background: #ffe0b3;
-      border: 2px outset #ffd4a0;
-      color: #6b4a3a;
-      padding: 6px 14px;
-      border-radius: 30px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 3px 0 #d4a070;
-    }
-
-    .control-btn.highlight {
-      background: #ffb347;
-      color: white;
-      border-color: #ffe0b3;
-    }
-
-    .avatar-library {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff5e6;
-      border: 5px ridge #ffb6d9;
-      border-radius: 30px;
-      padding: 24px;
-      z-index: 1000;
-      display: none;
-      max-width: 450px;
-      width: 90%;
-      box-shadow: 0 0 50px #ffb3d9;
-    }
-
-    .avatar-library.show {
-      display: block;
-    }
-
-    .avatar-library h3 {
-      color: #7a4a6e;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .avatar-tabs {
-      display: flex;
-      gap: 5px;
-      margin-bottom: 15px;
-    }
-
-    .avatar-tab {
-      flex: 1;
-      padding: 8px;
-      background: #ffe0f0;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #7a4a6e;
-    }
-
-    .avatar-tab.active {
-      background: #ffb6d9;
-      color: white;
-    }
-
-    .avatar-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin: 20px 0;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .avatar-option {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      border: 3px solid #ffd4e8;
-      cursor: pointer;
-      background: #fff0f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-      transition: 0.2s;
-    }
-
-    .avatar-option:hover {
-      transform: scale(1.1);
-      border-color: #ff99cc;
-      box-shadow: 0 0 15px #ffb6d9;
-    }
-
-    .upload-area {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .upload-btn {
-      background: #ffb6d9;
-      border: none;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-weight: bold;
-      cursor: pointer;
-      margin: 10px 0;
-    }
-
-    .close-library {
-      background: #c4a0b0;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 30px;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(255, 220, 240, 0.5);
-      backdrop-filter: blur(3px);
-      z-index: 999;
-      display: none;
-    }
-
-    .overlay.show {
-      display: block;
-    }
-
-    .guest-notice {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #fff0e0;
-      border: 3px solid #ffb6d9;
-      border-radius: 50px;
-      padding: 12px 24px;
-      z-index: 900;
-      box-shadow: 0 5px 20px rgba(255, 180, 200, 0.5);
-      display: none;
-      align-items: center;
-      gap: 15px;
-      color: #7a4a6e;
-      font-weight: bold;
-    }
-
-    .guest-notice.show {
-      display: flex;
-    }
-
-    .guest-notice button {
-      background: #ffb6d9;
-      border: none;
-      color: white;
-      padding: 5px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    [contenteditable="true"]:hover {
-      background: rgba(255, 200, 220, 0.2);
-      outline: 2px dashed #ffb6d9;
-      border-radius: 8px;
-    }
-
-    .bow-deco, .heart-corner, .floating-deco {
-      pointer-events: none;
-      position: absolute;
-      z-index: 20;
-    }
-    .bow-deco { top: -12px; right: 30px; font-size: 36px; filter: drop-shadow(0 0 8px #ffb6d9); }
-    .heart-corner { bottom: -8px; left: 20px; font-size: 30px; filter: drop-shadow(0 0 8px #ffb6d9); }
-    .floating-deco-1 { right: -5px; bottom: 30%; font-size: 28px; opacity: 0.7; }
-    .floating-deco-2 { left: 10px; top: 20%; font-size: 24px; opacity: 0.6; }
-
-    .line-girl-decoration {
-      display: flex;
-      justify-content: space-around;
-      margin: 15px 0;
-      padding: 5px;
-      pointer-events: none;
-    }
-
-    .line-girl-svg {
-      width: 70px;
-      height: 90px;
-      filter: drop-shadow(0 0 5px #ffd4e8);
-      opacity: 0.7;
-    }
-
-    .top-section {
-      display: flex;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      gap: 20px 30px;
-      margin-bottom: 20px;
-    }
-
-    .avatar-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .avatar-wrapper {
-      background: #ffe4f0;
-      padding: 10px 10px 6px;
-      border-radius: 60% 40% 60% 40% / 50% 50% 40% 40%;
-      border: 4mm ridge #ffd4e8;
-      box-shadow: 0 0 25px #ffb6d9, inset 0 0 10px #fff0f5;
-      cursor: pointer;
-    }
-
-    .avatar-img {
-      width: 130px;
-      height: 130px;
-      object-fit: cover;
-      background: #fff0f5;
-      border-radius: 55% 35% 55% 35% / 45% 45% 35% 55%;
-      border: 3px solid #ffffff;
-      box-shadow: 0 5px 0 #d491b0, 0 0 20px #ffd4e8;
-    }
-
-    .avatar-emoji {
-      font-size: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-    }
-
-    .welcome-neon {
-      flex: 1;
-      padding: 8px 0;
-    }
-
-    .neon-text {
-      font-size: 2.8rem;
-      font-weight: bold;
-      font-family: 'Brush Script MT', 'Comic Sans MS', cursive;
-      color: #7a4a6e;
-      text-shadow: 0 0 5px #fff9e6, 0 0 15px #ffb6d9, 0 0 25px #ffd4e8, 3px 3px 0 #ffe0f0;
-      animation: softGlow 2s infinite alternate;
-      outline: none;
-    }
-
-    @keyframes softGlow {
-      from { text-shadow: 0 0 5px #fff9e6, 0 0 15px #ffb6d9, 0 0 25px #ffd4e8, 3px 3px 0 #ffe0f0; }
-      to { text-shadow: 0 0 10px #fff5d0, 0 0 20px #ffc4e0, 0 0 35px #ffe0b3, 3px 3px 0 #ffd4e8; }
-    }
-
-    .hand-drawn-divider {
-      margin: 15px 0 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .divider-line {
-      flex: 1;
-      height: 6px;
-      background: repeating-linear-gradient(90deg, #ffd4e8, #ffd4e8 8px, transparent 8px, transparent 16px);
-      border-radius: 20px;
-    }
-
-    .divider-heart {
-      font-size: 28px;
-      filter: drop-shadow(0 0 8px #ffb6d9);
-      animation: heartbeat 1.5s infinite;
-    }
-
-    @keyframes heartbeat {
-      0%,100%{ transform: scale(1); }
-      30%{ transform: scale(1.15); }
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin: 25px 0 15px;
-    }
-
-    .pic-card {
-      background: rgba(255, 245, 235, 0.7);
-      backdrop-filter: blur(4px);
-      border: 3px ridge #ffd4e8;
-      border-radius: 30px 8px 30px 8px;
-      padding: 16px 12px;
-      box-shadow: 0 6px 0 #d4b0c0, 0 0 20px #ffe0f0;
-    }
-
-    .pic-frame {
-      background: #fff0e6;
-      padding: 8px;
-      border-radius: 20px 4px 20px 4px;
-      border: 2px dashed #ffd4e8;
-      margin-bottom: 12px;
-    }
-
-    .vintage-pic {
-      width: 100%;
-      aspect-ratio: 1/1;
-      object-fit: cover;
-      border-radius: 20px 4px 20px 4px;
-      border: 3px solid #fff9e6;
-      box-shadow: 0 0 15px #ffd4e8;
-      background: #ffe4d0;
-    }
-
-    .editable-box {
-      background: rgba(255, 250, 240, 0.6);
-      border: 2px inset #ffd4e8;
-      border-radius: 20px 4px 20px 4px;
-      padding: 8px;
-    }
-
-    .editable-text {
-      width: 100%;
-      min-height: 70px;
-      padding: 10px 8px;
-      background: #fff9f0;
-      border: 2px solid #ffd4e8;
-      border-radius: 14px 2px 14px 2px;
-      font-family: 'Comic Sans MS', '幼圆', sans-serif;
-      color: #6b4a5a;
-      font-size: 0.95rem;
-      font-weight: 500;
-      resize: vertical;
-      outline: none;
-    }
-
-    .comment-section {
-      margin-top: 12px;
-      border-top: 2px dotted #ffd4e8;
-      padding-top: 10px;
-    }
-
-    .comment-list {
-      max-height: 150px;
-      overflow-y: auto;
-      margin-bottom: 8px;
-      font-size: 0.8rem;
-      padding-right: 5px;
-    }
-
-    .comment-item {
-      background: rgba(255, 245, 240, 0.6);
-      padding: 6px 10px;
-      border-radius: 15px;
-      margin-bottom: 5px;
-      color: #6b4a5a;
-      display: flex;
-      align-items: flex-start;
-      gap: 5px;
-      flex-wrap: wrap;
-    }
-
-    .comment-name {
-      font-weight: bold;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .owner-crown {
-      font-size: 12px;
-      filter: drop-shadow(0 0 3px gold);
-    }
-
-    .reply-btn {
-      background: none;
-      border: 1px solid #ffd4e8;
-      border-radius: 10px;
-      padding: 2px 8px;
-      font-size: 0.65rem;
-      color: #9a7a8e;
-      cursor: pointer;
-      margin-left: 8px;
-    }
-
-    .reply-btn:hover {
-      background: #ffe0f0;
-    }
-
-    .comment-input-area {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-      margin-top: 8px;
-    }
-
-    .comment-name-input {
-      width: 75px;
-      padding: 5px 8px;
-      border-radius: 20px;
-      border: 2px solid #ffd4e8;
-      background: #fff9f0;
-      font-size: 0.75rem;
-      color: #6b4a5a;
-    }
-
-    .comment-text-input {
-      flex: 1;
-      padding: 5px 8px;
-      border-radius: 20px;
-      border: 2px solid #ffd4e8;
-      background: #fff9f0;
-      font-size: 0.75rem;
-      color: #6b4a5a;
-    }
-
-    .comment-btn {
-      background: #ffd4e8;
-      border: none;
-      color: #7a4a6e;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 0.75rem;
-      box-shadow: 0 2px 0 #d4a0b0;
-    }
-
-    .footer-note {
-      margin-top: 30px;
-      text-align: right;
-      font-size: 1rem;
-      border-top: 2px dotted #ffd4e8;
-      padding-top: 15px;
-      color: #7a5a6e;
-    }
-
-    .deco-bear {
-      position: absolute;
-      font-size: 20px;
-      opacity: 0.4;
-    }
-
-    .refresh-btn {
-      background: #b3e0ff;
-      border: 2px outset #d4e8ff;
-      color: #5a6a7e;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      margin-left: 10px;
-    }
-
-    @media (max-width: 640px) {
-      .neon-text { font-size: 2rem; }
-      .top-section { flex-direction: column; align-items: center; }
-      .welcome-neon { text-align: center; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李灵璐 - 个人简历</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2dd4bf;
+            --primary-dark: #0d9488;
+            --bg: #fafafa;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --dot-color: #2dd4bf;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 几何背景装饰 */
+        .geometric-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .dot-pattern {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-image: radial-gradient(var(--dot-color) 2px, transparent 2px);
+            background-size: 20px 20px;
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .dot-pattern:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .dot-pattern:nth-child(2) { top: 60%; right: 10%; animation-delay: -5s; }
+        .dot-pattern:nth-child(3) { bottom: 20%; left: 15%; animation-delay: -10s; }
+
+        .line-deco {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            height: 1px;
+            opacity: 0.3;
+        }
+
+        .line-deco:nth-child(4) { 
+            width: 300px; 
+            top: 30%; 
+            left: -100px; 
+            transform: rotate(45deg);
+            animation: slideLine 15s infinite linear;
+        }
+
+        .line-deco:nth-child(5) { 
+            width: 200px; 
+            top: 70%; 
+            right: -50px; 
+            transform: rotate(-30deg);
+            animation: slideLine 20s infinite linear reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes slideLine {
+            0% { transform: translateX(-100px) rotate(45deg); opacity: 0; }
+            50% { opacity: 0.3; }
+            100% { transform: translateX(calc(100vw + 100px)) rotate(45deg); opacity: 0; }
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 头部区域 */
+        header {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+            align-items: start;
+        }
+
+        .avatar-section {
+            position: relative;
+        }
+
+        .avatar-frame {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: white;
+            padding: 5px;
+            box-shadow: 0 10px 40px rgba(45, 212, 191, 0.15);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar-frame:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .avatar-frame::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--primary), var(--primary-dark), var(--primary));
+            z-index: -1;
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: var(--primary);
+        }
+
+        .header-info h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-subtitle {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .contact-item:hover {
+            color: var(--primary-dark);
+            background: rgba(45, 212, 191, 0.05);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        /* 区块样式 */
+        section {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-dark));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(45, 212, 191, 0.1);
+        }
+
+        section:hover::before {
+            transform: scaleY(1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header:hover .section-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .toggle-btn {
+            margin-left: auto;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .toggle-btn.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        /* 时间线样式 */
+        .timeline {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: repeating-linear-gradient(
+                to bottom,
+                var(--primary) 0,
+                var(--primary) 4px,
+                transparent 4px,
+                transparent 8px
+            );
+            opacity: 0.3;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 1.05rem;
+        }
+
+        .timeline-subtitle {
+            color: var(--primary-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .timeline-date {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-family: monospace;
+            background: rgba(45, 212, 191, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .timeline-content {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .timeline-content ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .timeline-content li {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 6px;
+        }
+
+        .timeline-content li::before {
+            content: '›';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* 技能标签 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            background: rgba(45, 212, 191, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(45, 212, 191, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            background: rgba(45, 212, 191, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .skill-category h4 {
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skill-tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
+        }
+
+        /* 自我评价 */
+        .intro-text {
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.05) 0%, rgba(13, 148, 136, 0.05) 100%);
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.8;
+            position: relative;
+        }
+
+        .intro-text::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 4rem;
+            color: var(--primary);
+            opacity: 0.1;
+            font-family: serif;
+            line-height: 1;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            header {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .avatar-section {
+                display: flex;
+                justify-content: center;
+            }
+
+            .contact-grid {
+                justify-items: center;
+            }
+
+            .timeline-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 2rem !important;
+            }
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .geometric-footer {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .geo-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .geo-dot:nth-child(2) { animation-delay: 0.3s; }
+        .geo-dot:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* 打印样式 */
+        @media print {
+            .geometric-bg, .toggle-btn { display: none; }
+            section { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+            body { background: white; }
+        }
+    </style>
 </head>
 <body>
-
-<div class="loading-overlay" id="loadingOverlay">
-  <span>🧸 載入中... 🎀</span>
-</div>
-
-<div class="deco-bear" style="top: 50px; left: 20px;">🧸</div>
-<div class="deco-bear" style="bottom: 80px; right: 30px;">🍀</div>
-<div class="deco-bear" style="top: 150px; right: 50px;">☘️</div>
-
-<div class="overlay" id="overlay"></div>
-<div class="avatar-library" id="avatarLibrary">
-  <h3>🎀 選擇妳的頭像 🎀</h3>
-  <div class="avatar-tabs">
-    <button class="avatar-tab active" onclick="switchAvatarTab('emoji')">😊 Emoji</button>
-    <button class="avatar-tab" onclick="switchAvatarTab('upload')">📸 上傳</button>
-  </div>
-  <div id="emojiTab">
-    <div class="avatar-grid" id="avatarGrid"></div>
-  </div>
-  <div id="uploadTab" style="display:none;">
-    <div class="upload-area">
-      <p style="color:#7a4a6e;">點擊上傳妳的圖片</p>
-      <button class="upload-btn" onclick="document.getElementById('avatarUploadInput').click()">📁 選擇圖片</button>
-      <input type="file" id="avatarUploadInput" accept="image/*" style="display:none;" onchange="uploadCustomAvatar(event)">
+    <!-- 几何背景装饰 -->
+    <div class="geometric-bg">
+        <div class="dot-pattern"></div>
+        <div class="dot-pattern"></div>
+        <div class="dot-pattern"></div>
+        <div class="line-deco"></div>
+        <div class="line-deco"></div>
     </div>
-  </div>
-  <button class="close-library" onclick="closeAvatarLibrary()">關閉</button>
-</div>
 
-<div class="guest-notice" id="guestNotice">
-  <span>👋 歡迎來訪！在這裡可以留下妳的評論喔～</span>
-  <button onclick="closeGuestNotice()">知道了 ✨</button>
-</div>
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <div class="avatar-section">
+                <div class="avatar-frame">
+                    <div class="avatar">李</div>
+                </div>
+            </div>
+            <div class="header-info">
+                <h1>李灵璐</h1>
+                <div class="header-subtitle">工商管理专业 · 应届毕业生</div>
+                <div class="contact-grid">
+                    <div class="contact-item" onclick="copyToClipboard('lll081005aurora@163.com')">
+                        <span class="contact-icon">✉</span>
+                        <span>lll081005aurora@163.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">♀</span>
+                        <span>女 | 23岁</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">📍</span>
+                        <span>户籍：梅州</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">🎓</span>
+                        <span>本科 | 2025.07毕业</span>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-<div class="dream-container">
-  <div class="bow-deco">🎀✨🎀</div>
-  <div class="heart-corner">💗💖💗</div>
-  <div class="floating-deco-1">🦋⭐</div>
-  <div class="floating-deco-2">🧸🍀</div>
+        <!-- 教育经历 -->
+        <section>
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">🎓</div>
+                <h2>教育经历</h2>
+                <button class="toggle-btn">−</button>
+            </div>
+            <div class="section-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div>
+                                <div class="timeline-title">电子科技大学中山学院</div>
+                                <div class="timeline-subtitle">工商管理 · 本科</div>
+                            </div>
+                            <span class="timeline-date">2021.09 - 2025.07</span>
+                        </div>
+                        <div class="timeline-content">
+                            <ul>
+                                <li>主修课程：管理学原理、市场营销、战略管理、组织行为学、财务管理、运营管理等</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
-    <span class="sync-status" id="syncStatus">☁️ 已連接雲端</span>
-    <button class="refresh-btn" onclick="loadAllFromCloud()">🔄 刷新</button>
-  </div>
+        <!-- 实习经历 -->
+        <section>
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">💼</div>
+                <h2>实习经历</h2>
+                <button class="toggle-btn">−</button>
+            </div>
+            <div class="section-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div>
+                                <div class="timeline-title">上海金誉汇酒店管理有限责任公司中山分公司</div>
+                                <div class="timeline-subtitle">前厅部接待员</div>
+                            </div>
+                            <span class="timeline-date">2024.12 - 2025.07</span>
+                        </div>
+                        <div class="timeline-content">
+                            <ul>
+                                <li><strong>流程优化：</strong>深度参与四星级酒店前台运营，通过分析客户动线，提出3项流程简化建议，使平均入住办理时间缩短15%</li>
+                                <li><strong>客诉处理：</strong>独立处理日均5起客户咨询与投诉，运用沟通技巧妥善解决，客户问题解决率达95%</li>
+                                <li><strong>数据分析：</strong>协助前厅经理进行运营数据复盘，使用Excel进行客户信息分类与趋势分析，为会员推广活动提供数据支持，助力季度会员转化率提升10%</li>
+                                <li><strong>跨部门协作：</strong>与客房部、餐饮部协同处理客户特殊需求，保障整体客户体验</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  <div class="login-bar">
-    <div class="login-status">
-      <span class="crown-icon" id="crownIcon">🧸</span>
-      <span id="loginStatusText">訪客模式 · 歡迎來玩</span>
+        <!-- 项目经历 -->
+        <section>
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">📊</div>
+                <h2>项目经历</h2>
+                <button class="toggle-btn">−</button>
+            </div>
+            <div class="section-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div>
+                                <div class="timeline-title">新能源汽车产业颠覆与融合研究（丰田）</div>
+                                <div class="timeline-subtitle">学术研究项目</div>
+                            </div>
+                            <span class="timeline-date">2024.12 - 2025.06</span>
+                        </div>
+                        <div class="timeline-content">
+                            <ul>
+                                <li><strong>研究方法应用：</strong>采用文献调查法、实地访谈法与个案分析法，系统收集并分析了超过50份行业报告及企业内部资料</li>
+                                <li><strong>机制剖析：</strong>聚焦"供应链、创新链、价值链"三链融合机制，揭示了丰田在混合动力与氢燃料电池领域的技术布局与市场策略的内在逻辑</li>
+                                <li><strong>策略输出：</strong>撰写了超过2万字的研究报告，提出了针对中型车企的3大电动化转型策略，报告获指导教师高度评价</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div>
+                                <div class="timeline-title">新媒体营销对旅游意愿影响调查</div>
+                                <div class="timeline-subtitle">市场调研项目</div>
+                            </div>
+                            <span class="timeline-date">2023.03 - 2023.05</span>
+                        </div>
+                        <div class="timeline-content">
+                            <ul>
+                                <li><strong>数据分析：</strong>运用实证分析法与SPSS工具对问卷数据进行处理，进行了信度效度检验、描述性统计及回归分析，验证了关键假设</li>
+                                <li><strong>洞察提炼：</strong>分析发现，高质量短视频内容与KOL推荐对用户旅游意愿的提升作用显著（相关系数达0.7以上），并总结了最易引发用户共鸣的3类内容主题</li>
+                                <li><strong>项目成果：</strong>撰写完成了项目分析报告，提出了"内容+互动"的营销组合建议</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 校园及社团经历 -->
+        <section>
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">🌟</div>
+                <h2>校园及社团经历</h2>
+                <button class="toggle-btn">−</button>
+            </div>
+            <div class="section-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div>
+                                <div class="timeline-title">管理学院党建策划部</div>
+                                <div class="timeline-subtitle">策划部理事</div>
+                            </div>
+                            <span class="timeline-date">2021.10 - 2023.05</span>
+                        </div>
+                        <div class="timeline-content">
+                            <ul>
+                                <li><strong>活动策划与执行：</strong>协助策划并落地执行"读书月""四六级模拟考试"等4场大型系列学生活动，独立撰写活动策划书，负责现场流程把控，累计吸引超过500人次参与</li>
+                                <li><strong>招新组织：</strong>参与部门招新全流程，负责宣传物料设计、面试问题设计与环节安排，协助面试筛选50余名报名者，最终成功招募15名新成员</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-header">
+                            <div>
+                                <div class="timeline-title">工商管理专业班级</div>
+                                <div class="timeline-subtitle">宣传委员</div>
+                            </div>
+                            <span class="timeline-date">2021.09 - 2025.07</span>
+                        </div>
+                        <div class="timeline-content">
+                            <ul>
+                                <li><strong>品牌宣传：</strong>主导策划并制作了班级活动宣传服装及纪念视频</li>
+                                <li><strong>需求沟通：</strong>收集班级同学意见，协同其他班委共同推动解决了3项班级共性需求</li>
+                                <li><strong>荣誉展示：</strong>配合学院完成校级"优秀班集体"评比的材料梳理与展示工作</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 相关技能 -->
+        <section>
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">🛠</div>
+                <h2>相关技能</h2>
+                <button class="toggle-btn">−</button>
+            </div>
+            <div class="section-content">
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>📈 办公与数据分析</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">WPS Office</span>
+                            <span class="skill-tag">Microsoft Office</span>
+                            <span class="skill-tag">SPSS</span>
+                            <span class="skill-tag">剪映</span>
+                            <span class="skill-tag">秀米</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h4>🎯 活动策划与执行</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">活动策划</span>
+                            <span class="skill-tag">方案撰写</span>
+                            <span class="skill-tag">资源协调</span>
+                            <span class="skill-tag">落地执行</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h4>📱 新媒体运营</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">文案撰写</span>
+                            <span class="skill-tag">内容策划</span>
+                            <span class="skill-tag">用户互动</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h4>🌐 语言与资质</h4>
+                        <div class="skill-tags">
+                            <span class="skill-tag">CET-4</span>
+                            <span class="skill-tag">普通话二级甲等</span>
+                            <span class="skill-tag">C1驾驶证</span>
+                            <span class="skill-tag">商务英语基础</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 自我评价 -->
+        <section>
+            <div class="section-header" onclick="toggleSection(this)">
+                <div class="section-icon">💬</div>
+                <h2>自我评价</h2>
+                <button class="toggle-btn">−</button>
+            </div>
+            <div class="section-content">
+                <div class="intro-text">
+                    积极开朗，善于沟通与表达，具备扎实的工商管理理论基础和快速学习能力。拥有丰富的校园活动策划与执行经验，培养了优秀的组织协调能力、团队合作精神和多任务处理能力。在酒店实习期间展现出优秀的客户服务意识和数据分析能力，能够熟练运用办公软件进行数据处理和报告撰写。
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="geometric-footer">
+                <div class="geo-dot"></div>
+                <div class="geo-dot"></div>
+                <div class="geo-dot"></div>
+            </div>
+            <p>© 2025 李灵璐 · 个人简历</p>
+        </footer>
     </div>
-    <div id="loginArea">
-      <input type="password" id="passwordInput" class="password-input" placeholder="密碼" style="width:80px;">
-      <button class="login-btn" onclick="login()">🔐 登入</button>
-    </div>
-    <div id="logoutArea" style="display:none;">
-      <button class="logout-btn" onclick="logout()">👑 退出主人模式</button>
-    </div>
-  </div>
 
-  <div class="control-panel" id="controlPanel">
-    <button class="control-btn highlight" onclick="saveSiteToCloud()">☁️ 同步網站到雲端</button>
-    <button class="control-btn" onclick="resetToDefault()">🔄 恢復默認</button>
-    <button class="control-btn" onclick="exportConfig()">📥 導出備份</button>
-    <button class="control-btn" onclick="importConfig()">📤 導入備份</button>
-    <span style="color:#7a6a5e; margin-left:auto;" id="saveIndicator"></span>
-  </div>
-
-  <div class="top-section">
-    <div class="avatar-area">
-      <div class="avatar-wrapper" onclick="handleAvatarClick()">
-        <div id="profileAvatar" class="avatar-img avatar-emoji">👧</div>
-      </div>
-      <div style="margin-top:6px; font-size:0.75rem; color:#9a7a8e;">
-        <span id="avatarHint">👆 點擊更換頭像</span>
-      </div>
-    </div>
-    <div class="welcome-neon">
-      <div class="neon-text" id="welcomeText" contenteditable="false">Welcome to my world!</div>
-      <div style="margin-top:6px; color:#8a6a7e;" id="welcomeSub" contenteditable="false">✧ 啵啵星球 · 永遠歡迎妳 ✧</div>
-    </div>
-  </div>
-
-  <div class="line-girl-decoration">
-    <svg class="line-girl-svg" viewBox="0 0 100 120">
-      <circle cx="50" cy="35" r="16" fill="none" stroke="#d4a0b0" stroke-width="2"/>
-      <circle cx="43" cy="32" r="2" fill="#d4a0b0"/>
-      <circle cx="57" cy="32" r="2" fill="#d4a0b0"/>
-      <path d="M45 43 Q50 49,55 43" fill="none" stroke="#d4a0b0" stroke-width="1.8"/>
-      <path d="M50 51 L50 75" stroke="#d4a0b0" stroke-width="1.8"/>
-      <path d="M35 55 L50 62 L65 55" fill="none" stroke="#d4a0b0" stroke-width="1.8"/>
-      <path d="M50 75 L42 95" stroke="#d4a0b0" stroke-width="1.8"/>
-      <path d="M50 75 L58 95" stroke="#d4a0b0" stroke-width="1.8"/>
-    </svg>
-    <svg class="line-girl-svg" viewBox="0 0 100 120">
-      <circle cx="50" cy="30" r="18" fill="none" stroke="#c4a0b0" stroke-width="2"/>
-      <path d="M40 28 Q45 25,50 28 Q55 25,60 28" fill="none" stroke="#c4a0b0" stroke-width="1.8"/>
-      <circle cx="42" cy="28" r="1.8" fill="#c4a0b0"/>
-      <circle cx="58" cy="28" r="1.8" fill="#c4a0b0"/>
-      <path d="M50 48 L50 78" stroke="#c4a0b0" stroke-width="1.8"/>
-      <path d="M50 58 L32 48" stroke="#c4a0b0" stroke-width="1.8"/>
-      <path d="M50 58 L68 48" stroke="#c4a0b0" stroke-width="1.8"/>
-      <path d="M50 78 L40 100" stroke="#c4a0b0" stroke-width="1.8"/>
-      <path d="M50 78 L60 100" stroke="#c4a0b0" stroke-width="1.8"/>
-    </svg>
-  </div>
-
-  <div class="hand-drawn-divider">
-    <span class="divider-heart" id="heartLeft" contenteditable="false">❤️</span>
-    <span class="divider-line"></span>
-    <span class="divider-heart" id="heartRight" contenteditable="false">💕</span>
-  </div>
-
-  <div class="content-grid" id="contentGrid"></div>
-
-  <div class="line-girl-decoration">
-    <svg class="line-girl-svg" viewBox="0 0 100 120">
-      <circle cx="50" cy="32" r="17" fill="none" stroke="#b4a0c0" stroke-width="2"/>
-      <circle cx="44" cy="29" r="2" fill="#b4a0c0"/>
-      <circle cx="56" cy="29" r="2" fill="#b4a0c0"/>
-      <path d="M46 40 Q50 45,54 40" fill="none" stroke="#b4a0c0" stroke-width="1.5"/>
-      <path d="M50 49 L50 70" stroke="#b4a0c0" stroke-width="1.8"/>
-      <path d="M50 58 L38 50" stroke="#b4a0c0" stroke-width="1.8"/>
-      <path d="M50 58 L62 50" stroke="#b4a0c0" stroke-width="1.8"/>
-      <path d="M50 70 L43 92" stroke="#b4a0c0" stroke-width="1.8"/>
-      <path d="M50 70 L57 92" stroke="#b4a0c0" stroke-width="1.8"/>
-    </svg>
-  </div>
-
-  <div class="footer-note">
-    <span id="footerLine1" contenteditable="false">🎀 歡迎來到我的小宇宙 🎀</span><br>
-    <span style="font-size:0.85rem;" id="footerLine2" contenteditable="false">✧ 留言 · 貼圖 · 愛妳 ✧</span>
-  </div>
-</div>
-
-<script>
-  // ========== 配置 - 请替换成你自己的 ==========
-  const JSONBIN_API_KEY = $2a$10$plHl7lwVtxDRSvcuiLOim.FYzmX7LCoGjktOqbAXH6uLY9fnM/7aq;           // 👈 替换这里！
-  const SITE_BIN_ID = 69d65cc7aaba882197d805f3;           // 👈 替换这里！（主人数据）
-  const COMMENTS_BIN_ID = 69d6650536566621a88f4399;   // 👈 替换这里！（公开评论）
-  
-  const SITE_URL = `https://api.jsonbin.io/v3/b/${SITE_BIN_ID}`;
-  const COMMENTS_URL = `https://api.jsonbin.io/v3/b/${COMMENTS_BIN_ID}`;
-  
-  const OWNER_PASSWORD = '123456';
-  const OWNER_NAME = '主人';
-  
-  let isOwner = false;
-  let guestName = localStorage.getItem('guestName') || '';
-  
-  const avatarEmojis = ['👧', '👩', '🧑', '👸', '🐰', '🐱', '🦊', '🐼', '🌸', '⭐', '🌈', '💗', '🎀', '🦋', '✨', '☀️'];
-  
-  const defaultCards = [
-    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffe0f0'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23fff0f5'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23d491b0' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23b07090' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E", text: "🌸 今天也是粉紅泡泡的一天！" },
-    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d4e8ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffe6b3'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffe6b3'/%3E%3Ctext x='30' y='90' font-size='14' fill='%237090b0' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E", text: "✨ 閃閃惹人愛 ✨" },
-    { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23e8d4ff'/%3E%3Cpath d='M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z' fill='%23fff0f5'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23a070b0' font-family='Comic Sans MS'%3E✧ 夢幻 ✧%3C/text%3E%3C/svg%3E", text: "🦋 在夢境裡飛行 🦋" }
-  ];
-
-  let cardsData = JSON.parse(JSON.stringify(defaultCards));
-  let commentsData = [[], [], []];
-
-  // ========== 云端操作 ==========
-  async function loadAllFromCloud() {
-    showLoading(true);
-    try {
-      // 并行加载站点数据和评论
-      const [siteRes, commentsRes] = await Promise.all([
-        fetch(`${SITE_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } }),
-        fetch(`${COMMENTS_URL}/latest`, { headers: { 'X-Master-Key': JSONBIN_API_KEY } })
-      ]);
-      
-      if (siteRes.ok) {
-        const siteData = await siteRes.json();
-        applySiteData(siteData.record);
-        if (siteData.record.cards) cardsData = siteData.record.cards;
-      }
-      
-      if (commentsRes.ok) {
-        const commentsResp = await commentsRes.json();
-        commentsData = commentsResp.record;
-        if (!Array.isArray(commentsData)) commentsData = [[], [], []];
-        while (commentsData.length < cardsData.length) commentsData.push([]);
-      }
-      
-      document.getElementById('syncStatus').innerHTML = '☁️ 已同步最新內容';
-      renderCards();
-      showSaveTip('✨ 已從雲端載入最新內容！');
-    } catch (e) {
-      console.error('加載失敗', e);
-      document.getElementById('syncStatus').innerHTML = '⚠️ 離線模式';
-    }
-    showLoading(false);
-  }
-
-  async function saveSiteToCloud() {
-    if (!isOwner) {
-      alert('只有主人可以儲存網站內容到雲端喔！👑');
-      return;
-    }
-    
-    showLoading(true);
-    
-    const siteData = collectSiteData();
-    siteData.cards = cardsData;
-    
-    try {
-      const response = await fetch(SITE_URL, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': JSONBIN_API_KEY
-        },
-        body: JSON.stringify(siteData)
-      });
-      
-      if (response.ok) {
-        document.getElementById('syncStatus').innerHTML = '☁️ 網站已同步';
-        showSaveTip('✨ 網站內容已同步到雲端！');
-      }
-    } catch (e) {
-      alert('同步失敗，請檢查網絡');
-    }
-    showLoading(false);
-  }
-
-  async function saveCommentsToCloud() {
-    try {
-      const response = await fetch(COMMENTS_URL, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': JSONBIN_API_KEY
-        },
-        body: JSON.stringify(commentsData)
-      });
-      
-      if (response.ok) {
-        document.getElementById('syncStatus').innerHTML = '☁️ 評論已同步';
-      }
-    } catch (e) {
-      console.error('評論同步失敗', e);
-    }
-  }
-
-  function applySiteData(data) {
-    if (data.avatar) {
-      const avatarEl = document.getElementById('profileAvatar');
-      if (data.avatarType === 'emoji') {
-        if (avatarEl.tagName === 'IMG') {
-          const parent = avatarEl.parentNode;
-          const newDiv = document.createElement('div');
-          newDiv.id = 'profileAvatar';
-          newDiv.className = 'avatar-img avatar-emoji';
-          newDiv.innerText = data.avatar;
-          parent.replaceChild(newDiv, avatarEl);
-        } else {
-          avatarEl.innerText = data.avatar;
+    <script>
+        // 区块折叠功能
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const btn = header.querySelector('.toggle-btn');
+            
+            content.classList.toggle('collapsed');
+            btn.classList.toggle('collapsed');
+            btn.textContent = content.classList.contains('collapsed') ? '+' : '−';
         }
-      } else {
-        if (avatarEl.tagName !== 'IMG') {
-          const parent = avatarEl.parentNode;
-          const img = document.createElement('img');
-          img.id = 'profileAvatar';
-          img.className = 'avatar-img';
-          img.src = data.avatar;
-          parent.replaceChild(img, avatarEl);
-        } else {
-          avatarEl.src = data.avatar;
+
+        // 复制到剪贴板
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('邮箱已复制到剪贴板');
+            });
         }
-      }
-    }
-    if (data.welcomeText) document.getElementById('welcomeText').innerText = data.welcomeText;
-    if (data.welcomeSub) document.getElementById('welcomeSub').innerText = data.welcomeSub;
-    if (data.heartLeft) document.getElementById('heartLeft').innerText = data.heartLeft;
-    if (data.heartRight) document.getElementById('heartRight').innerText = data.heartRight;
-    if (data.footerLine1) document.getElementById('footerLine1').innerText = data.footerLine1;
-    if (data.footerLine2) document.getElementById('footerLine2').innerText = data.footerLine2;
-  }
 
-  function collectSiteData() {
-    const avatarEl = document.getElementById('profileAvatar');
-    return {
-      avatar: avatarEl.tagName === 'IMG' ? avatarEl.src : avatarEl.innerText,
-      avatarType: avatarEl.tagName === 'IMG' ? 'image' : 'emoji',
-      welcomeText: document.getElementById('welcomeText').innerText,
-      welcomeSub: document.getElementById('welcomeSub').innerText,
-      heartLeft: document.getElementById('heartLeft').innerText,
-      heartRight: document.getElementById('heartRight').innerText,
-      footerLine1: document.getElementById('footerLine1').innerText,
-      footerLine2: document.getElementById('footerLine2').innerText
-    };
-  }
+        // Toast提示
+        function showToast(message) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
 
-  function showLoading(show) {
-    document.getElementById('loadingOverlay').classList.toggle('hide', !show);
-  }
-
-  // ========== 初始化 ==========
-  async function init() {
-    initAvatarLibrary();
-    await loadAllFromCloud();
-    updateOwnerUI();
-    
-    // 每15秒自动刷新评论
-    setInterval(async () => {
-      try {
-        const res = await fetch(`${COMMENTS_URL}/latest`, { 
-          headers: { 'X-Master-Key': JSONBIN_API_KEY } 
-        });
-        if (res.ok) {
-          const data = await res.json();
-          commentsData = data.record;
-          renderCards();
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--primary-dark);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 25px;
+                font-size: 0.9rem;
+                box-shadow: 0 4px 20px rgba(45, 212, 191, 0.3);
+                z-index: 1000;
+                animation: slideUp 0.3s ease;
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideDown 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
         }
-      } catch (e) {}
-    }, 15000);
-    
-    if (!isOwner && !localStorage.getItem('guestNoticeShown')) {
-      setTimeout(() => {
-        document.getElementById('guestNotice').classList.add('show');
-        localStorage.setItem('guestNoticeShown', 'true');
-      }, 500);
-    }
-    
-    if (guestName) {
-      setTimeout(() => {
-        document.querySelectorAll('.comment-name-input').forEach(input => {
-          if (!input.value) input.value = guestName;
-        });
-      }, 100);
-    }
-  }
 
-  function closeGuestNotice() {
-    document.getElementById('guestNotice').classList.remove('show');
-  }
-
-  function initAvatarLibrary() {
-    const grid = document.getElementById('avatarGrid');
-    grid.innerHTML = '';
-    avatarEmojis.forEach(emoji => {
-      const div = document.createElement('div');
-      div.className = 'avatar-option';
-      div.innerText = emoji;
-      div.onclick = () => selectAvatar(emoji);
-      grid.appendChild(div);
-    });
-  }
-
-  function switchAvatarTab(tab) {
-    document.querySelectorAll('.avatar-tab').forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
-    document.getElementById('emojiTab').style.display = tab === 'emoji' ? 'block' : 'none';
-    document.getElementById('uploadTab').style.display = tab === 'upload' ? 'block' : 'none';
-  }
-
-  function selectAvatar(avatar) {
-    const avatarEl = document.getElementById('profileAvatar');
-    if (avatarEl.tagName === 'IMG') {
-      const parent = avatarEl.parentNode;
-      const newDiv = document.createElement('div');
-      newDiv.id = 'profileAvatar';
-      newDiv.className = 'avatar-img avatar-emoji';
-      newDiv.innerText = avatar;
-      parent.replaceChild(newDiv, avatarEl);
-    } else {
-      avatarEl.innerText = avatar;
-    }
-    closeAvatarLibrary();
-  }
-
-  function uploadCustomAvatar(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const avatarEl = document.getElementById('profileAvatar');
-        const parent = avatarEl.parentNode;
-        const img = document.createElement('img');
-        img.id = 'profileAvatar';
-        img.className = 'avatar-img';
-        img.src = e.target.result;
-        img.style.objectFit = 'cover';
-        parent.replaceChild(img, avatarEl);
-        closeAvatarLibrary();
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  function openAvatarLibrary() {
-    if (!isOwner) {
-      alert('只有主人可以更換頭像喔！👑');
-      return;
-    }
-    document.getElementById('avatarLibrary').classList.add('show');
-    document.getElementById('overlay').classList.add('show');
-  }
-
-  function closeAvatarLibrary() {
-    document.getElementById('avatarLibrary').classList.remove('show');
-    document.getElementById('overlay').classList.remove('show');
-  }
-
-  function handleAvatarClick() {
-    openAvatarLibrary();
-  }
-
-  function login() {
-    const password = document.getElementById('passwordInput').value;
-    if (password === OWNER_PASSWORD) {
-      isOwner = true;
-      updateOwnerUI();
-      document.getElementById('passwordInput').value = '';
-      showSaveTip('歡迎回來，主人！👑');
-    } else {
-      alert('密碼錯誤喔～');
-    }
-  }
-
-  function logout() {
-    isOwner = false;
-    updateOwnerUI();
-    showSaveTip('已退出主人模式');
-  }
-
-  function updateOwnerUI() {
-    const loginArea = document.getElementById('loginArea');
-    const logoutArea = document.getElementById('logoutArea');
-    const controlPanel = document.getElementById('controlPanel');
-    const crownIcon = document.getElementById('crownIcon');
-    const statusText = document.getElementById('loginStatusText');
-    const editableElements = document.querySelectorAll('[contenteditable]');
-    const textareas = document.querySelectorAll('.editable-text');
-    const avatarHint = document.getElementById('avatarHint');
-
-    if (isOwner) {
-      loginArea.style.display = 'none';
-      logoutArea.style.display = 'block';
-      controlPanel.classList.add('show');
-      crownIcon.innerText = '👑';
-      statusText.innerText = '主人模式 · 可以編輯';
-      avatarHint.innerText = '👆 點擊更換頭像';
-      
-      editableElements.forEach(el => el.contentEditable = 'true');
-      textareas.forEach(el => el.readOnly = false);
-    } else {
-      loginArea.style.display = 'flex';
-      logoutArea.style.display = 'none';
-      controlPanel.classList.remove('show');
-      crownIcon.innerText = '🧸';
-      statusText.innerText = '訪客模式 · 歡迎來玩';
-      avatarHint.innerText = '🔒 只有主人可更換';
-      
-      editableElements.forEach(el => el.contentEditable = 'false');
-      textareas.forEach(el => el.readOnly = true);
-    }
-    
-    renderCards();
-  }
-
-  function renderCards() {
-    const grid = document.getElementById('contentGrid');
-    grid.innerHTML = '';
-    
-    // 确保评论数组长度足够
-    while (commentsData.length < cardsData.length) {
-      commentsData.push([]);
-    }
-    
-    cardsData.forEach((card, index) => {
-      const cardDiv = document.createElement('div');
-      cardDiv.className = 'pic-card';
-      
-      const picFrame = document.createElement('div');
-      picFrame.className = 'pic-frame';
-      if (isOwner) {
-        picFrame.style.cursor = 'pointer';
-        picFrame.onclick = () => uploadPic(index);
-      }
-      
-      const img = document.createElement('img');
-      img.className = 'vintage-pic';
-      img.src = card.pic;
-      
-      const picHint = document.createElement('div');
-      picHint.style.cssText = 'text-align:center; font-size:0.7rem; color:#b090a0; margin-top:3px;';
-      picHint.innerText = isOwner ? '👆 點擊更換' : '📸';
-      
-      picFrame.appendChild(img);
-      picFrame.appendChild(picHint);
-      
-      const editableBox = document.createElement('div');
-      editableBox.className = 'editable-box';
-      
-      const textarea = document.createElement('textarea');
-      textarea.className = 'editable-text';
-      textarea.value = card.text;
-      textarea.readOnly = !isOwner;
-      textarea.onchange = () => { 
-        card.text = textarea.value; 
-      };
-      
-      editableBox.appendChild(textarea);
-      
-      const commentSection = document.createElement('div');
-      commentSection.className = 'comment-section';
-      
-      const commentList = document.createElement('div');
-      commentList.className = 'comment-list';
-      
-      (commentsData[index] || []).forEach((comment) => {
-        const commentItem = document.createElement('div');
-        commentItem.className = 'comment-item';
-        const isOwnerComment = comment.name === OWNER_NAME || comment.name.includes('👑');
-        const replyTo = comment.replyTo ? ` @${comment.replyTo}` : '';
-        
-        commentItem.innerHTML = `
-          <span class="comment-name">
-            ${escapeHtml(comment.name)}
-            ${isOwnerComment ? '<span class="owner-crown">👑</span>' : ''}
-            ：
-          </span>
-          <span>${escapeHtml(comment.text)}${replyTo}</span>
-          <button class="reply-btn" onclick="replyToComment(${index}, '${escapeHtml(comment.name).replace(/'/g, "\\'")}')">💬 回覆</button>
+        // 添加动画样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideUp {
+                from { opacity: 0; transform: translate(-50%, 20px); }
+                to { opacity: 1; transform: translate(-50%, 0); }
+            }
+            @keyframes slideDown {
+                from { opacity: 1; transform: translate(-50%, 0); }
+                to { opacity: 0; transform: translate(-50%, 20px); }
+            }
         `;
-        commentList.appendChild(commentItem);
-      });
-      
-      const commentInputArea = document.createElement('div');
-      commentInputArea.className = 'comment-input-area';
-      
-      const nameInput = document.createElement('input');
-      nameInput.type = 'text';
-      nameInput.className = 'comment-name-input';
-      nameInput.placeholder = '名字';
-      nameInput.value = isOwner ? OWNER_NAME + '👑' : guestName;
-      nameInput.maxLength = 10;
-      nameInput.id = `commentName${index}`;
-      nameInput.onchange = function() {
-        if (!isOwner) {
-          guestName = this.value;
-          localStorage.setItem('guestName', guestName);
-        }
-      };
-      
-      const textInput = document.createElement('input');
-      textInput.type = 'text';
-      textInput.className = 'comment-text-input';
-      textInput.placeholder = '留言...';
-      textInput.maxLength = 50;
-      textInput.id = `commentText${index}`;
-      
-      const commentBtn = document.createElement('button');
-      commentBtn.className = 'comment-btn';
-      commentBtn.innerText = '發送';
-      commentBtn.onclick = () => addComment(index);
-      
-      commentInputArea.appendChild(nameInput);
-      commentInputArea.appendChild(textInput);
-      commentInputArea.appendChild(commentBtn);
-      
-      commentSection.appendChild(commentList);
-      commentSection.appendChild(commentInputArea);
-      
-      cardDiv.appendChild(picFrame);
-      cardDiv.appendChild(editableBox);
-      cardDiv.appendChild(commentSection);
-      
-      grid.appendChild(cardDiv);
-    });
-  }
+        document.head.appendChild(style);
 
-  function escapeHtml(text) {
-    if (!text) return '';
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            const sections = document.querySelectorAll('section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    section.style.transition = 'all 0.6s ease';
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
 
-  function uploadPic(index) {
-    if (!isOwner) return;
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          cardsData[index].pic = event.target.result;
-          renderCards();
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    input.click();
-  }
-
-  let replyTarget = null;
-
-  function replyToComment(index, targetName) {
-    const textInput = document.getElementById(`commentText${index}`);
-    if (textInput) {
-      textInput.placeholder = `回覆 ${targetName}...`;
-      textInput.focus();
-      replyTarget = targetName;
-    }
-  }
-
-  async function addComment(index) {
-    const nameInput = document.getElementById(`commentName${index}`);
-    const textInput = document.getElementById(`commentText${index}`);
-    let name = nameInput.value.trim();
-    let text = textInput.value.trim();
-    
-    if (!name) {
-      name = isOwner ? OWNER_NAME : '訪客';
-    }
-    if (!text) {
-      alert('請輸入留言內容～');
-      return;
-    }
-    
-    if (isOwner && !name.includes('👑')) {
-      name = name + '👑';
-    }
-    
-    const comment = { name, text, time: Date.now() };
-    if (replyTarget) {
-      comment.replyTo = replyTarget;
-      comment.text = text + ` @${replyTarget}`;
-      replyTarget = null;
-    }
-    
-    if (!commentsData[index]) commentsData[index] = [];
-    commentsData[index].push(comment);
-    
-    if (commentsData[index].length > 50) {
-      commentsData[index].shift();
-    }
-    
-    textInput.value = '';
-    textInput.placeholder = '留言...';
-    
-    renderCards();
-    
-    // 立即同步评论到云端（所有人都有权限）
-    await saveCommentsToCloud();
-    showSaveTip('💬 評論已發送！');
-  }
-
-  function resetToDefault() {
-    if (!isOwner) return;
-    if (confirm('確定要恢復默認設置嗎？')) {
-      cardsData = JSON.parse(JSON.stringify(defaultCards));
-      renderCards();
-      saveSiteToCloud();
-    }
-  }
-
-  function exportConfig() {
-    if (!isOwner) return;
-    const siteData = collectSiteData();
-    siteData.cards = cardsData;
-    const data = { siteData, comments: commentsData };
-    const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'my_site_backup.json';
-    a.click();
-  }
-
-  function importConfig() {
-    if (!isOwner) return;
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = async (event) => {
-          const data = JSON.parse(event.target.result);
-          if (data.siteData) {
-            applySiteData(data.siteData);
-            if (data.siteData.cards) cardsData = data.siteData.cards;
-          }
-          if (data.comments) commentsData = data.comments;
-          renderCards();
-          await saveSiteToCloud();
-          await saveCommentsToCloud();
-          showSaveTip('備份已導入並同步！');
-        };
-        reader.readAsText(file);
-      }
-    };
-    input.click();
-  }
-
-  function showSaveTip(msg) {
-    const indicator = document.getElementById('saveIndicator');
-    indicator.innerText = msg;
-    setTimeout(() => indicator.innerText = '', 3000);
-  }
-
-  window.onload = init;
-</script>
-
+        // 鼠标跟随效果（几何背景）
+        document.addEventListener('mousemove', (e) => {
+            const dots = document.querySelectorAll('.dot-pattern');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            dots.forEach((dot, index) => {
+                const speed = (index + 1) * 10;
+                const xOffset = (x - 0.5) * speed;
+                const yOffset = (y - 0.5) * speed;
+                dot.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+            });
+        });
+    </script>
 </body>
 </html>
