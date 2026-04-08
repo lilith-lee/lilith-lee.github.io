@@ -14,10 +14,8 @@
         radial-gradient(circle at 85% 15%, #ffe066 3px, transparent 3px),
         radial-gradient(circle at 75% 85%, #b3e0ff 2.5px, transparent 2.5px),
         radial-gradient(circle at 25% 75%, #d9b3ff 3px, transparent 3px),
-        radial-gradient(circle at 50% 50%, #ffccdd 2px, transparent 2px),
-        radial-gradient(circle at 10% 50%, #c2e0ff 2px, transparent 2px),
-        radial-gradient(circle at 90% 60%, #ffe6b3 2.5px, transparent 2.5px);
-      background-size: 180px 180px, 200px 200px, 220px 220px, 160px 160px, 250px 250px, 190px 190px, 210px 210px;
+        radial-gradient(circle at 50% 50%, #ffccdd 2px, transparent 2px);
+      background-size: 180px 180px, 200px 200px, 220px 220px, 160px 160px, 250px 250px;
       min-height: 100vh;
       padding: 24px 16px;
       font-family: 'Comic Sans MS', 'Chalkboard SE', '幼圆', 'Segoe UI', cursive, sans-serif;
@@ -25,7 +23,6 @@
       position: relative;
     }
 
-    /* 装饰元素层 */
     body::before {
       content: "🧸🎀🍀☘️⭐✨💗🦋";
       position: fixed;
@@ -61,7 +58,33 @@
       z-index: 10;
     }
 
-    /* 登录状态栏 - 更轻盈 */
+    /* 同步提示横幅 */
+    .sync-banner {
+      background: #ffe0b3;
+      border: 2px solid #ffb347;
+      border-radius: 20px;
+      padding: 10px 18px;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 15px;
+      color: #6b4a3a;
+    }
+
+    .sync-banner.show {
+      display: flex;
+    }
+
+    .sync-banner button {
+      background: #ffb347;
+      border: none;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
     .login-bar {
       background: rgba(255, 220, 240, 0.6);
       border: 2px solid #ffb6c1;
@@ -115,7 +138,6 @@
       color: #5a3a6e;
     }
 
-    /* 控制面板 */
     .control-panel {
       background: rgba(255, 235, 215, 0.7);
       border: 2px solid #ffd4a0;
@@ -145,7 +167,12 @@
       box-shadow: 0 3px 0 #d4a070;
     }
 
-    /* 头像库弹窗 */
+    .control-btn.highlight {
+      background: #ffb347;
+      color: white;
+      border-color: #ffe0b3;
+    }
+
     .avatar-library {
       position: fixed;
       top: 50%;
@@ -263,7 +290,6 @@
       display: block;
     }
 
-    /* 访客提示弹窗 */
     .guest-notice {
       position: fixed;
       bottom: 30px;
@@ -295,14 +321,12 @@
       cursor: pointer;
     }
 
-    /* 可编辑元素 */
     [contenteditable="true"]:hover {
       background: rgba(255, 200, 220, 0.2);
       outline: 2px dashed #ffb6d9;
       border-radius: 8px;
     }
 
-    /* 装饰元素 */
     .bow-deco, .heart-corner, .floating-deco {
       pointer-events: none;
       position: absolute;
@@ -313,7 +337,6 @@
     .floating-deco-1 { right: -5px; bottom: 30%; font-size: 28px; opacity: 0.7; }
     .floating-deco-2 { left: 10px; top: 20%; font-size: 24px; opacity: 0.6; }
 
-    /* 手绘线条女孩 */
     .line-girl-decoration {
       display: flex;
       justify-content: space-around;
@@ -472,7 +495,6 @@
       outline: none;
     }
 
-    /* 评论区 - 更美观 */
     .comment-section {
       margin-top: 12px;
       border-top: 2px dotted #ffd4e8;
@@ -511,10 +533,26 @@
       filter: drop-shadow(0 0 3px gold);
     }
 
+    .reply-btn {
+      background: none;
+      border: 1px solid #ffd4e8;
+      border-radius: 10px;
+      padding: 2px 8px;
+      font-size: 0.65rem;
+      color: #9a7a8e;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    .reply-btn:hover {
+      background: #ffe0f0;
+    }
+
     .comment-input-area {
       display: flex;
       gap: 5px;
       flex-wrap: wrap;
+      margin-top: 8px;
     }
 
     .comment-name-input {
@@ -562,7 +600,6 @@
       display: none;
     }
 
-    /* 装饰小熊四叶草等 */
     .deco-bear {
       position: absolute;
       font-size: 20px;
@@ -578,12 +615,10 @@
 </head>
 <body>
 
-<!-- 装饰元素 -->
 <div class="deco-bear" style="top: 50px; left: 20px;">🧸</div>
 <div class="deco-bear" style="bottom: 80px; right: 30px;">🍀</div>
 <div class="deco-bear" style="top: 150px; right: 50px;">☘️</div>
 
-<!-- 头像库弹窗 -->
 <div class="overlay" id="overlay"></div>
 <div class="avatar-library" id="avatarLibrary">
   <h3>🎀 選擇妳的頭像 🎀</h3>
@@ -604,10 +639,16 @@
   <button class="close-library" onclick="closeAvatarLibrary()">關閉</button>
 </div>
 
-<!-- 访客提示 -->
 <div class="guest-notice" id="guestNotice">
   <span>👋 歡迎來訪！在這裡可以留下妳的評論喔～</span>
   <button onclick="closeGuestNotice()">知道了 ✨</button>
+</div>
+
+<!-- 同步提示横幅 -->
+<div class="sync-banner" id="syncBanner">
+  <span>📢 主人已更新內容！點擊按鈕同步最新版本～</span>
+  <button onclick="syncLatestContent()">🔄 立即同步</button>
+  <button onclick="closeSyncBanner()" style="background:#c4a0b0;">✕</button>
 </div>
 
 <div class="dream-container">
@@ -616,7 +657,6 @@
   <div class="floating-deco-1">🦋⭐</div>
   <div class="floating-deco-2">🧸🍀</div>
 
-  <!-- 登录状态栏 -->
   <div class="login-bar">
     <div class="login-status">
       <span class="crown-icon" id="crownIcon">🧸</span>
@@ -631,16 +671,15 @@
     </div>
   </div>
 
-  <!-- 控制面板 -->
   <div class="control-panel" id="controlPanel">
-    <button class="control-btn" onclick="saveAllContent()">💾 保存更改</button>
+    <button class="control-btn" onclick="saveToLocal()">💾 本地保存</button>
+    <button class="control-btn highlight" onclick="generateUpdateCode()">📤 生成更新代碼</button>
     <button class="control-btn" onclick="resetToDefault()">🔄 恢復默認</button>
-    <button class="control-btn" onclick="exportConfig()">📤 導出</button>
-    <button class="control-btn" onclick="importConfig()">📥 導入</button>
+    <button class="control-btn" onclick="exportConfig()">📥 導出配置</button>
+    <button class="control-btn" onclick="importConfig()">📤 導入配置</button>
     <span style="color:#7a6a5e; margin-left:auto;" id="saveIndicator"></span>
   </div>
 
-  <!-- 头像区 -->
   <div class="top-section">
     <div class="avatar-area">
       <div class="avatar-wrapper" onclick="handleAvatarClick()">
@@ -656,7 +695,6 @@
     </div>
   </div>
 
-  <!-- 手绘线条女孩 -->
   <div class="line-girl-decoration">
     <svg class="line-girl-svg" viewBox="0 0 100 120">
       <circle cx="50" cy="35" r="16" fill="none" stroke="#d4a0b0" stroke-width="2"/>
@@ -681,17 +719,14 @@
     </svg>
   </div>
 
-  <!-- 分割线 -->
   <div class="hand-drawn-divider">
     <span class="divider-heart" id="heartLeft" contenteditable="false">❤️</span>
     <span class="divider-line"></span>
     <span class="divider-heart" id="heartRight" contenteditable="false">💕</span>
   </div>
 
-  <!-- 内容区域 -->
   <div class="content-grid" id="contentGrid"></div>
 
-  <!-- 手绘线条女孩 -->
   <div class="line-girl-decoration">
     <svg class="line-girl-svg" viewBox="0 0 100 120">
       <circle cx="50" cy="32" r="17" fill="none" stroke="#b4a0c0" stroke-width="2"/>
@@ -706,7 +741,6 @@
     </svg>
   </div>
 
-  <!-- 签名 -->
   <div class="footer-note">
     <span id="footerLine1" contenteditable="false">🎀 歡迎來到我的小宇宙 🎀</span><br>
     <span style="font-size:0.85rem;" id="footerLine2" contenteditable="false">✧ 留言 · 貼圖 · 愛妳 ✧</span>
@@ -718,13 +752,14 @@
   const OWNER_PASSWORD = '123456';
   const OWNER_NAME = '主人';
   
+  // 版本号 - 每次主人更新时递增
+  let contentVersion = localStorage.getItem('contentVersion') || '1.0.0';
+  
   let isOwner = false;
   let guestName = localStorage.getItem('guestName') || '';
   
-  // 预设头像
   const avatarEmojis = ['👧', '👩', '🧑', '👸', '🐰', '🐱', '🦊', '🐼', '🌸', '⭐', '🌈', '💗', '🎀', '🦋', '✨', '☀️'];
   
-  // 默认卡片
   const defaultCards = [
     { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23ffe0f0'/%3E%3Ccircle cx='50' cy='40' r='20' fill='%23fff0f5'/%3E%3Cpath d='M30 70 L50 55 L70 70' stroke='%23d491b0' stroke-width='3' fill='none'/%3E%3Ctext x='25' y='90' font-size='14' fill='%23b07090' font-family='Comic Sans MS'%3E✧ 小兔 ✧%3C/text%3E%3C/svg%3E", text: "🌸 今天也是粉紅泡泡的一天！" },
     { pic: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23d4e8ff'/%3E%3Cpath d='M20 40 Q50 10,80 40' stroke='%23ffffff' stroke-width='4' fill='%23ffe6f2'/%3E%3Ccircle cx='35' cy='35' r='6' fill='%23ffe6b3'/%3E%3Ccircle cx='65' cy='35' r='6' fill='%23ffe6b3'/%3E%3Ctext x='30' y='90' font-size='14' fill='%237090b0' font-family='Comic Sans MS'%3E✧ 星星 ✧%3C/text%3E%3C/svg%3E", text: "✨ 閃閃惹人愛 ✨" },
@@ -732,6 +767,9 @@
   ];
 
   let cardsData = JSON.parse(JSON.stringify(defaultCards));
+  
+  // 评论数据 - 使用一个简单的云存储方案（基于 GitHub Gist 或 JSONbin）
+  // 这里使用 localStorage 作为临时方案，但会提示主人更新
   let commentsData = JSON.parse(localStorage.getItem('millennium_comments') || '[[],[],[]]');
 
   // ========== 初始化 ==========
@@ -741,7 +779,6 @@
     updateOwnerUI();
     initAvatarLibrary();
     
-    // 显示访客提示（只显示一次）
     if (!isOwner && !localStorage.getItem('guestNoticeShown')) {
       setTimeout(() => {
         document.getElementById('guestNotice').classList.add('show');
@@ -749,7 +786,6 @@
       }, 500);
     }
     
-    // 如果有保存的访客名字，填入输入框
     if (guestName) {
       setTimeout(() => {
         document.querySelectorAll('.comment-name-input').forEach(input => {
@@ -757,10 +793,17 @@
         });
       }, 100);
     }
+
+    // 检查版本更新
+    checkVersionUpdate();
   }
 
   function closeGuestNotice() {
     document.getElementById('guestNotice').classList.remove('show');
+  }
+
+  function closeSyncBanner() {
+    document.getElementById('syncBanner').classList.remove('show');
   }
 
   function initAvatarLibrary() {
@@ -785,7 +828,6 @@
   function selectAvatar(avatar) {
     const avatarEl = document.getElementById('profileAvatar');
     if (avatarEl.tagName === 'IMG') {
-      // 如果是图片，转换成div
       const parent = avatarEl.parentNode;
       const newDiv = document.createElement('div');
       newDiv.id = 'profileAvatar';
@@ -796,9 +838,7 @@
       avatarEl.innerText = avatar;
     }
     closeAvatarLibrary();
-    if (isOwner) {
-      saveAllContent();
-    }
+    if (isOwner) saveToLocal();
   }
 
   function uploadCustomAvatar(event) {
@@ -815,7 +855,7 @@
         img.style.objectFit = 'cover';
         parent.replaceChild(img, avatarEl);
         closeAvatarLibrary();
-        if (isOwner) saveAllContent();
+        if (isOwner) saveToLocal();
       };
       reader.readAsDataURL(file);
     }
@@ -839,7 +879,6 @@
     openAvatarLibrary();
   }
 
-  // ========== 登录 ==========
   function login() {
     const password = document.getElementById('passwordInput').value;
     if (password === OWNER_PASSWORD) {
@@ -893,7 +932,6 @@
     renderCards();
   }
 
-  // ========== 渲染卡片 ==========
   function renderCards() {
     const grid = document.getElementById('contentGrid');
     grid.innerHTML = '';
@@ -902,7 +940,6 @@
       const cardDiv = document.createElement('div');
       cardDiv.className = 'pic-card';
       
-      // 图片
       const picFrame = document.createElement('div');
       picFrame.className = 'pic-frame';
       if (isOwner) {
@@ -921,7 +958,6 @@
       picFrame.appendChild(img);
       picFrame.appendChild(picHint);
       
-      // 文字
       const editableBox = document.createElement('div');
       editableBox.className = 'editable-box';
       
@@ -931,30 +967,31 @@
       textarea.readOnly = !isOwner;
       textarea.oninput = () => { 
         card.text = textarea.value; 
-        if(isOwner) autoSave(); 
+        if(isOwner) saveToLocal(); 
       };
       
       editableBox.appendChild(textarea);
       
-      // 评论区
       const commentSection = document.createElement('div');
       commentSection.className = 'comment-section';
       
       const commentList = document.createElement('div');
       commentList.className = 'comment-list';
       
-      // 渲染评论
-      (commentsData[index] || []).forEach(comment => {
+      (commentsData[index] || []).forEach((comment, cIndex) => {
         const commentItem = document.createElement('div');
         commentItem.className = 'comment-item';
         const isOwnerComment = comment.name === OWNER_NAME || comment.name.includes('👑');
+        const replyTo = comment.replyTo ? ` @${comment.replyTo}` : '';
+        
         commentItem.innerHTML = `
           <span class="comment-name">
             ${escapeHtml(comment.name)}
             ${isOwnerComment ? '<span class="owner-crown">👑</span>' : ''}
             ：
           </span>
-          <span>${escapeHtml(comment.text)}</span>
+          <span>${escapeHtml(comment.text)}${replyTo}</span>
+          <button class="reply-btn" onclick="replyToComment(${index}, '${escapeHtml(comment.name).replace(/'/g, "\\'")}')">💬 回覆</button>
         `;
         commentList.appendChild(commentItem);
       });
@@ -968,13 +1005,13 @@
       nameInput.placeholder = '名字';
       nameInput.value = isOwner ? OWNER_NAME + '👑' : guestName;
       nameInput.maxLength = 10;
+      nameInput.id = `commentName${index}`;
       nameInput.onchange = function() {
         if (!isOwner) {
           guestName = this.value;
           localStorage.setItem('guestName', guestName);
-          // 同步其他名字输入框
           document.querySelectorAll('.comment-name-input').forEach(inp => {
-            if (inp !== this && !isOwner) inp.value = guestName;
+            if (inp.id !== `commentName${index}` && !isOwner) inp.value = guestName;
           });
         }
       };
@@ -984,11 +1021,12 @@
       textInput.className = 'comment-text-input';
       textInput.placeholder = '留言...';
       textInput.maxLength = 50;
+      textInput.id = `commentText${index}`;
       
       const commentBtn = document.createElement('button');
       commentBtn.className = 'comment-btn';
       commentBtn.innerText = '發送';
-      commentBtn.onclick = () => addComment(index, nameInput, textInput);
+      commentBtn.onclick = () => addComment(index);
       
       commentInputArea.appendChild(nameInput);
       commentInputArea.appendChild(textInput);
@@ -1006,6 +1044,7 @@
   }
 
   function escapeHtml(text) {
+    if (!text) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
@@ -1023,7 +1062,7 @@
         reader.onload = (event) => {
           cardsData[index].pic = event.target.result;
           renderCards();
-          saveAllContent();
+          saveToLocal();
         };
         reader.readAsDataURL(file);
       }
@@ -1031,10 +1070,33 @@
     input.click();
   }
 
-  // ========== 评论 ==========
-  function addComment(index, nameInput, textInput) {
+  let replyTarget = null;
+
+  function replyToComment(index, targetName) {
+    const textInput = document.getElementById(`commentText${index}`);
+    if (textInput) {
+      textInput.placeholder = `回覆 ${targetName}...`;
+      textInput.focus();
+      replyTarget = targetName;
+      
+      // 修改发送按钮行为
+      const cardDiv = textInput.closest('.pic-card');
+      const commentBtn = cardDiv.querySelector('.comment-btn');
+      const originalClick = commentBtn.onclick;
+      commentBtn.onclick = () => {
+        addComment(index, targetName);
+        commentBtn.onclick = originalClick;
+        textInput.placeholder = '留言...';
+        replyTarget = null;
+      };
+    }
+  }
+
+  function addComment(index, replyTo = null) {
+    const nameInput = document.getElementById(`commentName${index}`);
+    const textInput = document.getElementById(`commentText${index}`);
     let name = nameInput.value.trim();
-    const text = textInput.value.trim();
+    let text = textInput.value.trim();
     
     if (!name) {
       name = isOwner ? OWNER_NAME : '訪客';
@@ -1044,44 +1106,63 @@
       return;
     }
     
-    // 主人评论自动加皇冠
     if (isOwner && !name.includes('👑')) {
       name = name + '👑';
     }
     
-    if (!commentsData[index]) commentsData[index] = [];
-    commentsData[index].push({ name, text, time: Date.now() });
+    const comment = { name, text, time: Date.now() };
+    if (replyTo || replyTarget) {
+      comment.replyTo = replyTo || replyTarget;
+      text = text + (comment.replyTo ? ` @${comment.replyTo}` : '');
+      comment.text = text;
+    }
     
-    if (commentsData[index].length > 30) {
+    if (!commentsData[index]) commentsData[index] = [];
+    commentsData[index].push(comment);
+    
+    if (commentsData[index].length > 50) {
       commentsData[index].shift();
     }
     
     textInput.value = '';
+    textInput.placeholder = '留言...';
+    replyTarget = null;
     
-    // 保存评论到本地
     localStorage.setItem('millennium_comments', JSON.stringify(commentsData));
     
     renderCards();
+    showSaveTip('評論已發送！');
   }
 
-  // ========== 保存/加载 ==========
   function loadOwnerData() {
     const saved = localStorage.getItem('millennium_owner_data');
     if (saved) {
       const data = JSON.parse(saved);
       
-      // 恢复头像
       const avatarEl = document.getElementById('profileAvatar');
       if (data.avatar) {
         if (data.avatarType === 'emoji') {
-          avatarEl.innerText = data.avatar;
+          if (avatarEl.tagName === 'IMG') {
+            const parent = avatarEl.parentNode;
+            const newDiv = document.createElement('div');
+            newDiv.id = 'profileAvatar';
+            newDiv.className = 'avatar-img avatar-emoji';
+            newDiv.innerText = data.avatar;
+            parent.replaceChild(newDiv, avatarEl);
+          } else {
+            avatarEl.innerText = data.avatar;
+          }
         } else {
-          const parent = avatarEl.parentNode;
-          const img = document.createElement('img');
-          img.id = 'profileAvatar';
-          img.className = 'avatar-img';
-          img.src = data.avatar;
-          parent.replaceChild(img, avatarEl);
+          if (avatarEl.tagName !== 'IMG') {
+            const parent = avatarEl.parentNode;
+            const img = document.createElement('img');
+            img.id = 'profileAvatar';
+            img.className = 'avatar-img';
+            img.src = data.avatar;
+            parent.replaceChild(img, avatarEl);
+          } else {
+            avatarEl.src = data.avatar;
+          }
         }
       }
       
@@ -1092,10 +1173,11 @@
       if (data.footerLine1) document.getElementById('footerLine1').innerText = data.footerLine1;
       if (data.footerLine2) document.getElementById('footerLine2').innerText = data.footerLine2;
       if (data.cards) cardsData = data.cards;
+      if (data.version) contentVersion = data.version;
     }
   }
 
-  function saveAllContent() {
+  function saveToLocal() {
     if (!isOwner) return;
     
     const avatarEl = document.getElementById('profileAvatar');
@@ -1108,15 +1190,72 @@
       heartRight: document.getElementById('heartRight').innerText,
       footerLine1: document.getElementById('footerLine1').innerText,
       footerLine2: document.getElementById('footerLine2').innerText,
-      cards: cardsData
+      cards: cardsData,
+      version: incrementVersion()
     };
     
     localStorage.setItem('millennium_owner_data', JSON.stringify(data));
-    showSaveTip('✨ 內容已保存！');
+    showSaveTip('✨ 內容已本地保存！請生成更新代碼同步給訪客');
   }
 
-  function autoSave() {
-    if (isOwner) saveAllContent();
+  function incrementVersion() {
+    const parts = contentVersion.split('.');
+    parts[2] = (parseInt(parts[2]) || 0) + 1;
+    contentVersion = parts.join('.');
+    localStorage.setItem('contentVersion', contentVersion);
+    return contentVersion;
+  }
+
+  function generateUpdateCode() {
+    if (!isOwner) return;
+    
+    const data = localStorage.getItem('millennium_owner_data');
+    if (!data) {
+      alert('請先保存內容！');
+      return;
+    }
+    
+    // 生成一个更新代码
+    const updateCode = btoa(encodeURIComponent(data));
+    
+    // 复制到剪贴板
+    navigator.clipboard?.writeText(updateCode).then(() => {
+      alert('📋 更新代碼已複製！請將這段代碼發送給訪客，或手動更新到網站文件中。\n\n提示：由於GitHub Pages是靜態網站，訪客需要點擊「同步最新內容」並輸入此代碼才能看到更新。');
+    }).catch(() => {
+      prompt('📋 請手動複製以下更新代碼：', updateCode);
+    });
+    
+    // 显示同步横幅（模拟）
+    document.getElementById('syncBanner').classList.add('show');
+  }
+
+  function syncLatestContent() {
+    const code = prompt('請輸入主人提供的更新代碼：');
+    if (code) {
+      try {
+        const data = JSON.parse(decodeURIComponent(atob(code)));
+        localStorage.setItem('millennium_owner_data', JSON.stringify(data));
+        contentVersion = data.version || '1.0.0';
+        localStorage.setItem('contentVersion', contentVersion);
+        loadOwnerData();
+        renderCards();
+        closeSyncBanner();
+        showSaveTip('✨ 已同步到最新內容！');
+      } catch (e) {
+        alert('更新代碼無效，請確認後重試～');
+      }
+    }
+  }
+
+  function checkVersionUpdate() {
+    // 检查是否有新版本（实际应用中可以从服务器获取）
+    // 这里简化处理：显示提示让访客手动同步
+    if (!isOwner && !localStorage.getItem('syncReminderShown')) {
+      setTimeout(() => {
+        document.getElementById('syncBanner').classList.add('show');
+        localStorage.setItem('syncReminderShown', 'true');
+      }, 2000);
+    }
   }
 
   function resetToDefault() {
@@ -1136,7 +1275,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'my_site.json';
+      a.download = 'my_site_config.json';
       a.click();
     }
   }
@@ -1165,17 +1304,16 @@
   function showSaveTip(msg) {
     const indicator = document.getElementById('saveIndicator');
     indicator.innerText = msg;
-    setTimeout(() => indicator.innerText = '', 2000);
+    setTimeout(() => indicator.innerText = '', 3000);
   }
 
-  // 监听变化
   document.addEventListener('input', (e) => {
     if (isOwner) {
       if (e.target.classList.contains('editable-text')) {
         const index = Array.from(document.querySelectorAll('.editable-text')).indexOf(e.target);
         if (index >= 0) cardsData[index].text = e.target.value;
       }
-      autoSave();
+      saveToLocal();
     }
   });
 
